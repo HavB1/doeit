@@ -3,8 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "dev:all": "concurrently \"pnpm run dev:webhook\" \"pnpm run dev\"",
     "dev": "next dev --turbopack",
-    "build": "next build",
+    "dev:webhook": "ngrok http --url=typically-crucial-hornet.ngrok-free.app 3000",
     "start": "next start",
     "lint": "next lint"
   },
@@ -50,6 +51,7 @@
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.41.0",
     "embla-carousel-react": "^8.5.2",
+    "framer-motion": "^12.6.3",
     "input-otp": "^1.4.2",
     "lucide-react": "^0.486.0",
     "next": "15.2.4",

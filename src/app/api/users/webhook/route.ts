@@ -6,18 +6,18 @@ import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
 export async function POST(req: Request) {
-  const SIGNING_SECRET = process.env.CLERK_SIGNIN_SECRET;
+  const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET;
 
   //   console.log("Webhook Called: ", SIGNING_SECRET);
 
-  if (!SIGNING_SECRET) {
+  if (!WEBHOOK_SECRET) {
     throw new Error(
-      "Error: Please add CLERK_SIGNIN_SECRET from Clerk Dashboard to .env or .env"
+      "Error: Please add CLERK_WEBHOOK_SECRET from Clerk Dashboard"
     );
   }
 
   // Create new Svix instance with secret
-  const wh = new Webhook(SIGNING_SECRET);
+  const wh = new Webhook(WEBHOOK_SECRET);
 
   // Get headers
   const headerPayload = await headers();

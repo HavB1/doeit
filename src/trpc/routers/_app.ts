@@ -1,5 +1,6 @@
 import { createTRPCRouter, publicProcedure } from "../init";
 import { z } from "zod";
+import { userProfileRouter } from "./userProfile";
 
 export const appRouter = createTRPCRouter({
   hello: publicProcedure
@@ -23,6 +24,7 @@ export const appRouter = createTRPCRouter({
   }),
 
   // Include all the domain routers
+  userProfile: userProfileRouter,
 });
 
 // export type definition of API

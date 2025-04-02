@@ -5,6 +5,7 @@ import {
   timestamp,
   uuid,
   jsonb,
+  numeric,
 } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
@@ -13,6 +14,8 @@ export const users = pgTable("users", {
   email: text("email").notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
+  name: text("name"),
+  imageUrl: text("image_url"),
 });
 
 export const workoutPlans = pgTable("workout_plans", {
@@ -73,4 +76,25 @@ export const workoutLogs = pgTable("workout_logs", {
       notes?: string;
     }[]
   >(),
+});
+
+export const userProfiles = pgTable("user_profiles", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  userId: uuid("user_id")
+    .references(() => users.id, { onDelete: "cascade" })
+    .unique()
+    .notNull(),
+  age: integer("age"),
+  sex: text("sex"),
+  height: numeric("height"),
+  currentWeight: numeric("current_weight"),
+  targetWeight: numeric("target_weight"),
+  fitnessGoal: text("fitness_goal"),
+  experienceLevel: text("experience_level"),
+  activityLevel: text("activity_level"),
+  weeklyGymGoal: text("weekly_gym_goal"),
+  dailyCalories: numeric("daily_calories"),
+  dailyProtein: numeric("daily_protein"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
