@@ -1,0 +1,76 @@
+import {
+  pgTable,
+  text,
+  integer,
+  timestamp,
+  uuid,
+  jsonb,
+} from "drizzle-orm/pg-core";
+
+export const users = pgTable("users", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  clerkId: text("clerk_id").unique().notNull(),
+  email: text("email").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const workoutPlans = pgTable("workout_plans", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  userId: uuid("user_id")
+    .references(() => users.id)
+    .notNull(),
+  name: text("name").notNull(),
+  description: text("description"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const workoutDays = pgTable("workout_days", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  planId: uuid("plan_id")
+    .references(() => workoutPlans.id)
+    .notNull(),
+  dayNumber: integer("day_number").notNull(),
+  focus: text("focus").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const exercises = pgTable("exercises", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  dayId: uuid("day_id")
+    .references(() => workoutDays.id)
+    .notNull(),
+  name: text("name").notNull(),
+  sets: integer("sets").notNull(),
+  reps: text("reps").notNull(), // Can be "6" or "12 each leg" or "1 min"
+  type: text("type"), // For special exercises like HIIT
+  duration: text("duration"), // For timed exercises
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const workoutLogs = pgTable("workout_logs", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  userId: uuid("user_id")
+    .references(() => users.id)
+    .notNull(),
+  planId: uuid("plan_id")
+    .references(() => workoutPlans.id)
+    .notNull(),
+  dayId: uuid("day_id")
+    .references(() => workoutDays.id)
+    .notNull(),
+  completedAt: timestamp("completed_at").defaultNow().notNull(),
+  notes: text("notes"),
+  exerciseLogs: jsonb("exercise_logs").$type<
+    {
+      exerciseId: string;
+      sets: number;
+      reps: string;
+      weight?: number;
+      notes?: string;
+    }[]
+  >(),
+});

@@ -1,0 +1,51 @@
+{
+  "workout_plan": [
+    {
+      "day": "Day 1",
+      "focus": "Upper Body Strength",
+      "exercises": [
+        { "name": "Bench Press", "sets": 4, "reps": 6 },
+        { "name": "Pull-Ups", "sets": 3, "reps": 8 },
+        { "name": "Overhead Press", "sets": 4, "reps": 6 },
+        { "name": "Barbell Rows", "sets": 3, "reps": 10 },
+        { "name": "Planks", "sets": 3, "duration": "1 min" }
+      ]
+    },
+    {
+      "day": "Day 2",
+      "focus": "Lower Body Strength + Conditioning",
+      "exercises": [
+        { "name": "Squats", "sets": 4, "reps": 6 },
+        { "name": "Romanian Deadlifts", "sets": 3, "reps": 10 },
+        { "name": "Walking Lunges", "sets": 3, "reps": "12 each leg" },
+        {
+          "name": "HIIT Cardio",
+          "duration": "10–15 min",
+          "type": "Treadmill, Bike, or Rower"
+        }
+      ]
+    },
+    {
+      "day": "Day 3",
+      "focus": "Push-Pull Hypertrophy",
+      "exercises": [
+        { "name": "Incline Dumbbell Press", "sets": 4, "reps": 10 },
+        { "name": "Lateral Raises", "sets": 4, "reps": 15 },
+        { "name": "Cable Rows", "sets": 4, "reps": 12 },
+        { "name": "Face Pulls", "sets": 3, "reps": 15 },
+        { "name": "Dips or Triceps Pushdowns", "sets": 3, "reps": 12 }
+      ]
+    },
+    {
+      "day": "Day 4",
+      "focus": "Legs + Core",
+      "exercises": [
+        { "name": "Deadlifts", "sets": 4, "reps": 5 },
+        { "name": "Leg Press", "sets": 3, "reps": 10 },
+        { "name": "Bulgarian Split Squats", "sets": 3, "reps": "8 per leg" },
+        { "name": "Calf Raises", "sets": 3, "reps": 15 },
+        { "name": "Hanging Leg Raises", "sets": 3, "reps": 15 }
+      ]
+    }
+  ]
+}
