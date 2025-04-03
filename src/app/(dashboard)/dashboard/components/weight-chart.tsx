@@ -11,6 +11,7 @@ import {
   YAxis,
 } from "recharts";
 import { format } from "date-fns";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export function WeightChart() {
   const trpc = useTRPC();
@@ -20,7 +21,11 @@ export function WeightChart() {
   );
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <div className="h-[350px] w-full flex items-center justify-center">
+        <Skeleton className="h-full w-full" />
+      </div>
+    );
   }
 
   if (!weightHistory?.length) {

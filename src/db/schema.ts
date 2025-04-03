@@ -25,6 +25,9 @@ export const workoutPlans = pgTable("workout_plans", {
     .notNull(),
   name: text("name").notNull(),
   description: text("description"),
+  goalType: text("goal_type")
+    .$type<"lose_weight" | "gain_muscle" | "maintain">()
+    .notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
@@ -89,7 +92,9 @@ export const userProfiles = pgTable("user_profiles", {
   height: numeric("height"),
   currentWeight: numeric("current_weight"),
   targetWeight: numeric("target_weight"),
-  fitnessGoal: text("fitness_goal"),
+  fitnessGoal: text("fitness_goal").$type<
+    "lose_weight" | "gain_muscle" | "maintain"
+  >(),
   experienceLevel: text("experience_level"),
   activityLevel: text("activity_level"),
   weeklyGymGoal: text("weekly_gym_goal"),
@@ -97,4 +102,36 @@ export const userProfiles = pgTable("user_profiles", {
   dailyProtein: numeric("daily_protein"),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+// 1. Preset Workout Plans
+export const presetWorkoutPlans = pgTable("preset_workout_plans", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  goalType: text("goal_type")
+    .$type<"lose_weight" | "gain_muscle" | "maintain">()
+    .notNull(),
+  name: text("name").notNull(),
+  description: text("description").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+// 2. Preset Workout Days
+export const presetWorkoutDays = pgTable("preset_workout_days", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  presetPlanId: uuid("preset_plan_id")
+    .references(() => presetWorkoutPlans.id)
+    .notNull(),
+  dayNumber: integer("day_number").notNull(),
+  focus: text("focus").notNull(),
+});
+
+// 3. Preset Exercises
+export const presetExercises = pgTable("preset_exercises", {
+  id: uuid("id").defaultRandom().primaryKey(),
+  presetDayId: uuid("preset_day_id")
+    .references(() => presetWorkoutDays.id)
+    .notNull(),
+  name: text("name").notNull(),
+  sets: integer("sets").notNull(),
+  reps: text("reps").notNull(),
 });

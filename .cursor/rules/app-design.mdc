@@ -1,0 +1,52 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+- The app is primarily for mobile devices.
+- Make sure that the app works well and looks good on mobile device first.
+
+- The TRPC config are in [client.tsx](mdc:src/trpc/client.tsx) [server.tsx](mdc:src/trpc/server.tsx) [init.ts](mdc:src/trpc/init.ts) [_app.ts](mdc:src/trpc/routers/_app.ts).
+- Use the docs for TRPC 11 with the new architecture:
+    ```
+    (page.tsx)(server)
+    <code> import { HydrateClient, prefetch, trpc } from '@/trpc/server';
+            import {ClientView} from "./client-view"
+    function Home() {
+prefetch(
+    trpc.hello.queryOptions({
+      /** input */
+    }),
+  );
+  return (
+    <HydrateClient>
+      <div>...</div>
+      {/** ... */}
+      <ClientView />
+    </HydrateClient>
+  );
+} <code>
+
+(client-view.tsx)
+'use client';
+// <-- hooks can only be used in client components
+import { useQuery } from '@tanstack/react-query';
+import { useTRPC } from '@/trpc/client';
+export function ClientView() {
+  const trpc = useTRPC();
+  const greeting = useQuery(trpc.hello.queryOptions({ text: 'world' }));
+  if (!greeting.data) return <div>Loading...</div>;
+  return <div>{greeting.data.greeting}</div>;
+}
+```
+
+- always check [app-spec.mdc](mdc:.cursor/rules/app-spec.mdc) to also see what we need to build
+
+- Make sure that you infer the types from trpc routers instead of hard typing them.
+
+- Always check [schema.ts](mdc:src/db/schema.ts) to get the correct reference for the database
+
+- Check the relevant file in /src/trpc/routers/ to get the correct function when it comes to query or mutation
+
+

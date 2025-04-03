@@ -23,8 +23,6 @@ export default function RequireOnboardingView({
   useEffect(() => {
     if (!isOnboardingCompleted) {
       router.push("/onboarding");
-    } else if (isOnboardingCompleted) {
-      router.push("/dashboard");
     }
   }, [isOnboardingCompleted, router]);
 

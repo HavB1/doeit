@@ -1,0 +1,219 @@
+{
+  "lose_weight": [
+    {
+      "name": "Fat Burner Beginner",
+      "description": "Light cardio-focused plan with bodyweight strength work.",
+      "intensity": "low",
+      "goalType": "lose_weight",
+      "days": [
+        {
+          "dayNumber": 1,
+          "focus": "Full Body Burn",
+          "exercises": [
+            {
+              "name": "Bodyweight Squats",
+              "sets": 3,
+              "reps": "15"
+            },
+            {
+              "name": "Push-Ups (Knee)",
+              "sets": 3,
+              "reps": "10"
+            },
+            {
+              "name": "Jumping Jacks",
+              "sets": 3,
+              "reps": "30 sec"
+            },
+            {
+              "name": "Wall Sit",
+              "sets": 3,
+              "reps": "30 sec"
+            },
+            {
+              "name": "Glute Bridge",
+              "sets": 3,
+              "reps": "15"
+            }
+          ]
+        },
+        {
+          "dayNumber": 2,
+          "focus": "Core + Cardio",
+          "exercises": [
+            {
+              "name": "Mountain Climbers",
+              "sets": 3,
+              "reps": "30 sec"
+            },
+            {
+              "name": "Plank",
+              "sets": 3,
+              "reps": "30 sec"
+            },
+            {
+              "name": "High Knees",
+              "sets": 3,
+              "reps": "30 sec"
+            },
+            {
+              "name": "Flutter Kicks",
+              "sets": 3,
+              "reps": "20"
+            },
+            {
+              "name": "Toe Touches",
+              "sets": 3,
+              "reps": "20"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "HIIT Torch",
+      "description": "Medium-intensity HIIT routine with bodyweight and cardio.",
+      "intensity": "medium",
+      "goalType": "lose_weight",
+      "days": [
+        {
+          "dayNumber": 1,
+          "focus": "HIIT Circuits",
+          "exercises": [
+            {
+              "name": "Burpees",
+              "sets": 4,
+              "reps": "10"
+            },
+            {
+              "name": "Jump Lunges",
+              "sets": 4,
+              "reps": "12"
+            },
+            {
+              "name": "Mountain Climbers",
+              "sets": 4,
+              "reps": "30 sec"
+            },
+            {
+              "name": "Jump Squats",
+              "sets": 4,
+              "reps": "15"
+            },
+            {
+              "name": "Plank Jacks",
+              "sets": 4,
+              "reps": "30 sec"
+            },
+            {
+              "name": "Side Planks",
+              "sets": 3,
+              "reps": "30 sec each side"
+            }
+          ]
+        },
+        {
+          "dayNumber": 2,
+          "focus": "Core & Cardio",
+          "exercises": [
+            {
+              "name": "Bicycle Crunches",
+              "sets": 4,
+              "reps": "20"
+            },
+            {
+              "name": "Skaters",
+              "sets": 4,
+              "reps": "20"
+            },
+            {
+              "name": "Step-Ups",
+              "sets": 3,
+              "reps": "15 each leg"
+            },
+            {
+              "name": "Jump Rope",
+              "sets": 4,
+              "reps": "1 min"
+            },
+            {
+              "name": "Russian Twists",
+              "sets": 4,
+              "reps": "30"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Shred Program Advanced",
+      "description": "High-intensity advanced cutting plan.",
+      "intensity": "high",
+      "goalType": "lose_weight",
+      "days": [
+        {
+          "dayNumber": 1,
+          "focus": "Full Body Power HIIT",
+          "exercises": [
+            {
+              "name": "Kettlebell Swings",
+              "sets": 5,
+              "reps": "20"
+            },
+            {
+              "name": "Box Jumps",
+              "sets": 5,
+              "reps": "12"
+            },
+            {
+              "name": "Battle Ropes",
+              "sets": 5,
+              "reps": "30 sec"
+            },
+            {
+              "name": "Dumbbell Snatch",
+              "sets": 4,
+              "reps": "12"
+            },
+            {
+              "name": "Rowing Machine",
+              "sets": 1,
+              "reps": "10 min"
+            }
+          ]
+        },
+        {
+          "dayNumber": 2,
+          "focus": "Cardio Strength Split",
+          "exercises": [
+            {
+              "name": "Treadmill Sprint Intervals",
+              "sets": 1,
+              "reps": "15 min"
+            },
+            {
+              "name": "Overhead Dumbbell Press",
+              "sets": 4,
+              "reps": "12"
+            },
+            {
+              "name": "TRX Rows",
+              "sets": 4,
+              "reps": "10"
+            },
+            {
+              "name": "Air Squats",
+              "sets": 4,
+              "reps": "20"
+            },
+            {
+              "name": "Sit-Ups",
+              "sets": 4,
+              "reps": "25"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,7 +1,6 @@
 "use client";
 
 import { useTRPC } from "@/trpc/client";
-import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { Scale, Dumbbell, Plus } from "lucide-react";
@@ -16,7 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import {
   Select,
@@ -25,19 +24,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import type { AppRouter } from "@/trpc/routers/_app";
+import type { TRPCClientErrorLike } from "@trpc/client";
 
 export function QuickActions() {
   const trpc = useTRPC();
   const router = useRouter();
   const [weight, setWeight] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
+  const [isWeightDialogOpen, setIsWeightDialogOpen] = useState(false);
   const [selectedExercise, setSelectedExercise] = useState("");
 
-  const { data: profile } = useQuery(
-    trpc.userProfile.getProfile.queryOptions()
-  );
-
-  const { data: todayWorkout } = useQuery(
+  const { data: todayWorkout, isLoading: isLoadingWorkout } = useQuery(
     trpc.workout.getTodayWorkout.queryOptions()
   );
 
@@ -45,12 +42,12 @@ export function QuickActions() {
     trpc.weight.logWeight.mutationOptions({
       onSuccess: () => {
         toast.success("Weight logged successfully");
-        setIsOpen(false);
+        setIsWeightDialogOpen(false);
         setWeight("");
         setSelectedExercise("");
       },
       onError: (error) => {
-        toast.error("Failed to log weight");
+        toast.error("Failed to log weight: " + error.message);
         console.error(error);
       },
     })
@@ -68,23 +65,30 @@ export function QuickActions() {
   };
 
   const handleLogWeightClick = () => {
-    if (!todayWorkout) {
-      toast.error("Please start a workout first");
-      router.push("/workouts/new");
+    if (!todayWorkout && !isLoadingWorkout) {
+      toast.info("Please start or select today's workout first.", {
+        action: {
+          label: "Go to Workouts",
+          onClick: () => router.push("/workouts"),
+        },
+      });
       return;
     }
-    setIsOpen(true);
+    if (todayWorkout) {
+      setIsWeightDialogOpen(true);
+    }
   };
 
   return (
     <div className="grid gap-4">
-      {/* Log Weight */}
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      {/* Log Weight (reverted name and added handler) */}
+      <Dialog open={isWeightDialogOpen} onOpenChange={setIsWeightDialogOpen}>
         <DialogTrigger asChild>
           <Button
             variant="outline"
             className="w-full justify-start"
             onClick={handleLogWeightClick}
+            disabled={isLoadingWorkout}
           >
             <Scale className="mr-2 h-4 w-4" />
             Log Weight
@@ -92,9 +96,9 @@ export function QuickActions() {
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Log Your Weight</DialogTitle>
+            <DialogTitle>Log Your Weight for Exercise</DialogTitle>
             <DialogDescription>
-              Log your weight for today's workout.
+              Select the exercise and enter your weight.
             </DialogDescription>
           </DialogHeader>
           <form onSubmit={handleLogWeight} className=" flex flex-col gap-4">
@@ -103,18 +107,24 @@ export function QuickActions() {
               <Select
                 value={selectedExercise}
                 onValueChange={setSelectedExercise}
+                required
               >
-                <SelectTrigger>
+                <SelectTrigger disabled={!todayWorkout?.exercises.length}>
                   <SelectValue placeholder="Select an exercise" />
                 </SelectTrigger>
                 <SelectContent>
-                  {todayWorkout?.exercises.map((exercise) => (
+                  {todayWorkout?.exercises.map((exercise: any) => (
                     <SelectItem key={exercise.id} value={exercise.id}>
                       {exercise.name}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
+              {!todayWorkout?.exercises.length && (
+                <p className="text-xs text-muted-foreground">
+                  No exercises found for today's workout.
+                </p>
+              )}
             </div>
             <div className="space-y-2">
               <Label htmlFor="weight">Weight (kg)</Label>
@@ -125,13 +135,14 @@ export function QuickActions() {
                 value={weight}
                 onChange={(e) => setWeight(e.target.value)}
                 placeholder="Enter your weight"
+                required
               />
             </div>
             <Button
               type="submit"
               className="w-full"
               disabled={
-                logWeightMutation.isPending || !selectedExercise || !weight
+                logWeightMutation.isPending || !weight || !selectedExercise
               }
             >
               {logWeightMutation.isPending ? "Logging..." : "Log Weight"}
