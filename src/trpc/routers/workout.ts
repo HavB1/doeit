@@ -4,10 +4,19 @@ import { db } from "@/db";
 import { workoutLogs, exercises, workoutPlans, workoutDays } from "@/db/schema";
 import { desc, eq, and, gte, lt } from "drizzle-orm";
 
+const exerciseLogSchema = z.object({
+  exerciseId: z.string(),
+  sets: z.number(),
+  reps: z.string(),
+  weight: z.number().optional(),
+  notes: z.string().optional(),
+});
+
 const createWorkoutSchema = z.object({
   planId: z.string(),
   dayId: z.string(),
   notes: z.string().optional(),
+  exerciseLogs: z.array(exerciseLogSchema),
 });
 
 export const workoutRouter = createTRPCRouter({
@@ -57,6 +66,7 @@ export const workoutRouter = createTRPCRouter({
           dayId: input.dayId,
           notes: input.notes,
           completedAt: new Date(),
+          exerciseLogs: input.exerciseLogs,
         })
         .returning();
 

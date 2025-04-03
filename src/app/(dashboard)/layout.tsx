@@ -10,7 +10,7 @@ export default function DashboardLayout({
 }) {
   return (
     <RequireOnboarding>
-      <div className="flex min-h-screen flex-col">
+      <div className="flex min-h-screen w-full flex-col">
         {/* Header */}
         <header className="sticky top-0 z-50 w-full px-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
           <div className="container flex h-14 items-center">
@@ -30,14 +30,14 @@ export default function DashboardLayout({
         </header>
 
         {/* Main Content */}
-        <div className="container flex-1 items-start md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10">
+        <div className="container mx-auto  w-screen flex-1 items-start md:grid md:grid-cols-[220px_minmax(0,1fr)] md:gap-6 lg:grid-cols-[240px_minmax(0,1fr)] lg:gap-10">
           {/* Sidebar */}
           <aside className="fixed top-14 z-30 -ml-2 hidden h-[calc(100vh-3.5rem)] w-full shrink-0 overflow-y-auto border-r md:sticky md:block">
             <DashboardNav />
           </aside>
 
           {/* Main Content */}
-          <main className="flex w-full flex-1 flex-col overflow-hidden">
+          <main className="flex px-4 w-full flex-1 flex-col overflow-hidden">
             {children}
           </main>
         </div>

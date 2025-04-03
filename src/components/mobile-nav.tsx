@@ -34,7 +34,7 @@ const items = [
   },
   {
     title: "Workouts",
-    href: "/workouts/plans",
+    href: "/workouts",
     icon: Dumbbell,
   },
   {

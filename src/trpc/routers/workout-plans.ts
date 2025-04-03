@@ -141,4 +141,63 @@ export const workoutPlansRouter = createTRPCRouter({
         days: newDays,
       };
     }),
+
+  getMyPlans: protectedProcedure.query(async ({ ctx }) => {
+    const plans = await db.query.workoutPlans.findMany({
+      where: eq(workoutPlans.userId, ctx.user.id),
+    });
+
+    const plansWithDays = await Promise.all(
+      plans.map(async (plan) => {
+        const days = await db.query.workoutDays.findMany({
+          where: eq(workoutDays.planId, plan.id),
+        });
+
+        const daysWithExercises = await Promise.all(
+          days.map(async (day) => {
+            const dayExercises = await db.query.exercises.findMany({
+              where: eq(exercises.dayId, day.id),
+            });
+
+            return {
+              ...day,
+              exercises: dayExercises,
+            };
+          })
+        );
+
+        return {
+          ...plan,
+          days: daysWithExercises,
+        };
+      })
+    );
+
+    return plansWithDays;
+  }),
+
+  getPlanDayDetails: protectedProcedure
+    .input(
+      z.object({
+        dayId: z.string(),
+      })
+    )
+    .query(async ({ input }) => {
+      const day = await db.query.workoutDays.findFirst({
+        where: eq(workoutDays.id, input.dayId),
+      });
+
+      if (!day) {
+        throw new Error("Day not found");
+      }
+
+      const dayExercises = await db.query.exercises.findMany({
+        where: eq(exercises.dayId, day.id),
+      });
+
+      return {
+        ...day,
+        exercises: dayExercises,
+      };
+    }),
 });
