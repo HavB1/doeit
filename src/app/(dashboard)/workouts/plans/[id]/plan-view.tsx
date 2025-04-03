@@ -12,24 +12,6 @@ import { ClonePlanButton } from "./clone-plan-button";
 import { useTRPC } from "@/trpc/client";
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
-import { PlanSkeleton } from "./page";
-
-interface Plan {
-  id: string;
-  name: string;
-  description: string;
-  days: Array<{
-    id: string;
-    dayNumber: number;
-    focus: string;
-    exercises: Array<{
-      id: string;
-      name: string;
-      sets: number;
-      reps: string;
-    }>;
-  }>;
-}
 
 interface PlanViewProps {
   planId: string;

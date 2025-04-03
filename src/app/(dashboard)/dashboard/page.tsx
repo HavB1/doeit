@@ -5,6 +5,8 @@ import { HydrateClient, prefetch, trpc } from "@/trpc/server";
 import { DashboardView } from "@/app/(dashboard)/dashboard/components/dashboard-view";
 import { DashboardSkeleton } from "./components/dashboard-skeleton";
 
+export const dynamic = "force-dynamic";
+
 export default async function DashboardPage() {
   const { userId } = await auth();
 

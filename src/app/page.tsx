@@ -2,6 +2,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
+export const dynamic = "force-dynamic";
+
 export default function Home() {
   return (
     <main className="flex h-full flex-col items-center justify-center p-4">

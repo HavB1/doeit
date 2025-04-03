@@ -1,12 +1,5 @@
 import { type Metadata } from "next";
-import {
-  ClerkProvider,
-  SignInButton,
-  SignUpButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from "@clerk/nextjs";
+import { ClerkProvider } from "@clerk/nextjs";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { TRPCReactProvider } from "@/trpc/client";
@@ -28,7 +21,7 @@ export const metadata: Metadata = {
     "Track your progress, set goals, and achieve your fitness dreams with Doeit. Your all-in-one fitness companion for workouts, nutrition, and personal growth.",
   keywords:
     "fitness, workout, exercise, health, fitness tracking, personal trainer, fitness goals, workout app",
-  viewport: "width=device-width, initial-scale=1, maximum-scale=1",
+  // viewport: "width=device-width, initial-scale=1, maximum-scale=1",
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "white" },
     { media: "(prefers-color-scheme: dark)", color: "black" },

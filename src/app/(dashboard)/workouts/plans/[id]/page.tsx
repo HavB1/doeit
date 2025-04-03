@@ -1,8 +1,9 @@
 import { HydrateClient, prefetch, trpc } from "@/trpc/server";
-import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { PlanView } from "./plan-view";
 import { Skeleton } from "@/components/ui/skeleton";
+
+export const dynamic = "force-dynamic";
 
 interface PlanPageProps {
   params: Promise<{ id: string }>;

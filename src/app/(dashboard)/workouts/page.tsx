@@ -5,6 +5,8 @@ import { Suspense } from "react";
 import { WorkoutsView } from "@/app/(dashboard)/workouts/components/workouts-view";
 import { HydrateClient, prefetch, trpc } from "@/trpc/server";
 
+export const dynamic = "force-dynamic";
+
 export default async function WorkoutsPage() {
   const { userId } = await auth();
 
@@ -13,6 +15,7 @@ export default async function WorkoutsPage() {
   }
 
   prefetch(trpc.workout.getRecentWorkouts.queryOptions());
+
   return (
     <HydrateClient>
       <Suspense fallback={<div>Loading...</div>}>

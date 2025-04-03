@@ -1,5 +1,7 @@
 import OnboardingView from "./components/onboarding-view";
 
+export const dynamic = "force-dynamic";
+
 export default function OnboardingPage() {
   return (
     <div className="container mx-auto flex min-h-screen flex-col items-center justify-center py-12">

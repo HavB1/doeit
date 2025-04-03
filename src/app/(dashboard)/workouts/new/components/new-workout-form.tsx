@@ -15,6 +15,12 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 import { toast } from "sonner";
+import type { inferRouterOutputs } from "@trpc/server";
+import type { AppRouter } from "@/trpc/routers/_app";
+
+type RouterOutput = inferRouterOutputs<AppRouter>;
+type DayDetails = RouterOutput["workoutPlans"]["getPlanDayDetails"];
+type Exercise = DayDetails["exercises"][number];
 
 export function NewWorkoutForm() {
   const trpc = useTRPC();
@@ -28,6 +34,12 @@ export function NewWorkoutForm() {
   const { data: days } = selectedPlan
     ? useQuery(
         trpc.workout.getWorkoutDays.queryOptions({ planId: selectedPlan })
+      )
+    : { data: undefined };
+
+  const { data: dayDetails } = selectedDay
+    ? useQuery(
+        trpc.workoutPlans.getPlanDayDetails.queryOptions({ dayId: selectedDay })
       )
     : { data: undefined };
 
@@ -52,6 +64,12 @@ export function NewWorkoutForm() {
       planId: selectedPlan,
       dayId: selectedDay,
       notes: notes || undefined,
+      exerciseLogs:
+        dayDetails?.exercises.map((exercise: Exercise) => ({
+          exerciseId: exercise.id,
+          sets: exercise.sets,
+          reps: exercise.reps,
+        })) || [],
     });
   };
 

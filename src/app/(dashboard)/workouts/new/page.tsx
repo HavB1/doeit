@@ -1,5 +1,7 @@
 import { NewWorkoutForm } from "./components/new-workout-form";
 
+export const dynamic = "force-dynamic";
+
 export default function NewWorkoutPage() {
   return (
     <div className="container mx-auto py-6">

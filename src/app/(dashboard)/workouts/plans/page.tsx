@@ -4,6 +4,8 @@ import { Suspense } from "react";
 import { PlansView } from "./plans-view";
 import { Skeleton } from "@/components/ui/skeleton";
 
+export const dynamic = "force-dynamic";
+
 function PlansSkeleton() {
   return (
     <div className="container py-6">
