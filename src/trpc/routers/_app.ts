@@ -1,6 +1,8 @@
 import { createTRPCRouter, publicProcedure } from "../init";
 import { z } from "zod";
 import { userProfileRouter } from "./userProfile";
+import { weightRouter } from "./weight";
+import { workoutRouter } from "./workout";
 
 export const appRouter = createTRPCRouter({
   hello: publicProcedure
@@ -25,6 +27,8 @@ export const appRouter = createTRPCRouter({
 
   // Include all the domain routers
   userProfile: userProfileRouter,
+  weight: weightRouter,
+  workout: workoutRouter,
 });
 
 // export type definition of API

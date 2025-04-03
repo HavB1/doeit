@@ -1,0 +1,203 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+
+
+# 🏋️‍♂️ doeit – Fitness Tracking App Spec
+
+## Overview
+`doeit` is a full-stack fitness tracking application built with Next.js 15, designed to help users manage weight loss goals, track workouts, monitor nutrition, and visualize progress. The app is modern, mobile-friendly, and uses a clean, minimal UI with Shadcn components.
+
+---
+
+## 🧱 Tech Stack
+
+| Concern         | Tech                          |
+|----------------|-------------------------------|
+| Frontend       | Next.js 15 (App Router, TS)   |
+| UI             | Shadcn UI + Tailwind CSS      |
+| Auth           | Clerk                         |
+| ORM            | Drizzle ORM                   |
+| Database       | Neon (PostgreSQL)             |
+| Charts         | Shadcn UI Charts|
+| State/Data     | TRPC v11 + TanStack React Query |
+| Rendering      | Server-rendered pages with Suspense-wrapped high-level client components |
+| Prefetching    | Data is prefetched on server in `page.tsx` |
+| Hosting        | Vercel                        |
+
+> ⚠️ Always check for the existence of a file before attempting to create it.
+
+---
+
+## 🧩 App Structure
+
+```
+Always check the codebase
+```
+
+---
+
+## 🔐 Authentication (Clerk)
+
+- Middleware-protected routes (`dashboard`, `weight`, `workouts`, etc.)
+- Clerk `auth()` used in server actions and  to access `userId`
+- Optional user metadata stored in Neon (`user_profiles`)
+
+---
+
+## 🧭 Onboarding Flow (`/onboarding/`)
+
+### Steps:
+1. **Welcome**
+2. **Profile Info** – age, sex, height, weight
+3. **Goal Setting** – lose/maintain/gain + target weight
+4. **Activity Level** – sedentary → very active + gym frequency
+5. **Macronutrient Setup** (optional)
+6. **Complete** – insert all into `user_profiles` → redirect to `/dashboard`
+
+### Data captured:
+```ts
+{
+  sex: string,
+  age: number,
+  height: number,
+  currentWeight: number,
+  targetWeight: number,
+  goal: "lose" | "maintain" | "gain",
+  activityLevel: string,
+  gymDaysPerWeek: number,
+  dailyCalories?: number,
+  dailyProtein?: number
+}
+```
+
+---
+
+## 🏠 Dashboard (`/dashboard`)
+
+- **Weight chart** (Line chart with last 30 days)
+- **Workout history** (latest logs)
+- **Current weight vs goal**
+- **Quick log buttons**
+- **Motivational tip or goal summary**
+
+---
+
+## ⚖️ Weight Tracker (`/weight`)
+
+### Functionality:
+- Input: weight (kg)
+- Save to `weight_logs`
+- Display: historical chart (Shadcn UI)
+- Optional: delete/edit log
+
+### Table: `weight_logs`
+```ts
+id: serial
+userId: uuid (FK → users)
+weight: real
+createdAt: timestamp
+```
+
+---
+
+## 💪 Workout Tracker (`/workouts`)
+
+### Functionality:
+- Log a gym session (workout type or note)
+- Show history (date + note)
+- Workout plan generator based on user
+- workout plan idea: 
+```{
+  "workout_plan": [
+    {
+      "day": "Day 1",
+      "focus": "Upper Body Strength",
+      "exercises": [
+        { "name": "Bench Press", "sets": 4, "reps": 6 },
+        { "name": "Pull-Ups", "sets": 3, "reps": 8 },
+        { "name": "Overhead Press", "sets": 4, "reps": 6 },
+        { "name": "Barbell Rows", "sets": 3, "reps": 10 },
+        { "name": "Planks", "sets": 3, "duration": "1 min" }
+      ]
+    },
+    {
+      "day": "Day 2",
+      "focus": "Lower Body Strength + Conditioning",
+      "exercises": [
+        { "name": "Squats", "sets": 4, "reps": 6 },
+        { "name": "Romanian Deadlifts", "sets": 3, "reps": 10 },
+        { "name": "Walking Lunges", "sets": 3, "reps": "12 each leg" },
+        {
+          "name": "HIIT Cardio",
+          "duration": "10–15 min",
+          "type": "Treadmill, Bike, or Rower"
+        }
+      ]
+    },
+    {
+      "day": "Day 3",
+      "focus": "Push-Pull Hypertrophy",
+      "exercises": [
+        { "name": "Incline Dumbbell Press", "sets": 4, "reps": 10 },
+        { "name": "Lateral Raises", "sets": 4, "reps": 15 },
+        { "name": "Cable Rows", "sets": 4, "reps": 12 },
+        { "name": "Face Pulls", "sets": 3, "reps": 15 },
+        { "name": "Dips or Triceps Pushdowns", "sets": 3, "reps": 12 }
+      ]
+    },
+    {
+      "day": "Day 4",
+      "focus": "Legs + Core",
+      "exercises": [
+        { "name": "Deadlifts", "sets": 4, "reps": 5 },
+        { "name": "Leg Press", "sets": 3, "reps": 10 },
+        { "name": "Bulgarian Split Squats", "sets": 3, "reps": "8 per leg" },
+        { "name": "Calf Raises", "sets": 3, "reps": 15 },
+        { "name": "Hanging Leg Raises", "sets": 3, "reps": 15 }
+      ]
+    }
+  ]
+}
+```
+- The 
+
+### Table: `workout_logs`
+```ts
+id: serial
+userId: uuid (FK)
+date: timestamp
+note: varchar
+```
+
+
+---
+
+## 🖼️ Visual Elements
+
+- All components use Shadcn UI
+- Hero section on landing page
+- Onboarding icons generated (e.g. personal metrics, goals)
+- Logo: minimalist text + abstract icon (checkmark + circle for "d")
+
+---
+
+## ✨ Feature Ideas (Future)
+
+- AI meal photo calorie detection
+- Smart reminders
+- Export data to CSV
+- Mobile app version with React Native
+
+---
+
+## ✅ Success Criteria
+
+- Users can log in with Clerk
+- Complete onboarding once
+- Track weight daily
+- Log workouts weekly
+- View progress visually in dashboard
+- App is responsive and fast

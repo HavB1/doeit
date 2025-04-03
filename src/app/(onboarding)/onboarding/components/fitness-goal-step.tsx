@@ -26,6 +26,8 @@ import {
   SelectItem,
   SelectValue,
 } from "@/components/ui/select";
+import { motion } from "framer-motion";
+import { Target, Trophy } from "lucide-react";
 
 const formSchema = z.object({
   fitnessGoal: z.enum(["lose_weight", "maintain", "gain_muscle"], {
@@ -64,70 +66,106 @@ export default function FitnessGoalStep({ onSuccess }: FitnessGoalStepProps) {
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Fitness Goals</CardTitle>
+    <Card className="border-0 shadow-none">
+      <CardHeader className="pb-2">
+        <CardTitle className="text-2xl font-bold">
+          What are your fitness goals?
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <FormField
-              control={form.control}
-              name="fitnessGoal"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>What is your primary fitness goal?</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select your goal" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="lose_weight">Lose Weight</SelectItem>
-                      <SelectItem value="maintain">Maintain Weight</SelectItem>
-                      <SelectItem value="gain_muscle">Gain Muscle</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="experienceLevel"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>What is your fitness experience level?</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select your experience level" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="beginner">
-                        Beginner (0-1 year)
-                      </SelectItem>
-                      <SelectItem value="intermediate">
-                        Intermediate (1-3 years)
-                      </SelectItem>
-                      <SelectItem value="advanced">
-                        Advanced (3+ years)
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit">Continue</Button>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <FormField
+                control={form.control}
+                name="fitnessGoal"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center gap-2">
+                      <Target className="h-4 w-4" />
+                      Primary Fitness Goal
+                    </FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="h-12 text-lg">
+                          <SelectValue placeholder="Select your goal" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="lose_weight">Lose Weight</SelectItem>
+                        <SelectItem value="maintain">
+                          Maintain Weight
+                        </SelectItem>
+                        <SelectItem value="gain_muscle">Gain Muscle</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.2, delay: 0.1 }}
+            >
+              <FormField
+                control={form.control}
+                name="experienceLevel"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center gap-2">
+                      <Trophy className="h-4 w-4" />
+                      Experience Level
+                    </FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="h-12 text-lg">
+                          <SelectValue placeholder="Select your experience level" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="beginner">
+                          Beginner (0-1 year)
+                        </SelectItem>
+                        <SelectItem value="intermediate">
+                          Intermediate (1-3 years)
+                        </SelectItem>
+                        <SelectItem value="advanced">
+                          Advanced (3+ years)
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.2, delay: 0.2 }}
+            >
+              <Button
+                type="submit"
+                className="w-full h-12 text-lg"
+                disabled={fitnessGoalMutation.isPending}
+              >
+                {fitnessGoalMutation.isPending ? "Saving..." : "Continue"}
+              </Button>
+            </motion.div>
           </form>
         </Form>
       </CardContent>

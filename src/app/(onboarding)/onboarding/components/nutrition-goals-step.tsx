@@ -2,9 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import { z } from "zod";
-
 import {
   Form,
   FormControl,
@@ -13,14 +11,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
 import { Input } from "@/components/ui/input";
-
 import { Button } from "@/components/ui/button";
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTRPC } from "@/trpc/client";
 import { useMutation } from "@tanstack/react-query";
+import { motion } from "framer-motion";
+import { Apple, Beef } from "lucide-react";
 
 const formSchema = z.object({
   dailyCalories: z
@@ -77,50 +74,86 @@ export default function NutritionGoalsStep({
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Nutrition Goals (Optional)</CardTitle>
+    <Card className="border-0 shadow-none">
+      <CardHeader className="pb-2">
+        <CardTitle className="text-2xl font-bold">
+          Set your nutrition goals
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <FormField
-              control={form.control}
-              name="dailyCalories"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Daily Calorie Goal (optional)</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      {...field}
-                      onChange={(e) => field.onChange(Number(e.target.value))}
-                      placeholder="Enter your daily calorie goal"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="dailyProtein"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Daily Protein Goal in grams (optional)</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="number"
-                      {...field}
-                      onChange={(e) => field.onChange(Number(e.target.value))}
-                      placeholder="Enter your daily protein goal"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit">Continue</Button>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <FormField
+                control={form.control}
+                name="dailyCalories"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center gap-2">
+                      <Apple className="h-4 w-4" />
+                      Daily Calorie Goal
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        {...field}
+                        onChange={(e) => field.onChange(Number(e.target.value))}
+                        className="h-12 text-lg"
+                        placeholder="Enter your daily calorie goal"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.2, delay: 0.1 }}
+            >
+              <FormField
+                control={form.control}
+                name="dailyProtein"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center gap-2">
+                      <Beef className="h-4 w-4" />
+                      Daily Protein Goal (grams)
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        type="number"
+                        {...field}
+                        onChange={(e) => field.onChange(Number(e.target.value))}
+                        className="h-12 text-lg"
+                        placeholder="Enter your daily protein goal"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.2, delay: 0.2 }}
+            >
+              <Button
+                type="submit"
+                className="w-full h-12 text-lg"
+                disabled={nutritionGoalsMutation.isPending}
+              >
+                {nutritionGoalsMutation.isPending ? "Saving..." : "Continue"}
+              </Button>
+            </motion.div>
           </form>
         </Form>
       </CardContent>

@@ -2,9 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import { z } from "zod";
-
 import {
   Form,
   FormControl,
@@ -13,9 +11,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-
 import { Button } from "@/components/ui/button";
-
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useTRPC } from "@/trpc/client";
 import { useMutation } from "@tanstack/react-query";
@@ -26,6 +22,8 @@ import {
   SelectItem,
   SelectValue,
 } from "@/components/ui/select";
+import { motion } from "framer-motion";
+import { Activity, Calendar } from "lucide-react";
 
 const formSchema = z.object({
   activityLevel: z.enum(
@@ -69,81 +67,113 @@ export default function ActivityLevelStep({
   }
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>Activity Level</CardTitle>
+    <Card className="border-0 shadow-none">
+      <CardHeader className="pb-2">
+        <CardTitle className="text-2xl font-bold">
+          How active are you?
+        </CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <FormField
-              control={form.control}
-              name="activityLevel"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>What is your current activity level?</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select your activity level" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="sedentary">
-                        Sedentary (little or no exercise)
-                      </SelectItem>
-                      <SelectItem value="light">
-                        Light (light exercise/sports 1-3 days/week)
-                      </SelectItem>
-                      <SelectItem value="moderate">
-                        Moderate (moderate exercise/sports 3-5 days/week)
-                      </SelectItem>
-                      <SelectItem value="very_active">
-                        Very Active (hard exercise/sports 6-7 days/week)
-                      </SelectItem>
-                      <SelectItem value="extra_active">
-                        Extra Active (very hard exercise/sports & physical job
-                        or training twice/day)
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="weeklyGymGoal"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>
-                    How many times per week do you want to go to the gym?
-                  </FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select your weekly gym goal" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="2-3">2-3 times per week</SelectItem>
-                      <SelectItem value="3-4">3-4 times per week</SelectItem>
-                      <SelectItem value="4-5">4-5 times per week</SelectItem>
-                      <SelectItem value="5-6">5-6 times per week</SelectItem>
-                      <SelectItem value="6+">6+ times per week</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <Button type="submit">Continue</Button>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <FormField
+                control={form.control}
+                name="activityLevel"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center gap-2">
+                      <Activity className="h-4 w-4" />
+                      Current Activity Level
+                    </FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="h-12 text-lg">
+                          <SelectValue placeholder="Select your activity level" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="sedentary">
+                          Sedentary (little or no exercise)
+                        </SelectItem>
+                        <SelectItem value="light">
+                          Light (light exercise/sports 1-3 days/week)
+                        </SelectItem>
+                        <SelectItem value="moderate">
+                          Moderate (moderate exercise/sports 3-5 days/week)
+                        </SelectItem>
+                        <SelectItem value="very_active">
+                          Very Active (hard exercise/sports 6-7 days/week)
+                        </SelectItem>
+                        <SelectItem value="extra_active">
+                          Extra Active (very hard exercise/sports & physical job
+                          or training twice/day)
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.2, delay: 0.1 }}
+            >
+              <FormField
+                control={form.control}
+                name="weeklyGymGoal"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="flex items-center gap-2">
+                      <Calendar className="h-4 w-4" />
+                      Weekly Gym Goal
+                    </FormLabel>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="h-12 text-lg">
+                          <SelectValue placeholder="Select your weekly gym goal" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="2-3">2-3 times per week</SelectItem>
+                        <SelectItem value="3-4">3-4 times per week</SelectItem>
+                        <SelectItem value="4-5">4-5 times per week</SelectItem>
+                        <SelectItem value="5-6">5-6 times per week</SelectItem>
+                        <SelectItem value="6+">6+ times per week</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.2, delay: 0.2 }}
+            >
+              <Button
+                type="submit"
+                className="w-full h-12 text-lg"
+                disabled={activityLevelMutation.isPending}
+              >
+                {activityLevelMutation.isPending ? "Saving..." : "Continue"}
+              </Button>
+            </motion.div>
           </form>
         </Form>
       </CardContent>
