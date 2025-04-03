@@ -6,7 +6,7 @@ import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
 
 interface SessionPageProps {
-  searchParams: {
+  searchParams: Promise<{
     planId?: string;
     dayId?: string;
   };
@@ -19,7 +19,7 @@ export default async function SessionPage({ searchParams }: SessionPageProps) {
     redirect("/sign-in");
   }
 
-  const { planId, dayId } = searchParams;
+  const { planId, dayId } = await searchParams;
 
   if (!planId || !dayId) {
     redirect("/workouts");
