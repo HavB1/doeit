@@ -23,14 +23,45 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Lino - Your Personal Fitness Journey",
+  title: "Doeit - Your Personal Fitness Journey",
   description:
-    "Track your progress, set goals, and achieve your fitness dreams with Lino",
+    "Track your progress, set goals, and achieve your fitness dreams with Doeit. Your all-in-one fitness companion for workouts, nutrition, and personal growth.",
+  keywords:
+    "fitness, workout, exercise, health, fitness tracking, personal trainer, fitness goals, workout app",
   viewport: "width=device-width, initial-scale=1, maximum-scale=1",
   themeColor: [
     { media: "(prefers-color-scheme: light)", color: "white" },
     { media: "(prefers-color-scheme: dark)", color: "black" },
   ],
+  manifest: "/manifest.json",
+  openGraph: {
+    title: "Doeit - Your Personal Fitness Journey",
+    description:
+      "Track your progress, set goals, and achieve your fitness dreams with Doeit",
+    url: "https://doeit.app",
+    siteName: "Doeit",
+    images: [
+      {
+        url: "https://doeit.app/og-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Doeit - Your Personal Fitness Journey",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Doeit - Your Personal Fitness Journey",
+    description:
+      "Track your progress, set goals, and achieve your fitness dreams with Doeit",
+    images: ["https://doeit.app/twitter-image.png"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default function RootLayout({
@@ -45,16 +76,9 @@ export default function RootLayout({
           <body
             className={`${geistSans.variable} ${geistMono.variable} antialiased`}
           >
-            <header className="flex justify-end items-center p-4 gap-4 h-16">
-              <SignedOut>
-                <SignInButton />
-                <SignUpButton />
-              </SignedOut>
-              <SignedIn>
-                <UserButton />
-              </SignedIn>
-            </header>
-            {children}
+            <main className="flex min-h-screen w-full flex-col items-center justify-center">
+              {children}
+            </main>
             <Toaster />
           </body>
         </html>
