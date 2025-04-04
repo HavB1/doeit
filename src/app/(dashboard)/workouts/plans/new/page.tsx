@@ -1,6 +1,6 @@
 import { HydrateClient, prefetch, trpc } from "@/trpc/server";
 import { CreatePlanView } from "./components/create-plan-view";
-import { Suspense } from "react";
+
 export const dynamic = "force-dynamic";
 
 export default function CreatePlanPage() {
