@@ -57,14 +57,14 @@ export function DashboardView() {
         </Card>
 
         {/* Quick Actions - takes full width on small screens */}
-        <Card className="col-span-1 md:col-span-1 lg:col-span-3">
+        {/* <Card className="col-span-1 md:col-span-1 lg:col-span-3">
           <CardHeader>
             <CardTitle>Quick Actions</CardTitle>
           </CardHeader>
           <CardContent>
             <QuickActions />
           </CardContent>
-        </Card>
+        </Card> */}
       </div>
 
       {/* Recent Workouts - takes full width */}
@@ -73,7 +73,6 @@ export function DashboardView() {
           <CardTitle>Recent Workouts</CardTitle>
         </CardHeader>
         <CardContent>
-          {/* Pass recentWorkouts data if needed by WorkoutHistory */}
           <WorkoutHistory />
         </CardContent>
       </Card>

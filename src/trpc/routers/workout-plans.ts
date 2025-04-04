@@ -7,8 +7,9 @@ import {
   workoutPlans,
   workoutDays,
   exercises,
+  workoutLogs,
 } from "@/db/schema";
-import { eq } from "drizzle-orm";
+import { eq, and } from "drizzle-orm";
 import { createTRPCRouter, protectedProcedure } from "../init";
 import { db } from "@/db";
 
@@ -236,13 +237,18 @@ export const workoutPlansRouter = createTRPCRouter({
         name: z.string().min(1),
         description: z.string().optional(),
         goalType: z.enum(["lose_weight", "gain_muscle", "maintain"]),
-        focus: z.string().min(1),
-        exercises: z.array(
+        days: z.array(
           z.object({
-            id: z.string(),
-            name: z.string(),
-            sets: z.number(),
-            reps: z.string(),
+            dayNumber: z.number(),
+            focus: z.string().min(1),
+            exercises: z.array(
+              z.object({
+                id: z.string(),
+                name: z.string(),
+                sets: z.number(),
+                reps: z.string(),
+              })
+            ),
           })
         ),
       })
@@ -261,43 +267,75 @@ export const workoutPlansRouter = createTRPCRouter({
         })
         .returning();
 
-      // Create a single day for the plan
-      const [day] = await db
-        .insert(workoutDays)
-        .values({
-          planId: plan.id,
-          dayNumber: 1,
-          focus: input.focus,
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        })
-        .returning();
-
-      // Create exercises for the day
-      const createdExercises = await Promise.all(
-        input.exercises.map((exercise) =>
-          db
-            .insert(exercises)
+      // Create days and exercises for each day
+      const createdDays = await Promise.all(
+        input.days.map(async (dayInput) => {
+          // Create the day
+          const [day] = await db
+            .insert(workoutDays)
             .values({
-              dayId: day.id,
-              name: exercise.name,
-              sets: exercise.sets,
-              reps: exercise.reps,
+              planId: plan.id,
+              dayNumber: dayInput.dayNumber,
+              focus: dayInput.focus,
               createdAt: new Date(),
               updatedAt: new Date(),
             })
-            .returning()
-        )
+            .returning();
+
+          // Create exercises for the day
+          const createdExercises = await Promise.all(
+            dayInput.exercises.map((exercise) =>
+              db
+                .insert(exercises)
+                .values({
+                  dayId: day.id,
+                  name: exercise.name,
+                  sets: exercise.sets,
+                  reps: exercise.reps,
+                  createdAt: new Date(),
+                  updatedAt: new Date(),
+                })
+                .returning()
+            )
+          );
+
+          return {
+            ...day,
+            exercises: createdExercises.flat(),
+          };
+        })
       );
 
       return {
         ...plan,
-        days: [
-          {
-            ...day,
-            exercises: createdExercises.flat(),
-          },
-        ],
+        days: createdDays,
       };
+    }),
+
+  getNextIncompleteDay: protectedProcedure
+    .input(z.object({ planId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      // Get all days for the plan
+      const days = await db.query.workoutDays.findMany({
+        where: eq(workoutDays.planId, input.planId),
+        orderBy: (days) => days.dayNumber,
+      });
+
+      // Get all completed workouts for this plan
+      const completedWorkouts = await db.query.workoutLogs.findMany({
+        where: and(
+          eq(workoutLogs.userId, ctx.user.id),
+          eq(workoutLogs.planId, input.planId)
+        ),
+      });
+
+      // Create a set of completed day IDs
+      const completedDayIds = new Set(completedWorkouts.map((w) => w.dayId));
+
+      // Find the first day that hasn't been completed
+      const nextDay = days.find((day) => !completedDayIds.has(day.id));
+
+      // If all days are completed, return the first day
+      return nextDay || days[0];
     }),
 });

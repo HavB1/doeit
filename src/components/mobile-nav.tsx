@@ -33,26 +33,26 @@ const items = [
     icon: Dumbbell,
   },
 
-  {
-    title: "Weight",
-    href: "/weight",
-    icon: Scale,
-  },
+  // {
+  //   title: "Weight",
+  //   href: "/weight",
+  //   icon: Scale,
+  // },
   {
     title: "Dashboard",
     href: "/dashboard",
     icon: LayoutDashboard,
   },
-  {
-    title: "Progress",
-    href: "/progress",
-    icon: BarChart3,
-  },
-  {
-    title: "Settings",
-    href: "/settings",
-    icon: Settings,
-  },
+  // {
+  //   title: "Progress",
+  //   href: "/progress",
+  //   icon: BarChart3,
+  // },
+  // {
+  //   title: "Settings",
+  //   href: "/settings",
+  //   icon: Settings,
+  // },
 ];
 
 export function MobileNav() {

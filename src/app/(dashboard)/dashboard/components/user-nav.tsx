@@ -1,6 +1,6 @@
 "use client";
 
-import { SignedOut, SignOutButton, UserButton, useUser } from "@clerk/nextjs";
+import { SignOutButton, useUser } from "@clerk/nextjs";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,18 +13,22 @@ import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useRouter } from "next/navigation";
 import { LogOutIcon } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export function UserNav() {
   const router = useRouter();
-
+  const [avatarFallback, setAvatarFallback] = useState("");
   const { user } = useUser();
 
-  const avatarFallback = user?.fullName
-    ? user.fullName
+  useEffect(() => {
+    if (user?.fullName) {
+      const initials = user.fullName
         .split(" ")
         .map((name) => name[0])
-        .join("")
-    : "SC";
+        .join("");
+      setAvatarFallback(initials);
+    }
+  }, [user?.fullName]);
 
   return (
     <DropdownMenu>
@@ -32,7 +36,7 @@ export function UserNav() {
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
             <AvatarImage src={user?.imageUrl} alt="@username" />
-            <AvatarFallback>{avatarFallback}</AvatarFallback>
+            <AvatarFallback>{avatarFallback || "..."}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
@@ -56,10 +60,6 @@ export function UserNav() {
         <DropdownMenuItem className="flex items-center gap-2">
           <LogOutIcon className="h-4 w-4" />
           <SignOutButton />
-          {/* <div className="flex items-center gap-2"> */}
-
-          {/* <p>Logout</p> */}
-          {/* </div> */}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

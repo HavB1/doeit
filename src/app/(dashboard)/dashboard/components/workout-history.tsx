@@ -3,10 +3,12 @@
 import { useTRPC } from "@/trpc/client";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
-import { Dumbbell } from "lucide-react";
+import { ArrowRight, Dumbbell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 import type { inferRouterOutputs } from "@trpc/server";
 import type { AppRouter } from "@/trpc/routers/_app";
 
@@ -22,23 +24,21 @@ export function WorkoutHistory() {
   );
 
   if (isLoading) {
-    // Skeleton for loading state
     return (
       <div className="space-y-4">
         {[1, 2, 3].map((i) => (
-          <div
-            key={i}
-            className="flex items-center justify-between rounded-lg border p-4"
-          >
-            <div className="flex items-center space-x-4">
-              <Skeleton className="h-5 w-5 rounded-full" />
-              <div className="space-y-1">
-                <Skeleton className="h-4 w-24" />
-                <Skeleton className="h-3 w-20" />
+          <Card key={i} className="p-4">
+            <CardContent className="flex items-center justify-between p-0">
+              <div className="flex items-center gap-4">
+                <Skeleton className="h-10 w-10 rounded-full" />
+                <div className="space-y-2">
+                  <Skeleton className="h-4 w-32" />
+                  <Skeleton className="h-3 w-24" />
+                </div>
               </div>
-            </div>
-            <Skeleton className="h-8 w-20" />
-          </div>
+              <Skeleton className="h-8 w-20 rounded-full" />
+            </CardContent>
+          </Card>
         ))}
       </div>
     );
@@ -46,54 +46,82 @@ export function WorkoutHistory() {
 
   if (!workouts?.length) {
     return (
-      <div className="flex flex-col items-center justify-center space-y-4 py-8">
-        <Dumbbell className="h-12 w-12 text-muted-foreground" />
-        <p className="text-muted-foreground">No workouts logged yet</p>
-        <Button onClick={() => router.push("/workouts")}>
-          Log Your First Workout
-        </Button>
-      </div>
+      <Card className="p-6">
+        <CardContent className="flex flex-col items-center justify-center space-y-4 p-0">
+          <Dumbbell className="h-12 w-12 text-muted-foreground" />
+          <p className="text-muted-foreground text-center">
+            No workouts logged yet
+          </p>
+          <Button
+            onClick={() => router.push("/workouts")}
+            className="rounded-full"
+          >
+            Log Your First Workout
+          </Button>
+        </CardContent>
+      </Card>
     );
   }
 
-  // Limit to latest 3 workouts for the dashboard view
   const recentWorkoutsToDisplay = workouts.slice(0, 3);
 
   return (
     <div className="space-y-4">
       {recentWorkoutsToDisplay.map((workout) => {
         const workoutTitle = workout.notes || "Logged Workout";
+        const exerciseCount = workout.exerciseLogs?.length || 0;
+
         return (
-          <div
+          <Card
             key={workout.id}
-            className="flex items-center justify-between rounded-lg border p-4"
+            className="p-4 transition-all hover:shadow-md active:scale-[0.98]"
+            onClick={() => router.push(`/workouts/${workout.id}`)}
           >
-            <div className="flex items-center space-x-4">
-              <Dumbbell className="h-5 w-5 text-muted-foreground flex-shrink-0" />
-              <div className="overflow-hidden">
-                <p className="font-medium truncate" title={workoutTitle}>
-                  {workoutTitle}
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  {format(new Date(workout.completedAt), "MMM d, yyyy")}
-                </p>
+            <CardContent className="flex flex-col items-center justify-between gap-4 p-0">
+              <div className="flex items-center gap-4">
+                <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+                  <Dumbbell className="h-5 w-5 text-primary" />
+                </div>
+                <div className="space-y-1">
+                  <p
+                    className="font-medium truncate max-w-[200px]"
+                    title={workoutTitle}
+                  >
+                    {workoutTitle}
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <Badge variant="outline" className="text-xs">
+                      {format(new Date(workout.completedAt), "MMM d, yyyy")}
+                    </Badge>
+                    <Badge variant="secondary" className="text-xs">
+                      {exerciseCount}{" "}
+                      {exerciseCount === 1 ? "exercise" : "exercises"}
+                    </Badge>
+                  </div>
+                </div>
               </div>
-            </div>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => router.push(`/workouts/${workout.id}`)}
-              className="flex-shrink-0 ml-2"
-            >
-              View Details
-            </Button>
-          </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="rounded-full"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  router.push(`/workouts/${workout.id}`);
+                }}
+              >
+                View <ArrowRight className="size-4 ml-2" />
+              </Button>
+            </CardContent>
+          </Card>
         );
       })}
-      {/* Show View All button only if there are workouts */}
       {workouts.length > 0 && (
         <div className="flex justify-center pt-2">
-          <Button variant="outline" onClick={() => router.push("/workouts")}>
+          <Button
+            variant="outline"
+            onClick={() => router.push("/workouts")}
+            className="rounded-full"
+          >
             View All Workouts
           </Button>
         </div>

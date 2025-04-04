@@ -39,7 +39,7 @@ export function PlansView() {
   }
 
   return (
-    <div className="container py-6 px-4 md:px-6">
+    <div className="container py-6 ">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
           <h1 className="text-2xl sm:text-3xl font-bold">Workout Plans</h1>

@@ -86,4 +86,34 @@ export const workoutRouter = createTRPCRouter({
         where: eq(workoutDays.planId, input.planId),
       });
     }),
+
+  getWorkoutDetails: protectedProcedure
+    .input(z.object({ workoutId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const workout = await db.query.workoutLogs.findFirst({
+        where: eq(workoutLogs.id, input.workoutId),
+      });
+
+      if (!workout) {
+        throw new Error("Workout not found");
+      }
+
+      const exerciseLogs = workout.exerciseLogs || [];
+      const exerciseDetails = await Promise.all(
+        exerciseLogs.map(async (log) => {
+          const exercise = await db.query.exercises.findFirst({
+            where: eq(exercises.id, log.exerciseId),
+          });
+          return {
+            ...log,
+            exercise,
+          };
+        })
+      );
+
+      return {
+        ...workout,
+        exerciseLogs: exerciseDetails,
+      };
+    }),
 });

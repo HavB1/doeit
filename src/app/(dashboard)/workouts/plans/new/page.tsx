@@ -1,7 +1,11 @@
-import { HydrateClient } from "@/trpc/server";
+import { HydrateClient, prefetch, trpc } from "@/trpc/server";
 import { CreatePlanView } from "./components/create-plan-view";
+import { Suspense } from "react";
+export const dynamic = "force-dynamic";
 
 export default function CreatePlanPage() {
+  prefetch(trpc.workoutPlans.getPresetExercises.queryOptions());
+
   return (
     <HydrateClient>
       <div className="container py-6 px-4 md:px-6">
@@ -14,7 +18,11 @@ export default function CreatePlanPage() {
             sets and reps
           </p>
         </div>
-        <CreatePlanView />
+        <HydrateClient>
+          {/* <Suspense fallback={<div>Loading...</div>}> */}
+          <CreatePlanView />
+          {/* </Suspense> */}
+        </HydrateClient>
       </div>
     </HydrateClient>
   );
