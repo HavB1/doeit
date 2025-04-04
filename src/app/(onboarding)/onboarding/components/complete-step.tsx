@@ -14,7 +14,9 @@ interface CompleteStepProps {
 export default function CompleteStep({ onSuccess }: CompleteStepProps) {
   const router = useRouter();
 
-  const handleComplete = () => {
+  const handleComplete = async () => {
+    // Set the cookie to indicate onboarding is completed
+    document.cookie = "onboarding_completed=true; path=/; max-age=31536000"; // 1 year expiry
     router.push("/dashboard");
   };
 

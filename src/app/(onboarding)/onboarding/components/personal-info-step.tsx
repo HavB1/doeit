@@ -31,7 +31,7 @@ const formSchema = z.object({
   age: z.number().int().positive().min(1, {
     message: "Age must be at least 1.",
   }),
-  sex: z.enum(["male", "female", "other", "prefer_not_to_say"], {
+  sex: z.enum(["male", "female"], {
     required_error: "Please select your sex.",
   }),
   height: z.number().positive().min(1, {
@@ -63,20 +63,33 @@ export default function PersonalInfoStep({ onSuccess }: PersonalInfoStepProps) {
     },
   });
 
-  const personalInfoMutation = useMutation(
-    trpc.userProfile.createOrUpdateProfile.mutationOptions({
-      onSuccess: () => {
-        onSuccess();
-      },
-      onError: (error) => {
-        console.error(error);
-        toast.error("Failed to update personal information");
-      },
-    })
-  );
+  const personalInfoMutation = useMutation({
+    ...trpc.userProfile.createOrUpdateProfile.mutationOptions(),
+    onSuccess: () => {
+      onSuccess();
+    },
+    onError: (error) => {
+      console.error("Mutation error:", error);
+      toast.error("Failed to update personal information. Please try again.");
+    },
+  });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    personalInfoMutation.mutate(values);
+    try {
+      // Ensure all numeric values are properly converted
+      const processedValues = {
+        ...values,
+        age: Number(values.age),
+        height: Number(values.height),
+        currentWeight: Number(values.currentWeight),
+        targetWeight: Number(values.targetWeight),
+      };
+
+      personalInfoMutation.mutate(processedValues);
+    } catch (error) {
+      console.error("Form submission error:", error);
+      toast.error("An error occurred while processing your information.");
+    }
   }
 
   return (
@@ -107,7 +120,12 @@ export default function PersonalInfoStep({ onSuccess }: PersonalInfoStepProps) {
                       <Input
                         type="number"
                         {...field}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          field.onChange(
+                            value === "" ? undefined : Number(value)
+                          );
+                        }}
                         className="h-12 text-lg"
                         placeholder="Enter your age"
                       />
@@ -170,7 +188,12 @@ export default function PersonalInfoStep({ onSuccess }: PersonalInfoStepProps) {
                       <Input
                         type="number"
                         {...field}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          field.onChange(
+                            value === "" ? undefined : Number(value)
+                          );
+                        }}
                         className="h-12 text-lg"
                         placeholder="Enter your height"
                       />
@@ -199,7 +222,12 @@ export default function PersonalInfoStep({ onSuccess }: PersonalInfoStepProps) {
                       <Input
                         type="number"
                         {...field}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          field.onChange(
+                            value === "" ? undefined : Number(value)
+                          );
+                        }}
                         className="h-12 text-lg"
                         placeholder="Enter your current weight"
                       />
@@ -228,7 +256,12 @@ export default function PersonalInfoStep({ onSuccess }: PersonalInfoStepProps) {
                       <Input
                         type="number"
                         {...field}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          field.onChange(
+                            value === "" ? undefined : Number(value)
+                          );
+                        }}
                         className="h-12 text-lg"
                         placeholder="Enter your target weight"
                       />

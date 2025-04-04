@@ -12,9 +12,58 @@ import { ClonePlanButton } from "./clone-plan-button";
 import { useTRPC } from "@/trpc/client";
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Info } from "lucide-react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import Image from "next/image";
+import exerciseInfo from "@/lib/exercise-info.json";
 
 interface PlanViewProps {
   planId: string;
+}
+
+function ExerciseInfoPopover({ exerciseName }: { exerciseName: string }) {
+  const exercise = exerciseInfo.exercises.find(
+    (ex) => ex.name.toLowerCase() === exerciseName.toLowerCase()
+  );
+
+  if (!exercise) return null;
+
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button variant="ghost" size="icon" className="h-8 w-8">
+          <Info className="h-4 w-4" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-80">
+        <div className="space-y-4">
+          <div className="relative h-48 w-full">
+            <Image
+              src={`/${exercise.image}`}
+              alt={exercise.name}
+              fill
+              className="rounded-md object-cover"
+              // onError={(e) => {
+              //   const target = e.target as HTMLImageElement;
+              //   target.src = "/placeholder.png";
+              // }}
+            />
+          </div>
+          <div>
+            <h4 className="font-semibold">{exercise.name}</h4>
+            <p className="text-sm text-muted-foreground mt-1">
+              {exercise.bodyParts.join(", ")}
+            </p>
+            <p className="text-sm mt-2">{exercise.description}</p>
+          </div>
+        </div>
+      </PopoverContent>
+    </Popover>
+  );
 }
 
 function PlanViewSkeleton() {
@@ -111,6 +160,7 @@ export function PlanView({ planId }: PlanViewProps) {
                         {exercise.sets} sets × {exercise.reps} reps
                       </p>
                     </div>
+                    <ExerciseInfoPopover exerciseName={exercise.name} />
                   </div>
                 ))}
               </div>

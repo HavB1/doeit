@@ -48,6 +48,17 @@ export function TRPCReactProvider(
         httpBatchLink({
           transformer: superjson,
           url: getUrl(),
+          headers: () => {
+            const headers = new Headers();
+            headers.set("x-trpc-source", "react");
+            return headers;
+          },
+          fetch(url, options) {
+            return fetch(url, {
+              ...options,
+              credentials: "include",
+            });
+          },
         }),
       ],
     })

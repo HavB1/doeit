@@ -22,10 +22,10 @@ export const metadata: Metadata = {
   keywords:
     "fitness, workout, exercise, health, fitness tracking, personal trainer, fitness goals, workout app",
   // viewport: "width=device-width, initial-scale=1, maximum-scale=1",
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "white" },
-    { media: "(prefers-color-scheme: dark)", color: "black" },
-  ],
+  // themeColor: [
+  //   { media: "(prefers-color-scheme: light)", color: "white" },
+  //   { media: "(prefers-color-scheme: dark)", color: "black" },
+  // ],
   manifest: "/manifest.json",
   openGraph: {
     title: "Doeit - Your Personal Fitness Journey",

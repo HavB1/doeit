@@ -12,9 +12,26 @@ export const createTRPCContext = cache(async () => {
    */
 
   const { userId } = await auth();
-  // Return userId in context without requiring authentication
-  // This allows both authenticated and unauthenticated requests
-  return { userId };
+
+  if (!userId) {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "You must be logged in to access this resource",
+    });
+  }
+
+  const dbUser = await db.query.users.findFirst({
+    where: eq(users.clerkId, userId),
+  });
+
+  if (!dbUser) {
+    throw new TRPCError({
+      code: "NOT_FOUND",
+      message: "User not found in database",
+    });
+  }
+
+  return { userId, user: dbUser };
 });
 // Avoid exporting the entire t-object
 // since it's not very descriptive.
@@ -41,27 +58,16 @@ export const publicProcedure = t.procedure;
 const authedProcedure = t.procedure.use(async function isAuthed(opts) {
   const { ctx, next } = opts;
 
-  if (!ctx.userId) {
+  if (!ctx.userId || !ctx.user) {
     throw new TRPCError({
       code: "UNAUTHORIZED",
       message: "You must be logged in to access this resource",
     });
   }
 
-  const dbUser = await db.query.users.findFirst({
-    where: eq(users.clerkId, ctx.userId),
-  });
-
-  if (!dbUser) {
-    throw new TRPCError({
-      code: "NOT_FOUND",
-      message: "Something went wrong. User not found",
-    });
-  }
-
   return next({
     ctx: {
-      user: dbUser,
+      user: ctx.user,
     },
   });
 });

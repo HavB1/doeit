@@ -1,0 +1,660 @@
+[
+  {
+    "id": "01e058ca-44f3-4cb9-adc8-ef7be86f78b0",
+    "preset_day_id": "db397f2a-aea2-4cbd-a4ca-95a44d39c2e5",
+    "name": "Lat Pulldown Machine",
+    "sets": 4,
+    "reps": "10"
+  },
+  {
+    "id": "031bae14-c918-4051-a152-507fd90477d7",
+    "preset_day_id": "c93e1151-3448-4669-8cd1-b204e086a768",
+    "name": "Triceps Pushdowns",
+    "sets": 3,
+    "reps": "12"
+  },
+  {
+    "id": "074d7363-77e7-45c9-83ec-f8f045be174a",
+    "preset_day_id": "c93e1151-3448-4669-8cd1-b204e086a768",
+    "name": "Incline Push-Ups",
+    "sets": 3,
+    "reps": "10"
+  },
+  {
+    "id": "08aff055-663f-48ab-8c29-367d069082a1",
+    "preset_day_id": "4a731a62-6c6d-4448-96d8-4abca514d7fc",
+    "name": "Flutter Kicks",
+    "sets": 3,
+    "reps": "20"
+  },
+  {
+    "id": "0992c2ac-51d7-4145-a21d-794f6f8e9247",
+    "preset_day_id": "a9edfe39-d393-4aa9-8d8e-80a7e269104f",
+    "name": "Bodyweight Lunges",
+    "sets": 3,
+    "reps": "12 each leg"
+  },
+  {
+    "id": "0a4eba8a-b107-4d85-9da5-116b4d81d6b2",
+    "preset_day_id": "88c3c1e5-7074-4fb6-ad84-b30cee716adc",
+    "name": "Push-Ups (Knee)",
+    "sets": 3,
+    "reps": "10"
+  },
+  {
+    "id": "0b63b4be-f074-441d-9dd8-556404c0adfa",
+    "preset_day_id": "d4aa1379-979b-49df-9ed6-68be70665f38",
+    "name": "Wall Push-Ups",
+    "sets": 3,
+    "reps": "15"
+  },
+  {
+    "id": "0eaffa56-edd4-489d-9c5e-f7153a4429aa",
+    "preset_day_id": "2a99b209-6547-4da8-8ec6-3c6d34e80f04",
+    "name": "Mountain Climbers",
+    "sets": 3,
+    "reps": "30 sec"
+  },
+  {
+    "id": "0f95f074-40c5-4d61-b983-edfd3cf770fa",
+    "preset_day_id": "c9673e47-8b83-4cf3-9bb9-85c096fe0f64",
+    "name": "Shoulder Press Machine",
+    "sets": 4,
+    "reps": "10"
+  },
+  {
+    "id": "15d70058-38c1-4818-b8d4-ebe68d0f0a75",
+    "preset_day_id": "dbae2360-62f7-4cc9-9454-deab78a2838f",
+    "name": "Wall Push-Ups",
+    "sets": 3,
+    "reps": "12"
+  },
+  {
+    "id": "19f2f365-629b-4483-a3ea-b0f741af93e0",
+    "preset_day_id": "4a731a62-6c6d-4448-96d8-4abca514d7fc",
+    "name": "Plank",
+    "sets": 3,
+    "reps": "30 sec"
+  },
+  {
+    "id": "1a4f1544-7369-4752-b278-cf05145ad786",
+    "preset_day_id": "4a731a62-6c6d-4448-96d8-4abca514d7fc",
+    "name": "High Knees",
+    "sets": 3,
+    "reps": "30 sec"
+  },
+  {
+    "id": "23a402c7-4f4e-4277-a827-cfae2a81a282",
+    "preset_day_id": "a9edfe39-d393-4aa9-8d8e-80a7e269104f",
+    "name": "Romanian Deadlift",
+    "sets": 3,
+    "reps": "10"
+  },
+  {
+    "id": "25f890bd-f875-416f-ba70-cd9b1f1026c8",
+    "preset_day_id": "db397f2a-aea2-4cbd-a4ca-95a44d39c2e5",
+    "name": "Preacher Curl Machine",
+    "sets": 3,
+    "reps": "12"
+  },
+  {
+    "id": "26bb4044-9e14-4f92-81a0-dd6234f5ed10",
+    "preset_day_id": "d0b674a7-f078-4157-87c3-991a8013da81",
+    "name": "Step-ups",
+    "sets": 3,
+    "reps": "12"
+  },
+  {
+    "id": "26d7cdbf-8e59-4dc8-b0f9-217df8d5d6c5",
+    "preset_day_id": "88c3c1e5-7074-4fb6-ad84-b30cee716adc",
+    "name": "Wall Sit",
+    "sets": 3,
+    "reps": "30 sec"
+  },
+  {
+    "id": "26e6679c-5a63-4690-a066-522fe497c0a0",
+    "preset_day_id": "88c3c1e5-7074-4fb6-ad84-b30cee716adc",
+    "name": "Glute Bridge",
+    "sets": 3,
+    "reps": "15"
+  },
+  {
+    "id": "28f0cd98-4280-483a-9386-6a4a7e3154fe",
+    "preset_day_id": "0982eaff-4d34-4a86-b8bc-dd654720b603",
+    "name": "Cable Row",
+    "sets": 3,
+    "reps": "12"
+  },
+  {
+    "id": "293c5393-cd09-482a-af96-56cd548950a5",
+    "preset_day_id": "83a60c5d-ff7d-4f58-ae54-70eaa71990f5",
+    "name": "Yoga Flow",
+    "sets": 1,
+    "reps": "15 min"
+  },
+  {
+    "id": "29795527-a682-4a51-9dfc-9bdce65b504d",
+    "preset_day_id": "475a6f7d-e773-46e8-9dee-3adb98018500",
+    "name": "Overhead Triceps Extension (Cable)",
+    "sets": 3,
+    "reps": "15"
+  },
+  {
+    "id": "2ac59966-cb4c-4137-8955-4a7d64834ac3",
+    "preset_day_id": "0982eaff-4d34-4a86-b8bc-dd654720b603",
+    "name": "EZ Bar Curl",
+    "sets": 3,
+    "reps": "10"
+  },
+  {
+    "id": "2b4bfa50-c856-4db6-a5b3-fff64eebcb10",
+    "preset_day_id": "83a60c5d-ff7d-4f58-ae54-70eaa71990f5",
+    "name": "Stretching",
+    "sets": 1,
+    "reps": "15 min"
+  },
+  {
+    "id": "32309077-f688-4d74-9df7-fbca1384a02b",
+    "preset_day_id": "4a731a62-6c6d-4448-96d8-4abca514d7fc",
+    "name": "Toe Touches",
+    "sets": 3,
+    "reps": "20"
+  },
+  {
+    "id": "3d94e564-fd11-4a5d-ab67-9a788a7c59af",
+    "preset_day_id": "4a731a62-6c6d-4448-96d8-4abca514d7fc",
+    "name": "Mountain Climbers",
+    "sets": 3,
+    "reps": "30 sec"
+  },
+  {
+    "id": "42cbbe3f-1564-4cee-937e-da181ad92c5f",
+    "preset_day_id": "83a60c5d-ff7d-4f58-ae54-70eaa71990f5",
+    "name": "Walking",
+    "sets": 1,
+    "reps": "20 min"
+  },
+  {
+    "id": "48b41b9c-79d2-45e2-86da-17d8542eaf7e",
+    "preset_day_id": "2a99b209-6547-4da8-8ec6-3c6d34e80f04",
+    "name": "Kettlebell Swings",
+    "sets": 3,
+    "reps": "15"
+  },
+  {
+    "id": "4d09d424-7795-4cde-b1e0-0cba79f8abda",
+    "preset_day_id": "63c10c65-3804-4c28-a2a0-c21772e21561",
+    "name": "Wall Push-Ups",
+    "sets": 3,
+    "reps": "12"
+  },
+  {
+    "id": "4d38d39f-056f-42c2-8f72-4729a7e64615",
+    "preset_day_id": "23742cbc-69ba-40f2-b1f3-5dca5ba004ce",
+    "name": "Standing Toe Touch",
+    "sets": 3,
+    "reps": "30 sec"
+  },
+  {
+    "id": "4eed378d-e47b-48da-adcf-2d6c1a410116",
+    "preset_day_id": "db397f2a-aea2-4cbd-a4ca-95a44d39c2e5",
+    "name": "Cable Rope Hammer Curl",
+    "sets": 3,
+    "reps": "12"
+  },
+  {
+    "id": "51331ab2-00af-45a5-b41f-049d91d9cc9c",
+    "preset_day_id": "63c10c65-3804-4c28-a2a0-c21772e21561",
+    "name": "Bird Dog",
+    "sets": 3,
+    "reps": "10"
+  },
+  {
+    "id": "51b3624c-4897-40cc-a3b7-2c8a26d69fa3",
+    "preset_day_id": "63c10c65-3804-4c28-a2a0-c21772e21561",
+    "name": "Glute Bridge",
+    "sets": 3,
+    "reps": "15"
+  },
+  {
+    "id": "521b69c3-5978-4d79-bc40-8435fe5bdc25",
+    "preset_day_id": "d0b674a7-f078-4157-87c3-991a8013da81",
+    "name": "Push-Ups",
+    "sets": 3,
+    "reps": "10"
+  },
+  {
+    "id": "56b52665-e3eb-4225-b770-e16902218ccb",
+    "preset_day_id": "dbae2360-62f7-4cc9-9454-deab78a2838f",
+    "name": "Glute Bridge",
+    "sets": 3,
+    "reps": "15"
+  },
+  {
+    "id": "57c9148e-611e-4373-953e-79e04e73fa6d",
+    "preset_day_id": "c97542a7-ce5c-4fb6-8053-f6ff8c02b9df",
+    "name": "Toe Touches",
+    "sets": 3,
+    "reps": "20"
+  },
+  {
+    "id": "5983d7c6-51c9-4522-876f-ef37096941b0",
+    "preset_day_id": "63c10c65-3804-4c28-a2a0-c21772e21561",
+    "name": "Step-ups",
+    "sets": 3,
+    "reps": "10 each leg"
+  },
+  {
+    "id": "5aa415b1-1c1a-4c29-8aa6-3b1733e344e1",
+    "preset_day_id": "194f4da1-1601-4986-a2a0-c9505ad4e09a",
+    "name": "Plank",
+    "sets": 3,
+    "reps": "30 sec"
+  },
+  {
+    "id": "5b698222-3d0f-4325-b384-6597ad272fe2",
+    "preset_day_id": "c97542a7-ce5c-4fb6-8053-f6ff8c02b9df",
+    "name": "Burpees",
+    "sets": 3,
+    "reps": "10"
+  },
+  {
+    "id": "5ca5fd2c-3b25-40cb-a139-f0e3d5c8b8ff",
+    "preset_day_id": "df0ffb54-fbd0-4b20-aa42-1f55c2ec2c2c",
+    "name": "Plank",
+    "sets": 3,
+    "reps": "30 sec"
+  },
+  {
+    "id": "5d1c722c-c7ff-4293-adac-1bf53a194b4a",
+    "preset_day_id": "df0ffb54-fbd0-4b20-aa42-1f55c2ec2c2c",
+    "name": "High Knees",
+    "sets": 3,
+    "reps": "30 sec"
+  },
+  {
+    "id": "5fb3a22d-85d8-471e-98b9-8496a825d6e1",
+    "preset_day_id": "35243520-9643-416b-8361-8798224f42d8",
+    "name": "Glute Bridge",
+    "sets": 3,
+    "reps": "15"
+  },
+  {
+    "id": "62cb709f-509f-42cf-be5d-9cabb35bed54",
+    "preset_day_id": "23f65f04-cdea-4b0c-9376-17a32cc380f4",
+    "name": "Face Pulls",
+    "sets": 3,
+    "reps": "15"
+  },
+  {
+    "id": "63ad28ef-4326-458f-b2fb-b1f242bd0a0f",
+    "preset_day_id": "c93e1151-3448-4669-8cd1-b204e086a768",
+    "name": "Shoulder Press Machine",
+    "sets": 3,
+    "reps": "10"
+  },
+  {
+    "id": "642ac35a-f262-4114-836d-fe02e26ab76e",
+    "preset_day_id": "23f65f04-cdea-4b0c-9376-17a32cc380f4",
+    "name": "Lat Pulldown",
+    "sets": 3,
+    "reps": "10"
+  },
+  {
+    "id": "64bcf77f-c1f3-49ca-9e84-9cce233daf30",
+    "preset_day_id": "d0b674a7-f078-4157-87c3-991a8013da81",
+    "name": "Arm Circles",
+    "sets": 3,
+    "reps": "30 sec"
+  },
+  {
+    "id": "6cb5117d-53ec-433e-be7d-60dea5688599",
+    "preset_day_id": "194f4da1-1601-4986-a2a0-c9505ad4e09a",
+    "name": "Side Bends",
+    "sets": 3,
+    "reps": "20"
+  },
+  {
+    "id": "6d861977-d06b-4f02-8a1b-2ea1ba916448",
+    "preset_day_id": "194f4da1-1601-4986-a2a0-c9505ad4e09a",
+    "name": "Ankle Hops",
+    "sets": 2,
+    "reps": "20"
+  },
+  {
+    "id": "75433924-1e63-4b8f-bdda-072f399c93cf",
+    "preset_day_id": "c93e1151-3448-4669-8cd1-b204e086a768",
+    "name": "Lateral Raises",
+    "sets": 3,
+    "reps": "15"
+  },
+  {
+    "id": "771f5e29-7785-4af0-9950-d9c9d88e1911",
+    "preset_day_id": "194f4da1-1601-4986-a2a0-c9505ad4e09a",
+    "name": "Back Extensions",
+    "sets": 3,
+    "reps": "15"
+  },
+  {
+    "id": "77c12675-4713-47d2-8127-0bd15022202e",
+    "preset_day_id": "a9edfe39-d393-4aa9-8d8e-80a7e269104f",
+    "name": "Calf Raise",
+    "sets": 3,
+    "reps": "20"
+  },
+  {
+    "id": "79b64351-313b-4773-b01b-636006c45cd0",
+    "preset_day_id": "2a99b209-6547-4da8-8ec6-3c6d34e80f04",
+    "name": "Bicycle Crunches",
+    "sets": 3,
+    "reps": "30"
+  },
+  {
+    "id": "7e323210-763f-4cd4-88dc-2c0267382569",
+    "preset_day_id": "63c10c65-3804-4c28-a2a0-c21772e21561",
+    "name": "Bodyweight Squat",
+    "sets": 3,
+    "reps": "15"
+  },
+  {
+    "id": "84e64644-d50a-4fed-bb2e-5a1f84778fd9",
+    "preset_day_id": "475a6f7d-e773-46e8-9dee-3adb98018500",
+    "name": "Triceps Pushdown (Cable)",
+    "sets": 4,
+    "reps": "12"
+  },
+  {
+    "id": "877a1221-c1fa-41f2-850c-52ec59e8b4e3",
+    "preset_day_id": "a9edfe39-d393-4aa9-8d8e-80a7e269104f",
+    "name": "Leg Press",
+    "sets": 3,
+    "reps": "15"
+  },
+  {
+    "id": "89285e10-bd45-4c80-bf43-c3aa89a49179",
+    "preset_day_id": "c97542a7-ce5c-4fb6-8053-f6ff8c02b9df",
+    "name": "Skaters",
+    "sets": 3,
+    "reps": "20"
+  },
+  {
+    "id": "89ce48c3-82b9-4ec8-84dc-8081b9fe9e50",
+    "preset_day_id": "23f65f04-cdea-4b0c-9376-17a32cc380f4",
+    "name": "EZ Bar Curls",
+    "sets": 3,
+    "reps": "12"
+  },
+  {
+    "id": "8b62920c-c14e-44b0-bcc4-c38e266e6194",
+    "preset_day_id": "35243520-9643-416b-8361-8798224f42d8",
+    "name": "Step-Ups",
+    "sets": 3,
+    "reps": "12"
+  },
+  {
+    "id": "8ccec44e-95c0-4b4c-994f-8a6e2274d554",
+    "preset_day_id": "d4aa1379-979b-49df-9ed6-68be70665f38",
+    "name": "Shoulder Taps",
+    "sets": 3,
+    "reps": "20"
+  },
+  {
+    "id": "8dd8bcd8-a513-4787-9401-171adea889ae",
+    "preset_day_id": "35243520-9643-416b-8361-8798224f42d8",
+    "name": "Bodyweight Squats",
+    "sets": 3,
+    "reps": "15"
+  },
+  {
+    "id": "8f258fee-eb6e-451e-a7ec-841f3d161c18",
+    "preset_day_id": "83a60c5d-ff7d-4f58-ae54-70eaa71990f5",
+    "name": "Foam Rolling",
+    "sets": 1,
+    "reps": "10 min"
+  },
+  {
+    "id": "918aac6f-424d-4f37-a56b-1a5bb3224e08",
+    "preset_day_id": "23742cbc-69ba-40f2-b1f3-5dca5ba004ce",
+    "name": "Plank",
+    "sets": 3,
+    "reps": "30 sec"
+  },
+  {
+    "id": "92692976-1427-4098-96f7-29e0937beeb9",
+    "preset_day_id": "d4aa1379-979b-49df-9ed6-68be70665f38",
+    "name": "Superman Hold",
+    "sets": 3,
+    "reps": "30 sec"
+  },
+  {
+    "id": "9550f912-a3c8-4b49-847a-ed08b9c1ef55",
+    "preset_day_id": "c9673e47-8b83-4cf3-9bb9-85c096fe0f64",
+    "name": "Lateral Raise Machine",
+    "sets": 4,
+    "reps": "12"
+  },
+  {
+    "id": "9906ce9b-16c5-4615-9837-452afc712c4b",
+    "preset_day_id": "23f65f04-cdea-4b0c-9376-17a32cc380f4",
+    "name": "Seated Cable Row",
+    "sets": 3,
+    "reps": "10"
+  },
+  {
+    "id": "a19f408c-bae6-465e-9b9f-186ffc2b7bfc",
+    "preset_day_id": "d0b674a7-f078-4157-87c3-991a8013da81",
+    "name": "Lateral Lunges",
+    "sets": 3,
+    "reps": "10 each side"
+  },
+  {
+    "id": "a22dc8b0-4786-45a6-9dd4-41deed8f6f29",
+    "preset_day_id": "c97542a7-ce5c-4fb6-8053-f6ff8c02b9df",
+    "name": "Jumping Jacks",
+    "sets": 3,
+    "reps": "1 min"
+  },
+  {
+    "id": "aa14fd9d-dc47-4506-973c-b04746516549",
+    "preset_day_id": "266654fc-7243-4bbe-84d9-8f87acf9f79d",
+    "name": "Chest Press Machine",
+    "sets": 3,
+    "reps": "12"
+  },
+  {
+    "id": "aa3250b2-621f-4d37-ae28-5c78e4d16c20",
+    "preset_day_id": "266654fc-7243-4bbe-84d9-8f87acf9f79d",
+    "name": "Incline Push-ups",
+    "sets": 3,
+    "reps": "12"
+  },
+  {
+    "id": "aa612724-7f93-4028-a4d3-2cec0fec5afa",
+    "preset_day_id": "784bd4ec-0359-488d-bc60-690362496f68",
+    "name": "Calf Raise Machine",
+    "sets": 4,
+    "reps": "20"
+  },
+  {
+    "id": "ab53017d-cede-4c55-b776-ee7ad0f9944e",
+    "preset_day_id": "23742cbc-69ba-40f2-b1f3-5dca5ba004ce",
+    "name": "Superman Hold",
+    "sets": 3,
+    "reps": "30 sec"
+  },
+  {
+    "id": "ae97129a-7c0f-4c95-aa7e-a457a3f72fe8",
+    "preset_day_id": "dbae2360-62f7-4cc9-9454-deab78a2838f",
+    "name": "Bodyweight Squats",
+    "sets": 3,
+    "reps": "15"
+  },
+  {
+    "id": "b11da2a9-805a-4e97-863b-0dcb615df475",
+    "preset_day_id": "475a6f7d-e773-46e8-9dee-3adb98018500",
+    "name": "Chest Press Machine",
+    "sets": 4,
+    "reps": "10"
+  },
+  {
+    "id": "b2704299-4e91-426f-bccc-2fdde68c6f85",
+    "preset_day_id": "88c3c1e5-7074-4fb6-ad84-b30cee716adc",
+    "name": "Jumping Jacks",
+    "sets": 3,
+    "reps": "30 sec"
+  },
+  {
+    "id": "b6b8452e-00fd-4223-a210-e6c83166b8e3",
+    "preset_day_id": "784bd4ec-0359-488d-bc60-690362496f68",
+    "name": "Leg Curl Machine",
+    "sets": 3,
+    "reps": "15"
+  },
+  {
+    "id": "ba87504a-f62e-421a-96bf-724a3e495c1b",
+    "preset_day_id": "2a99b209-6547-4da8-8ec6-3c6d34e80f04",
+    "name": "Plank",
+    "sets": 3,
+    "reps": "45 sec"
+  },
+  {
+    "id": "c119955f-146b-4591-b262-ed1f744e3596",
+    "preset_day_id": "df0ffb54-fbd0-4b20-aa42-1f55c2ec2c2c",
+    "name": "Flutter Kicks",
+    "sets": 3,
+    "reps": "20"
+  },
+  {
+    "id": "c847457b-ff88-4223-bcc6-83e3acf27ad1",
+    "preset_day_id": "784bd4ec-0359-488d-bc60-690362496f68",
+    "name": "Leg Press Machine",
+    "sets": 4,
+    "reps": "10"
+  },
+  {
+    "id": "c87ced20-ed79-4945-9349-0fedbf0376f8",
+    "preset_day_id": "c9673e47-8b83-4cf3-9bb9-85c096fe0f64",
+    "name": "Hanging Leg Raises",
+    "sets": 3,
+    "reps": "15"
+  },
+  {
+    "id": "c9d70d3a-86ba-4046-b970-53392a9adbab",
+    "preset_day_id": "c93e1151-3448-4669-8cd1-b204e086a768",
+    "name": "Chest Press Machine",
+    "sets": 3,
+    "reps": "12"
+  },
+  {
+    "id": "d19091f9-be2d-4f34-b766-a0b4daab4388",
+    "preset_day_id": "c9673e47-8b83-4cf3-9bb9-85c096fe0f64",
+    "name": "Cable Crunch",
+    "sets": 4,
+    "reps": "15"
+  },
+  {
+    "id": "d1cde69c-6702-45a9-a479-af4256888a01",
+    "preset_day_id": "784bd4ec-0359-488d-bc60-690362496f68",
+    "name": "Leg Extension Machine",
+    "sets": 3,
+    "reps": "15"
+  },
+  {
+    "id": "d38cd6b8-f62e-4773-9da3-5f33930ad6f2",
+    "preset_day_id": "475a6f7d-e773-46e8-9dee-3adb98018500",
+    "name": "Pec Deck Machine",
+    "sets": 4,
+    "reps": "12"
+  },
+  {
+    "id": "d901b970-3b4b-4810-8c33-90c0b5ad289e",
+    "preset_day_id": "23742cbc-69ba-40f2-b1f3-5dca5ba004ce",
+    "name": "Cat-Cow Stretch",
+    "sets": 3,
+    "reps": "10"
+  },
+  {
+    "id": "ddcef51f-7585-4048-a293-bec230d7bc3e",
+    "preset_day_id": "0982eaff-4d34-4a86-b8bc-dd654720b603",
+    "name": "Hammer Curl",
+    "sets": 3,
+    "reps": "12"
+  },
+  {
+    "id": "e14f3e66-da16-42de-b013-2ea1122b4743",
+    "preset_day_id": "dbae2360-62f7-4cc9-9454-deab78a2838f",
+    "name": "Bird Dog",
+    "sets": 3,
+    "reps": "10 each side"
+  },
+  {
+    "id": "e2285690-c414-4e61-b74a-a4cf8353e80a",
+    "preset_day_id": "35243520-9643-416b-8361-8798224f42d8",
+    "name": "Wall Sit",
+    "sets": 3,
+    "reps": "30 sec"
+  },
+  {
+    "id": "e56d919e-5c5e-440b-a0b7-afdd65dc0ead",
+    "preset_day_id": "df0ffb54-fbd0-4b20-aa42-1f55c2ec2c2c",
+    "name": "Mountain Climbers",
+    "sets": 3,
+    "reps": "30 sec"
+  },
+  {
+    "id": "e57cd964-a3aa-487d-88b4-def90f27c9ff",
+    "preset_day_id": "d4aa1379-979b-49df-9ed6-68be70665f38",
+    "name": "Incline Push-Ups",
+    "sets": 3,
+    "reps": "12"
+  },
+  {
+    "id": "e65320ba-8206-4572-b6f6-6218d9f06458",
+    "preset_day_id": "266654fc-7243-4bbe-84d9-8f87acf9f79d",
+    "name": "Shoulder Press Machine",
+    "sets": 3,
+    "reps": "10"
+  },
+  {
+    "id": "e6ecf460-0ae1-4ba0-8a12-2d160ae3dafe",
+    "preset_day_id": "db397f2a-aea2-4cbd-a4ca-95a44d39c2e5",
+    "name": "Seated Row Machine",
+    "sets": 4,
+    "reps": "12"
+  },
+  {
+    "id": "e768c996-84a3-4610-8743-3edd18eeb6d1",
+    "preset_day_id": "194f4da1-1601-4986-a2a0-c9505ad4e09a",
+    "name": "Standing Toe Touch",
+    "sets": 2,
+    "reps": "30 sec"
+  },
+  {
+    "id": "ea916d84-1721-4d6e-aaff-48521563ff3d",
+    "preset_day_id": "88c3c1e5-7074-4fb6-ad84-b30cee716adc",
+    "name": "Bodyweight Squats",
+    "sets": 3,
+    "reps": "15"
+  },
+  {
+    "id": "ec67a69a-b5dc-4e68-a835-a33c2813811a",
+    "preset_day_id": "266654fc-7243-4bbe-84d9-8f87acf9f79d",
+    "name": "Lateral Raises",
+    "sets": 3,
+    "reps": "15"
+  },
+  {
+    "id": "f60a5140-d302-418e-8531-d7e950ecf529",
+    "preset_day_id": "0982eaff-4d34-4a86-b8bc-dd654720b603",
+    "name": "Lat Pulldown",
+    "sets": 3,
+    "reps": "10"
+  },
+  {
+    "id": "fe80dddc-5cd5-480d-b8cf-b54f13a5cd43",
+    "preset_day_id": "23f65f04-cdea-4b0c-9376-17a32cc380f4",
+    "name": "Hammer Curls",
+    "sets": 3,
+    "reps": "12"
+  }
+]

@@ -36,12 +36,14 @@ export function SessionView({ planId, dayId }: SessionViewProps) {
   const router = useRouter();
   const trpc = useTRPC();
   const [exerciseLogs, setExerciseLogs] = useState<ExerciseLogState>({});
+  const [componentMounted, setComponentMounted] = useState(false);
 
   const { data: dayDetails, isLoading } = useQuery(
     trpc.workoutPlans.getPlanDayDetails.queryOptions({ dayId })
   );
 
   useEffect(() => {
+    setComponentMounted(true);
     if (dayDetails) {
       const initialLogs: ExerciseLogState = {};
       dayDetails.exercises.forEach((exercise) => {

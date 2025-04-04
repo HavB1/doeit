@@ -23,19 +23,25 @@ import {
 
 const items = [
   {
-    title: "Dashboard",
-    href: "/dashboard",
-    icon: LayoutDashboard,
+    title: "Workouts",
+    href: "/workouts",
+    icon: Dumbbell,
   },
+  {
+    title: "Plans",
+    href: "/workouts/plans",
+    icon: Dumbbell,
+  },
+
   {
     title: "Weight",
     href: "/weight",
     icon: Scale,
   },
   {
-    title: "Workouts",
-    href: "/workouts",
-    icon: Dumbbell,
+    title: "Dashboard",
+    href: "/dashboard",
+    icon: LayoutDashboard,
   },
   {
     title: "Progress",

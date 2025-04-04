@@ -28,6 +28,7 @@ import {
 } from "@/components/ui/select";
 import { motion } from "framer-motion";
 import { Target, Trophy } from "lucide-react";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   fitnessGoal: z.enum(["lose_weight", "maintain", "gain_muscle"], {
@@ -56,6 +57,7 @@ export default function FitnessGoalStep({ onSuccess }: FitnessGoalStepProps) {
   const fitnessGoalMutation = useMutation(
     trpc.userProfile.createOrUpdateProfile.mutationOptions({
       onSuccess: () => {
+        toast.success("Fitness goal updated successfully");
         onSuccess();
       },
     })
@@ -74,7 +76,10 @@ export default function FitnessGoalStep({ onSuccess }: FitnessGoalStepProps) {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="flex flex-col gap-8"
+          >
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}

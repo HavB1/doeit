@@ -200,4 +200,104 @@ export const workoutPlansRouter = createTRPCRouter({
         exercises: dayExercises,
       };
     }),
+
+  getPresetExercises: protectedProcedure.query(async () => {
+    const exercises = await db
+      .select({
+        id: presetExercises.id,
+        name: presetExercises.name,
+        sets: presetExercises.sets,
+        reps: presetExercises.reps,
+      })
+      .from(presetExercises)
+      .leftJoin(
+        presetWorkoutDays,
+        eq(presetExercises.presetDayId, presetWorkoutDays.id)
+      )
+      .leftJoin(
+        presetWorkoutPlans,
+        eq(presetWorkoutDays.presetPlanId, presetWorkoutPlans.id)
+      );
+
+    // Deduplicate exercises by name
+    const uniqueExercises = exercises.reduce((acc, curr) => {
+      if (!acc.some((e) => e.name === curr.name)) {
+        acc.push(curr);
+      }
+      return acc;
+    }, [] as typeof exercises);
+
+    return uniqueExercises;
+  }),
+
+  createPlan: protectedProcedure
+    .input(
+      z.object({
+        name: z.string().min(1),
+        description: z.string().optional(),
+        goalType: z.enum(["lose_weight", "gain_muscle", "maintain"]),
+        focus: z.string().min(1),
+        exercises: z.array(
+          z.object({
+            id: z.string(),
+            name: z.string(),
+            sets: z.number(),
+            reps: z.string(),
+          })
+        ),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      // Create the plan
+      const [plan] = await db
+        .insert(workoutPlans)
+        .values({
+          userId: ctx.user.id,
+          name: input.name,
+          description: input.description,
+          goalType: input.goalType,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        })
+        .returning();
+
+      // Create a single day for the plan
+      const [day] = await db
+        .insert(workoutDays)
+        .values({
+          planId: plan.id,
+          dayNumber: 1,
+          focus: input.focus,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        })
+        .returning();
+
+      // Create exercises for the day
+      const createdExercises = await Promise.all(
+        input.exercises.map((exercise) =>
+          db
+            .insert(exercises)
+            .values({
+              dayId: day.id,
+              name: exercise.name,
+              sets: exercise.sets,
+              reps: exercise.reps,
+              createdAt: new Date(),
+              updatedAt: new Date(),
+            })
+            .returning()
+        )
+      );
+
+      return {
+        ...plan,
+        days: [
+          {
+            ...day,
+            exercises: createdExercises.flat(),
+          },
+        ],
+      };
+    }),
 });
