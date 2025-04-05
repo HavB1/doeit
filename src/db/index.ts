@@ -1,10 +1,11 @@
 import "dotenv/config";
 
-import { drizzle } from "drizzle-orm/neon-serverless";
-import { neon, neonConfig, Pool } from "@neondatabase/serverless";
-import ws from "ws";
+import { drizzle } from "drizzle-orm/neon-http";
+import { neon } from "@neondatabase/serverless";
 
-neonConfig.webSocketConstructor = ws;
+// import ws from "ws";
+
+// neonConfig.webSocketConstructor = ws;
 
 import * as schema from "./schema";
 
@@ -14,11 +15,11 @@ if (!dbUrl) {
   throw new Error("Database URL is not set");
 }
 
-const pool = new Pool({ connectionString: dbUrl });
+// const pool = new Pool({ connectionString: dbUrl });
 
 export const sql = neon(dbUrl);
 
 export const db = drizzle({
-  client: pool,
+  client: sql,
   schema,
 });
