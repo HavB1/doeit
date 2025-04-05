@@ -50,11 +50,11 @@ export function UserNav() {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => router.push("/settings")}>
-          Settings
+        <DropdownMenuItem onClick={() => router.push("/workouts")}>
+          My Plans
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => router.push("/profile")}>
-          Profile
+        <DropdownMenuItem onClick={() => router.push("/dashboard")}>
+          Dashboard
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem className="flex items-center gap-2">

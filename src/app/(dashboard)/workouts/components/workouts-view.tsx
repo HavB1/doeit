@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useTRPC } from "@/trpc/client";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { format } from "date-fns";
 import type { inferRouterOutputs } from "@trpc/server";
@@ -45,9 +45,14 @@ export function WorkoutsView() {
   );
 
   const { data: nextDay, isLoading: isLoadingNextDay } = useQuery(
-    trpc.workoutPlans.getNextIncompleteDay.queryOptions({
-      planId: selectedPlan?.id || "",
-    })
+    trpc.workoutPlans.getNextIncompleteDay.queryOptions(
+      {
+        planId: selectedPlan?.id || "",
+      },
+      {
+        enabled: !!selectedPlan,
+      }
+    )
   );
 
   if (isLoadingPlans || isLoadingWorkouts) {
@@ -88,124 +93,158 @@ export function WorkoutsView() {
         </TabsList>
 
         <TabsContent value="plans" className="space-y-4">
-          {plans?.map((plan) => {
-            const completedDays = plan.days.filter((day) =>
-              recentWorkouts?.some(
-                (workout) =>
-                  workout.planId === plan.id && workout.dayId === day.id
-              )
-            ).length;
-            const progress = (completedDays / plan.days.length) * 100;
+          {!plans?.length ? (
+            <Card className="p-6">
+              <CardContent className="flex flex-col items-center justify-center space-y-4 p-0">
+                <Dumbbell className="h-12 w-12 text-muted-foreground" />
+                <p className="text-muted-foreground text-center">
+                  No workout plans yet
+                </p>
+                <Button
+                  onClick={() => router.push("/workouts/plans/new")}
+                  className="rounded-full"
+                >
+                  Create Your First Plan
+                </Button>
+              </CardContent>
+            </Card>
+          ) : (
+            plans?.map((plan) => {
+              const completedDays = plan.days.filter((day) =>
+                recentWorkouts?.some(
+                  (workout) =>
+                    workout.planId === plan.id && workout.dayId === day.id
+                )
+              ).length;
+              const progress = (completedDays / plan.days.length) * 100;
 
-            return (
+              return (
+                <Card
+                  key={plan.id}
+                  className="p-4 transition-all hover:shadow-md active:scale-[0.98]"
+                  onClick={() => router.push(`/workouts/plans/${plan.id}`)}
+                >
+                  <div className="flex flex-col gap-3">
+                    <div className="flex items-start justify-between">
+                      <div className="space-y-1">
+                        <h3 className="font-semibold text-lg">{plan.name}</h3>
+                        <p className="text-sm text-muted-foreground">
+                          {plan.description || "No description available"}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Badge className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
+                          {completedDays}/{plan.days.length} days
+                        </Badge>
+                      </div>
+                    </div>
+
+                    <Progress value={progress} className="h-2" />
+
+                    <div className="flex items-center justify-between pt-2">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs text-muted-foreground">
+                          {plan.goalType === "lose_weight"
+                            ? "Weight Loss"
+                            : plan.goalType === "gain_muscle"
+                            ? "Muscle Gain"
+                            : "Maintenance"}
+                        </span>
+                      </div>
+                      <Button
+                        size="sm"
+                        className="rounded-full"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handlePlanSelect(plan);
+                        }}
+                      >
+                        Continue
+                      </Button>
+                    </div>
+                  </div>
+                </Card>
+              );
+            })
+          )}
+        </TabsContent>
+
+        <TabsContent value="history" className="space-y-4">
+          {!recentWorkouts?.length ? (
+            <Card className="p-6">
+              <CardContent className="flex flex-col items-center justify-center space-y-4 p-0">
+                <Dumbbell className="h-12 w-12 text-muted-foreground" />
+                <p className="text-muted-foreground text-center">
+                  No workouts logged yet
+                </p>
+                <Button
+                  onClick={() => router.push("/workouts/plans")}
+                  className="rounded-full"
+                >
+                  Start Your First Workout
+                </Button>
+              </CardContent>
+            </Card>
+          ) : (
+            recentWorkouts?.map((workout) => (
               <Card
-                key={plan.id}
+                key={workout.id}
                 className="p-4 transition-all hover:shadow-md active:scale-[0.98]"
-                onClick={() => router.push(`/workouts/plans/${plan.id}`)}
+                onClick={() => router.push(`/workouts/${workout.id}`)}
               >
                 <div className="flex flex-col gap-3">
                   <div className="flex items-start justify-between">
                     <div className="space-y-1">
-                      <h3 className="font-semibold text-lg">{plan.name}</h3>
+                      <h3 className="font-semibold text-lg">
+                        {workout.notes || "Untitled Workout"}
+                      </h3>
                       <p className="text-sm text-muted-foreground">
-                        {plan.description || "No description available"}
+                        {new Date(workout.completedAt).toLocaleDateString(
+                          undefined,
+                          {
+                            weekday: "long",
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          }
+                        )}
                       </p>
                     </div>
                     <div className="flex items-center gap-2">
                       <Badge className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
-                        {completedDays}/{plan.days.length} days
+                        {new Date(workout.completedAt).toLocaleTimeString(
+                          undefined,
+                          {
+                            hour: "2-digit",
+                            minute: "2-digit",
+                          }
+                        )}
                       </Badge>
                     </div>
                   </div>
 
-                  <Progress value={progress} className="h-2" />
-
                   <div className="flex items-center justify-between pt-2">
                     <div className="flex items-center gap-2">
                       <span className="text-xs text-muted-foreground">
-                        {plan.goalType === "lose_weight"
-                          ? "Weight Loss"
-                          : plan.goalType === "gain_muscle"
-                          ? "Muscle Gain"
-                          : "Maintenance"}
+                        {workout.exerciseLogs?.length || 0} exercises
                       </span>
                     </div>
                     <Button
                       size="sm"
+                      variant="outline"
                       className="rounded-full"
                       onClick={(e) => {
                         e.stopPropagation();
-                        handlePlanSelect(plan);
+                        router.push(`/workouts/${workout.id}`);
                       }}
                     >
-                      Continue
+                      Details
                     </Button>
                   </div>
                 </div>
               </Card>
-            );
-          })}
-        </TabsContent>
-
-        <TabsContent value="history" className="space-y-4">
-          {recentWorkouts?.map((workout) => (
-            <Card
-              key={workout.id}
-              className="p-4 transition-all hover:shadow-md active:scale-[0.98]"
-              onClick={() => router.push(`/workouts/${workout.id}`)}
-            >
-              <div className="flex flex-col gap-3">
-                <div className="flex items-start justify-between">
-                  <div className="space-y-1">
-                    <h3 className="font-semibold text-lg">
-                      {workout.notes || "Untitled Workout"}
-                    </h3>
-                    <p className="text-sm text-muted-foreground">
-                      {new Date(workout.completedAt).toLocaleDateString(
-                        undefined,
-                        {
-                          weekday: "long",
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        }
-                      )}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Badge className="text-xs bg-primary/10 text-primary px-2 py-1 rounded-full">
-                      {new Date(workout.completedAt).toLocaleTimeString(
-                        undefined,
-                        {
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        }
-                      )}
-                    </Badge>
-                  </div>
-                </div>
-
-                <div className="flex items-center justify-between pt-2">
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs text-muted-foreground">
-                      {workout.exerciseLogs?.length || 0} exercises
-                    </span>
-                  </div>
-                  <Button
-                    size="sm"
-                    variant="outline"
-                    className="rounded-full"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      router.push(`/workouts/${workout.id}`);
-                    }}
-                  >
-                    Details
-                  </Button>
-                </div>
-              </div>
-            </Card>
-          ))}
+            ))
+          )}
         </TabsContent>
       </Tabs>
 

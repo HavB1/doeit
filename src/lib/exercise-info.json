@@ -239,6 +239,312 @@
       "image": "placeholder.png",
       "bodyParts": ["Cardiovascular", "Lower Body"],
       "description": "A low-impact cardiovascular exercise. Maintain good posture with shoulders back and core engaged. Swing your arms naturally and take comfortable strides."
+    },
+    {
+      "name": "Clean and Press",
+      "image": "placeholder.png",
+      "bodyParts": ["Full Body", "Shoulders", "Legs"],
+      "description": "Start with a barbell on the floor. Perform a clean by lifting the bar to your shoulders, then press it overhead. Lower the bar back to your shoulders, then to the floor. Keep your core engaged throughout."
+    },
+    {
+      "name": "Box Jumps",
+      "image": "placeholder.png",
+      "bodyParts": ["Legs", "Core", "Cardiovascular"],
+      "description": "Stand in front of a box or platform. Jump onto the box, landing softly with both feet. Step or jump back down and repeat. Keep your chest up and core engaged throughout."
+    },
+    {
+      "name": "Medicine Ball Slams",
+      "image": "placeholder.png",
+      "bodyParts": ["Full Body", "Core", "Cardiovascular"],
+      "description": "Hold a medicine ball overhead. Slam it down to the ground with force, then catch it on the bounce. Keep your core engaged and back straight throughout the movement."
+    },
+    {
+      "name": "Rope Climbs",
+      "image": "placeholder.png",
+      "bodyParts": ["Upper Body", "Core", "Grip"],
+      "description": "Grip the rope with both hands and feet. Use your arms and legs to climb up the rope. Keep your core engaged and maintain proper form throughout the movement."
+    },
+    {
+      "name": "Dragon Flags",
+      "image": "placeholder.png",
+      "bodyParts": ["Core", "Hip Flexors"],
+      "description": "Lie on a bench and grip it behind your head. Lift your entire body up until it's vertical, then lower it back down with control. Keep your body straight throughout the movement."
+    },
+    {
+      "name": "Battle Ropes",
+      "image": "placeholder.png",
+      "bodyParts": ["Upper Body", "Core", "Cardiovascular"],
+      "description": "Hold the ends of battle ropes with both hands. Create waves in the ropes by moving your arms up and down. Keep your core engaged and maintain proper form throughout."
+    },
+    {
+      "name": "Jump Rope",
+      "image": "placeholder.png",
+      "bodyParts": ["Cardiovascular", "Calves", "Coordination"],
+      "description": "Hold the jump rope handles and swing it over your head. Jump over the rope as it comes around. Keep your core engaged and maintain a steady rhythm."
+    },
+    {
+      "name": "Russian Twists",
+      "image": "placeholder.png",
+      "bodyParts": ["Core", "Obliques"],
+      "description": "Sit on the floor with knees bent and feet elevated. Hold a weight or medicine ball and twist your torso from side to side. Keep your back straight and core engaged."
+    },
+    {
+      "name": "Bent Over Rows",
+      "image": "placeholder.png",
+      "bodyParts": ["Back", "Biceps", "Rear Deltoids"],
+      "description": "Stand with feet shoulder-width apart, holding a barbell or dumbbells. Bend at the hips and keep your back straight. Pull the weight up to your abdomen, then lower it with control."
+    },
+    {
+      "name": "Overhead Press",
+      "image": "placeholder.png",
+      "bodyParts": ["Shoulders", "Triceps", "Upper Chest"],
+      "description": "Stand with feet shoulder-width apart, holding a barbell or dumbbells at shoulder height. Press the weight overhead until your arms are fully extended. Lower the weight with control."
+    },
+    {
+      "name": "Bulgarian Split Squats",
+      "image": "placeholder.png",
+      "bodyParts": ["Quadriceps", "Glutes", "Hamstrings"],
+      "description": "Stand with one foot on a bench behind you. Lower your body until your front thigh is parallel to the floor. Push back up to the starting position. Keep your chest up and core engaged."
+    },
+    {
+      "name": "Romanian Deadlifts",
+      "image": "placeholder.png",
+      "bodyParts": ["Hamstrings", "Glutes", "Lower Back"],
+      "description": "Stand with feet shoulder-width apart, holding a barbell or dumbbells. Hinge at the hips and lower the weight while keeping your back straight. Return to the starting position by squeezing your glutes."
+    },
+    {
+      "name": "Weighted Plank",
+      "image": "placeholder.png",
+      "bodyParts": ["Core", "Shoulders", "Back"],
+      "description": "Start in a plank position with a weight plate on your back. Hold the position while keeping your body in a straight line from head to heels. Keep your core engaged throughout."
+    },
+    {
+      "name": "Weighted Pull-Ups",
+      "image": "placeholder.png",
+      "bodyParts": ["Back", "Biceps", "Shoulders"],
+      "description": "Perform pull-ups with additional weight attached to your body. Pull your body up until your chin clears the bar, then lower yourself back down with control. Keep your core engaged throughout."
+    },
+    {
+      "name": "Weighted Dips",
+      "image": "placeholder.png",
+      "bodyParts": ["Chest", "Triceps", "Shoulders"],
+      "description": "Perform dips with additional weight attached to your body. Lower your body by bending your elbows, then push back up to the starting position. Keep your chest up and core engaged."
+    },
+    {
+      "name": "Push Press",
+      "image": "placeholder.png",
+      "bodyParts": ["Shoulders", "Legs", "Core"],
+      "description": "Start with a barbell at shoulder height. Dip slightly with your legs, then explosively press the weight overhead. Lower the weight back to your shoulders with control."
+    },
+    {
+      "name": "Front Squat",
+      "image": "placeholder.png",
+      "bodyParts": ["Quadriceps", "Core", "Upper Back"],
+      "description": "Hold a barbell in the front rack position. Squat down until your thighs are parallel to the floor, then push back up to the starting position. Keep your chest up and core engaged."
+    },
+    {
+      "name": "Glute Ham Raise",
+      "image": "placeholder.png",
+      "bodyParts": ["Hamstrings", "Glutes", "Lower Back"],
+      "description": "Position yourself in a glute ham raise machine. Lower your body until it's parallel to the floor, then raise it back up by contracting your hamstrings and glutes. Keep your core engaged throughout."
+    },
+    {
+      "name": "Hip Abduction Machine",
+      "image": "placeholder.png",
+      "bodyParts": ["Hip Abductors", "Glutes"],
+      "description": "Sit at the hip abduction machine with your legs against the pads. Push your legs outward against the resistance, then slowly return to the starting position. Keep your back straight throughout."
+    },
+    {
+      "name": "Hip Adduction Machine",
+      "image": "placeholder.png",
+      "bodyParts": ["Hip Adductors", "Inner Thighs"],
+      "description": "Sit at the hip adduction machine with your legs against the pads. Bring your legs together against the resistance, then slowly return to the starting position. Keep your back straight throughout."
+    },
+    {
+      "name": "Seated Knee Extensions",
+      "image": "placeholder.png",
+      "bodyParts": ["Quadriceps"],
+      "description": "Sit at the knee extension machine with your back against the pad. Place your ankles under the padded bar. Extend your legs until they are straight, then slowly lower the weight back to the starting position."
+    },
+    {
+      "name": "Standing Calf Raises",
+      "image": "placeholder.png",
+      "bodyParts": ["Calves"],
+      "description": "Stand on a step or platform with your heels hanging off. Raise your heels as high as possible, then lower them below the platform level. Keep your knees straight throughout the movement."
+    },
+    {
+      "name": "Seated Russian Twists",
+      "image": "placeholder.png",
+      "bodyParts": ["Core", "Obliques"],
+      "description": "Sit on the floor with knees bent and feet elevated. Hold a weight or medicine ball and twist your torso from side to side. Keep your back straight and core engaged."
+    },
+    {
+      "name": "Standing Side Crunches",
+      "image": "placeholder.png",
+      "bodyParts": ["Obliques", "Core"],
+      "description": "Stand with feet shoulder-width apart. Bring one knee up while bringing the opposite elbow down to meet it. Return to the starting position and repeat on the other side. Keep your core engaged throughout."
+    },
+    {
+      "name": "Marching in Place",
+      "image": "placeholder.png",
+      "bodyParts": ["Cardiovascular", "Hip Flexors"],
+      "description": "Stand with feet hip-width apart. Lift your knees up one at a time in a marching motion. Keep your back straight and core engaged. Pump your arms to increase intensity."
+    },
+    {
+      "name": "Cycling",
+      "image": "placeholder.png",
+      "bodyParts": ["Cardiovascular", "Legs"],
+      "description": "Pedal on a stationary bike or outdoor bicycle. Maintain proper posture with your back straight and core engaged. Adjust resistance and speed according to your fitness level."
+    },
+    {
+      "name": "Sit-Ups",
+      "image": "placeholder.png",
+      "bodyParts": ["Abs", "Hip Flexors"],
+      "description": "Lie on your back with knees bent and feet flat on the floor. Place your hands behind your head and curl your upper body up towards your knees. Lower back down with control."
+    },
+    {
+      "name": "Dumbbell Squat",
+      "image": "placeholder.png",
+      "bodyParts": ["Quadriceps", "Glutes", "Core"],
+      "description": "Stand with feet shoulder-width apart, holding dumbbells at your sides. Lower your body by bending your knees and pushing your hips back. Keep your chest up and back straight. Return to standing position."
+    },
+    {
+      "name": "Dumbbell Bench Press",
+      "image": "placeholder.png",
+      "bodyParts": ["Chest", "Triceps", "Shoulders"],
+      "description": "Lie on a bench with dumbbells in each hand. Press the weights up until your arms are fully extended. Lower the weights with control, keeping your elbows at a 45-degree angle."
+    },
+    {
+      "name": "Dumbbell Rows",
+      "image": "placeholder.png",
+      "bodyParts": ["Back", "Biceps", "Rear Deltoids"],
+      "description": "Place one hand and knee on a bench, holding a dumbbell in the other hand. Pull the weight up to your side, keeping your elbow close to your body. Lower the weight with control."
+    },
+    {
+      "name": "Dumbbell Shoulder Press",
+      "image": "placeholder.png",
+      "bodyParts": ["Shoulders", "Triceps", "Upper Chest"],
+      "description": "Stand or sit with dumbbells at shoulder height. Press the weights overhead until your arms are fully extended. Lower the weights with control, keeping your core engaged."
+    },
+    {
+      "name": "Dumbbell Curls",
+      "image": "placeholder.png",
+      "bodyParts": ["Biceps", "Forearms"],
+      "description": "Stand with dumbbells in each hand, palms facing forward. Curl the weights up while keeping your elbows close to your body. Lower the weights slowly with control."
+    },
+    {
+      "name": "Triceps Extensions",
+      "image": "placeholder.png",
+      "bodyParts": ["Triceps"],
+      "description": "Stand or sit with a dumbbell in both hands overhead. Lower the weight behind your head by bending your elbows. Extend your arms back to the starting position."
+    },
+    {
+      "name": "Chin-Ups",
+      "image": "placeholder.png",
+      "bodyParts": ["Back", "Biceps", "Shoulders"],
+      "description": "Hang from a pull-up bar with hands shoulder-width apart and palms facing you. Pull your body up until your chin clears the bar, then lower yourself back down with control. Keep your core engaged throughout."
+    },
+    {
+      "name": "Barbell Squat",
+      "image": "placeholder.png",
+      "bodyParts": ["Quadriceps", "Glutes", "Core"],
+      "description": "Stand with feet shoulder-width apart, holding a barbell on your upper back. Lower your body by bending your knees and pushing your hips back. Keep your chest up and back straight. Return to standing position."
+    },
+    {
+      "name": "Barbell Bench Press",
+      "image": "placeholder.png",
+      "bodyParts": ["Chest", "Triceps", "Shoulders"],
+      "description": "Lie on a bench with a barbell at chest height. Press the bar up until your arms are fully extended. Lower the bar with control, keeping your elbows at a 45-degree angle."
+    },
+    {
+      "name": "Barbell Rows",
+      "image": "placeholder.png",
+      "bodyParts": ["Back", "Biceps", "Rear Deltoids"],
+      "description": "Stand with feet shoulder-width apart, holding a barbell. Bend at the hips and keep your back straight. Pull the weight up to your abdomen, then lower it with control."
+    },
+    {
+      "name": "Barbell Curls",
+      "image": "placeholder.png",
+      "bodyParts": ["Biceps", "Forearms"],
+      "description": "Stand with feet shoulder-width apart, holding a barbell with an underhand grip. Curl the bar up while keeping your elbows close to your body. Lower the bar slowly with control."
+    },
+    {
+      "name": "Incline DB Press",
+      "image": "placeholder.png",
+      "bodyParts": ["Upper Chest", "Shoulders", "Triceps"],
+      "description": "Lie on an incline bench with dumbbells in each hand. Press the weights up until your arms are fully extended. Lower the weights with control, keeping your elbows at a 45-degree angle."
+    },
+    {
+      "name": "Cable Crossover",
+      "image": "placeholder.png",
+      "bodyParts": ["Chest", "Shoulders"],
+      "description": "Stand between two cable machines with handles in each hand. Bring your hands together in front of your chest, then return to the starting position. Keep your core engaged throughout."
+    },
+    {
+      "name": "Skull Crushers",
+      "image": "placeholder.png",
+      "bodyParts": ["Triceps"],
+      "description": "Lie on a bench with a barbell or EZ bar. Lower the weight towards your forehead by bending your elbows. Extend your arms back to the starting position."
+    },
+    {
+      "name": "Close-Grip Bench Press",
+      "image": "placeholder.png",
+      "bodyParts": ["Triceps", "Chest"],
+      "description": "Lie on a bench with hands closer than shoulder-width on the barbell. Press the bar up until your arms are fully extended. Lower the bar with control, keeping your elbows close to your body."
+    },
+    {
+      "name": "T-Bar Rows",
+      "image": "placeholder.png",
+      "bodyParts": ["Back", "Biceps", "Rear Deltoids"],
+      "description": "Stand with feet shoulder-width apart, holding a T-bar. Bend at the hips and keep your back straight. Pull the weight up to your chest, then lower it with control."
+    },
+    {
+      "name": "Reverse Fly",
+      "image": "placeholder.png",
+      "bodyParts": ["Rear Deltoids", "Upper Back"],
+      "description": "Stand with feet shoulder-width apart, holding dumbbells. Bend at the hips and keep your back straight. Raise your arms out to the sides, then lower them with control."
+    },
+    {
+      "name": "Preacher Curls",
+      "image": "placeholder.png",
+      "bodyParts": ["Biceps"],
+      "description": "Sit at the preacher curl bench with your upper arms resting on the pad. Hold a barbell or dumbbells with an underhand grip. Curl the weight up while keeping your upper arms stationary. Lower the weight slowly."
+    },
+    {
+      "name": "Triceps Pushdown",
+      "image": "placeholder.png",
+      "bodyParts": ["Triceps"],
+      "description": "Stand at the cable machine with a straight bar attachment. Grip the bar with hands shoulder-width apart. Keep your elbows close to your body and push the bar down until your arms are fully extended."
+    },
+    {
+      "name": "Wall Push-Ups",
+      "image": "placeholder.png",
+      "bodyParts": ["Chest", "Triceps", "Shoulders"],
+      "description": "Stand facing a wall with feet shoulder-width apart. Place your hands on the wall slightly wider than shoulder-width. Bend your elbows to bring your chest towards the wall, then push back to the starting position. Keep your core engaged and back straight."
+    },
+    {
+      "name": "Seated Row Machine",
+      "image": "placeholder.png",
+      "bodyParts": ["Back", "Biceps", "Rear Deltoids"],
+      "description": "Sit at the seated row machine with your chest against the pad. Grab the handles and pull them towards your abdomen while keeping your back straight. Squeeze your shoulder blades together at the end of the movement."
+    },
+    {
+      "name": "Lat Pulldown Machine",
+      "image": "placeholder.png",
+      "bodyParts": ["Back", "Biceps", "Shoulders"],
+      "description": "Sit at the lat pulldown machine with your knees under the pads. Grip the bar slightly wider than shoulder-width. Pull the bar down to your upper chest while keeping your back straight. Slowly return to the starting position."
+    },
+    {
+      "name": "Standing Toe Touch",
+      "image": "placeholder.png",
+      "bodyParts": ["Hamstrings", "Lower Back", "Core"],
+      "description": "Stand with feet shoulder-width apart. Hinge at the hips and reach down to touch your toes while keeping your legs straight. Return to the starting position by engaging your core and glutes."
+    },
+    {
+      "name": "Push-Ups (Knee)",
+      "image": "placeholder.png",
+      "bodyParts": ["Chest", "Triceps", "Shoulders", "Core"],
+      "description": "Start in a plank position with your knees on the ground. Place your hands slightly wider than shoulder-width. Lower your body until your chest nearly touches the floor, then push back up to the starting position. Keep your core engaged and back straight."
     }
   ]
 }

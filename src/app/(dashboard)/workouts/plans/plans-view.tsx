@@ -40,21 +40,6 @@ export function PlansView() {
 
   return (
     <div className="container py-6 ">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-bold">Workout Plans</h1>
-          <p className="text-muted-foreground mt-1">
-            Choose a preset plan or create your own
-          </p>
-        </div>
-        <Button asChild className="w-full sm:w-auto">
-          <Link href="/workouts/plans/new">
-            <Plus className="mr-2 h-4 w-4" />
-            Create Plan
-          </Link>
-        </Button>
-      </div>
-
       <Tabs defaultValue="lose_weight" className="mt-6">
         <div className="overflow-x-auto pb-2">
           <TabsList className="inline-flex">

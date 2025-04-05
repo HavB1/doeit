@@ -9,7 +9,8 @@
     "start": "next start",
     "lint": "next lint",
     "build": "next build",
-    "seed": "dotenv -e .env.local -- drizzle-kit push && drizzle-kit generate && dotenv -e .env.local -- tsx drizzle/seed.ts"
+    "seed": "dotenv -e .env.local -- drizzle-kit push && drizzle-kit generate && dotenv -e .env.local -- tsx drizzle/seed.ts",
+    "migrate:rls": "dotenv -e .env.local -- tsx drizzle/migrate-rls.ts"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.12.12",

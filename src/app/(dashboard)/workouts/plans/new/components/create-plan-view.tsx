@@ -16,10 +16,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Plus, Trash2 } from "lucide-react";
+import { Plus, Trash2, Dumbbell } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Badge } from "@/components/ui/badge";
 
 type Exercise = {
   id: string;
@@ -230,151 +237,214 @@ export function CreatePlanView() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="container mx-auto py-6 space-y-6">
+      {/* Header Section */}
       <div className="space-y-4">
         <div>
-          <Label htmlFor="planName">Plan Name</Label>
+          <Label htmlFor="planName" className="text-base font-medium">
+            Plan Name
+          </Label>
           <Input
             id="planName"
             value={planName}
             onChange={(e) => setPlanName(e.target.value)}
             placeholder="Enter plan name"
+            className="mt-2 h-12 text-base"
           />
         </div>
         <div>
-          <Label htmlFor="planDescription">Description</Label>
+          <Label htmlFor="planDescription" className="text-base font-medium">
+            Description
+          </Label>
           <Textarea
             id="planDescription"
             value={planDescription}
             onChange={(e) => setPlanDescription(e.target.value)}
             placeholder="Enter plan description"
+            className="mt-2 min-h-[100px] text-base"
           />
         </div>
         <div>
-          <Label htmlFor="goalType">Goal Type</Label>
+          <Label htmlFor="goalType" className="text-base font-medium">
+            Goal Type
+          </Label>
           <Select
             value={goalType}
             onValueChange={(
               value: "lose_weight" | "gain_muscle" | "maintain"
             ) => setGoalType(value)}
           >
-            <SelectTrigger>
+            <SelectTrigger className="mt-2 h-12 text-base">
               <SelectValue placeholder="Select goal type" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="lose_weight">Lose Weight</SelectItem>
-              <SelectItem value="gain_muscle">Gain Muscle</SelectItem>
-              <SelectItem value="maintain">Maintain</SelectItem>
+              <SelectItem value="lose_weight" className="text-base">
+                Lose Weight
+              </SelectItem>
+              <SelectItem value="gain_muscle" className="text-base">
+                Gain Muscle
+              </SelectItem>
+              <SelectItem value="maintain" className="text-base">
+                Maintain
+              </SelectItem>
             </SelectContent>
           </Select>
         </div>
       </div>
 
-      {days.map((day) => (
-        <Card key={day.dayNumber}>
-          <CardHeader className="flex flex-row items-center justify-between">
-            <CardTitle>Day {day.dayNumber}</CardTitle>
-            {days.length > 1 && (
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => handleRemoveDay(day.dayNumber)}
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            )}
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div>
-              <Label htmlFor={`focus-${day.dayNumber}`}>Focus</Label>
-              <Input
-                id={`focus-${day.dayNumber}`}
-                value={day.focus}
-                onChange={(e) =>
-                  handleUpdateDayFocus(day.dayNumber, e.target.value)
-                }
-                placeholder="Enter workout focus (e.g., Upper Body, Cardio)"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label>Exercises</Label>
-              {presetExercises.map((exercise) => (
-                <div key={exercise.id} className="space-y-2">
-                  <div className="flex items-center space-x-2">
-                    <Checkbox
-                      id={`${day.dayNumber}-${exercise.id}`}
-                      checked={(selectedExercises[day.dayNumber] || []).some(
-                        (e) => e.id === exercise.id
-                      )}
-                      onCheckedChange={() =>
-                        handleExerciseSelect(exercise, day.dayNumber)
-                      }
-                    />
-                    <Label htmlFor={`${day.dayNumber}-${exercise.id}`}>
-                      {exercise.name}
-                    </Label>
-                  </div>
-                  {(selectedExercises[day.dayNumber] || []).some(
-                    (e) => e.id === exercise.id
-                  ) && (
-                    <div className="flex gap-4 ml-6">
-                      <div>
-                        <Label htmlFor={`sets-${day.dayNumber}-${exercise.id}`}>
-                          Sets
-                        </Label>
-                        <Input
-                          id={`sets-${day.dayNumber}-${exercise.id}`}
-                          type="number"
-                          value={
-                            customSets[`${day.dayNumber}-${exercise.id}`] ||
-                            exercise.sets
-                          }
-                          onChange={(e) =>
-                            setCustomSets((prev) => ({
-                              ...prev,
-                              [`${day.dayNumber}-${exercise.id}`]: parseInt(
-                                e.target.value
-                              ),
-                            }))
-                          }
-                          min="1"
-                        />
+      {/* Days Section */}
+      <div className="space-y-4">
+        {days.map((day) => (
+          <Card key={day.dayNumber} className="overflow-hidden">
+            <CardHeader className="flex flex-row items-center justify-between p-4">
+              <CardTitle className="text-lg">Day {day.dayNumber}</CardTitle>
+              {days.length > 1 && (
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="h-10 w-10"
+                  onClick={() => handleRemoveDay(day.dayNumber)}
+                >
+                  <Trash2 className="h-5 w-5" />
+                </Button>
+              )}
+            </CardHeader>
+            <CardContent className="space-y-4 p-4">
+              <div>
+                <Label
+                  htmlFor={`focus-${day.dayNumber}`}
+                  className="text-base font-medium"
+                >
+                  Focus
+                </Label>
+                <Input
+                  id={`focus-${day.dayNumber}`}
+                  value={day.focus}
+                  onChange={(e) =>
+                    handleUpdateDayFocus(day.dayNumber, e.target.value)
+                  }
+                  placeholder="Enter workout focus (e.g., Upper Body, Cardio)"
+                  className="mt-2 h-12 text-base"
+                />
+              </div>
+              <div className="space-y-4">
+                <Label className="text-base font-medium">Exercises</Label>
+                <Accordion type="single" collapsible className="w-full">
+                  <AccordionItem value="exercises">
+                    <AccordionTrigger className="text-base bg-accent/20 p-2 rounded-md">
+                      <div className="flex flex-col  ">
+                        <div className="flex items-center gap-2">
+                          <Dumbbell className="h-4 w-4" />
+                          <span>Select Exercises</span>
+                        </div>
+                        <Badge variant="secondary" className=" no-underline">
+                          {(selectedExercises[day.dayNumber] || []).length}{" "}
+                          selected
+                        </Badge>
                       </div>
-                      <div>
-                        <Label htmlFor={`reps-${day.dayNumber}-${exercise.id}`}>
-                          Reps
-                        </Label>
-                        <Input
-                          id={`reps-${day.dayNumber}-${exercise.id}`}
-                          value={
-                            customReps[`${day.dayNumber}-${exercise.id}`] ||
-                            exercise.reps
-                          }
-                          onChange={(e) =>
-                            setCustomReps((prev) => ({
-                              ...prev,
-                              [`${day.dayNumber}-${exercise.id}`]:
-                                e.target.value,
-                            }))
-                          }
-                          placeholder="e.g., 12 or 30 sec"
-                        />
+                    </AccordionTrigger>
+                    <AccordionContent>
+                      <div className="space-y-4 pt-2">
+                        {presetExercises.map((exercise) => (
+                          <div key={exercise.id} className="space-y-3">
+                            <div className="flex items-center space-x-3">
+                              <Checkbox
+                                id={`${day.dayNumber}-${exercise.id}`}
+                                checked={(
+                                  selectedExercises[day.dayNumber] || []
+                                ).some((e) => e.id === exercise.id)}
+                                onCheckedChange={() =>
+                                  handleExerciseSelect(exercise, day.dayNumber)
+                                }
+                                className="h-5 w-5"
+                              />
+                              <Label
+                                htmlFor={`${day.dayNumber}-${exercise.id}`}
+                                className="text-base"
+                              >
+                                {exercise.name}
+                              </Label>
+                            </div>
+                            {(selectedExercises[day.dayNumber] || []).some(
+                              (e) => e.id === exercise.id
+                            ) && (
+                              <div className="flex gap-4 ml-8">
+                                <div className="flex-1">
+                                  <Label
+                                    htmlFor={`sets-${day.dayNumber}-${exercise.id}`}
+                                    className="text-sm text-muted-foreground"
+                                  >
+                                    Sets
+                                  </Label>
+                                  <Input
+                                    id={`sets-${day.dayNumber}-${exercise.id}`}
+                                    type="number"
+                                    value={
+                                      customSets[
+                                        `${day.dayNumber}-${exercise.id}`
+                                      ] || exercise.sets
+                                    }
+                                    onChange={(e) =>
+                                      setCustomSets((prev) => ({
+                                        ...prev,
+                                        [`${day.dayNumber}-${exercise.id}`]:
+                                          parseInt(e.target.value),
+                                      }))
+                                    }
+                                    min="1"
+                                    className="h-10 text-base"
+                                  />
+                                </div>
+                                <div className="flex-1">
+                                  <Label
+                                    htmlFor={`reps-${day.dayNumber}-${exercise.id}`}
+                                    className="text-sm text-muted-foreground"
+                                  >
+                                    Reps
+                                  </Label>
+                                  <Input
+                                    id={`reps-${day.dayNumber}-${exercise.id}`}
+                                    value={
+                                      customReps[
+                                        `${day.dayNumber}-${exercise.id}`
+                                      ] || exercise.reps
+                                    }
+                                    onChange={(e) =>
+                                      setCustomReps((prev) => ({
+                                        ...prev,
+                                        [`${day.dayNumber}-${exercise.id}`]:
+                                          e.target.value,
+                                      }))
+                                    }
+                                    placeholder="e.g., 12 or 30 sec"
+                                    className="h-10 text-base"
+                                  />
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        ))}
                       </div>
-                    </div>
-                  )}
-                </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
-      ))}
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
 
-      <Button variant="outline" className="w-full" onClick={handleAddDay}>
-        <Plus className="mr-2 h-4 w-4" />
-        Add Day
-      </Button>
+      {/* Action Buttons */}
+      <div className="space-y-4">
+        <Button
+          variant="outline"
+          className="w-full h-12 text-base"
+          onClick={handleAddDay}
+        >
+          <Plus className="mr-2 h-5 w-5" />
+          Add Day
+        </Button>
 
-      <div className="flex justify-end">
         <Button
           onClick={handleCreatePlan}
           disabled={
@@ -384,6 +454,7 @@ export function CreatePlanView() {
               (day) => (selectedExercises[day.dayNumber] || []).length === 0
             )
           }
+          className="w-full h-12 text-base"
         >
           Create Plan
         </Button>

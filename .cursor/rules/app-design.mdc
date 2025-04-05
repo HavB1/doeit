@@ -6,6 +6,7 @@ alwaysApply: true
 
 - The app is primarily for mobile devices.
 - Make sure that the app works well and looks good on mobile device first.
+- Make your design reflect a mobile app design. Do not worry about devices larger than mobile. Focus only on mobile devices
 
 - The TRPC config are in [client.tsx](mdc:src/trpc/client.tsx) [server.tsx](mdc:src/trpc/server.tsx) [init.ts](mdc:src/trpc/init.ts) [_app.ts](mdc:src/trpc/routers/_app.ts).
 - Use the docs for TRPC 11 with the new architecture:
@@ -48,5 +49,7 @@ export function ClientView() {
 - Always check [schema.ts](mdc:src/db/schema.ts) to get the correct reference for the database
 
 - Check the relevant file in /src/trpc/routers/ to get the correct function when it comes to query or mutation
+
+
 
 

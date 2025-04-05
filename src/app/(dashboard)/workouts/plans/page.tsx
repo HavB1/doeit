@@ -3,6 +3,7 @@ import { prefetch } from "@/trpc/server";
 import { Suspense } from "react";
 import { PlansView } from "./plans-view";
 import { Skeleton } from "@/components/ui/skeleton";
+import Link from "next/link";
 
 export const dynamic = "force-dynamic";
 
@@ -56,10 +57,23 @@ export default async function WorkoutPlansPage() {
   );
 
   return (
-    <HydrateClient>
-      <Suspense fallback={<PlansSkeleton />}>
-        <PlansView />
-      </Suspense>
-    </HydrateClient>
+    <div className="container py-6">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        <div>
+          <h1 className="text-2xl sm:text-3xl font-bold">Workout Plans</h1>
+          <p className="text-muted-foreground mt-1">
+            Choose a preset plan or{" "}
+            <Link href="/workouts/plans/new" className="text-primary">
+              create your own
+            </Link>
+          </p>
+        </div>
+      </div>
+      <HydrateClient>
+        <Suspense fallback={<PlansSkeleton />}>
+          <PlansView />
+        </Suspense>
+      </HydrateClient>
+    </div>
   );
 }
