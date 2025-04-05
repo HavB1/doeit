@@ -31,11 +31,11 @@ export const metadata: Metadata = {
     title: "Doeit - Your Personal Fitness Journey",
     description:
       "Track your progress, set goals, and achieve your fitness dreams with Doeit",
-    url: "https://doeit.app",
+    url: "https://doeit.ditolab.com",
     siteName: "Doeit",
     images: [
       {
-        url: "https://doeit.app/og-image.png",
+        url: "https://doeit.ditolab.com/open-graph-image.png",
         width: 1200,
         height: 630,
         alt: "Doeit - Your Personal Fitness Journey",
@@ -49,7 +49,7 @@ export const metadata: Metadata = {
     title: "Doeit - Your Personal Fitness Journey",
     description:
       "Track your progress, set goals, and achieve your fitness dreams with Doeit",
-    images: ["https://doeit.app/twitter-image.png"],
+    images: ["https://doeit.ditolab.com/twitter-image.png"],
   },
   robots: {
     index: true,
