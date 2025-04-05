@@ -8,7 +8,7 @@ import { eq } from "drizzle-orm";
 export async function POST(req: Request) {
   const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET;
 
-  //   console.log("Webhook Called: ", SIGNING_SECRET);
+  console.log("Webhook Called: ", WEBHOOK_SECRET);
 
   if (!WEBHOOK_SECRET) {
     throw new Error(
@@ -27,6 +27,7 @@ export async function POST(req: Request) {
 
   // If there are no headers, error out
   if (!svix_id || !svix_timestamp || !svix_signature) {
+    console.error("Error: Missing Svix headers");
     return new Response("Error: Missing Svix headers", {
       status: 400,
     });
@@ -59,10 +60,10 @@ export async function POST(req: Request) {
   if (eventType === "user.created") {
     const data = evt.data;
 
-    //  console.log(
-    //    `Received webhook with ID ${data.id} and event type of ${eventType}`
-    //  );
-    //  console.log("Webhook payload:", body);
+    console.log(
+      `Received webhook with ID ${data.id} and event type of ${eventType}`
+    );
+    console.log("Webhook payload:", body);
 
     await db.insert(users).values({
       clerkId: data.id,
@@ -75,10 +76,10 @@ export async function POST(req: Request) {
   if (eventType === "user.updated") {
     const data = evt.data;
 
-    //  console.log(
-    //    `Received webhook with ID ${data.id} and event type of ${eventType}`
-    //  );
-    //  console.log("Webhook payload:", body);
+    console.log(
+      `Received webhook with ID ${data.id} and event type of ${eventType}`
+    );
+    console.log("Webhook payload:", body);
 
     await db
       .update(users)
@@ -93,10 +94,10 @@ export async function POST(req: Request) {
   if (eventType === "user.deleted") {
     const data = evt.data;
 
-    //  console.log(
-    //    `Received webhook with ID ${data.id} and event type of ${eventType}`
-    //  );
-    //  console.log("Webhook payload:", body);
+    console.log(
+      `Received webhook with ID ${data.id} and event type of ${eventType}`
+    );
+    console.log("Webhook payload:", body);
 
     if (!data.id) {
       return new Response("Error: User ID is missing", {
