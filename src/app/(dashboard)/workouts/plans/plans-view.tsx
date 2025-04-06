@@ -11,7 +11,7 @@ import {
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useTRPC } from "@/trpc/client";
 import { useQuery } from "@tanstack/react-query";
-import { Plus } from "lucide-react";
+// import { Plus } from "lucide-react";
 import Link from "next/link";
 
 export function PlansView() {

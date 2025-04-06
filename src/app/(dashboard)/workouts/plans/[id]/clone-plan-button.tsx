@@ -33,7 +33,7 @@ export function ClonePlanButton({ planId }: ClonePlanButtonProps) {
       onSuccess: () => {
         toast.success("Plan cloned successfully");
         setOpen(false);
-        router.refresh();
+        router.push("/workouts");
       },
       onError: (error) => {
         toast.error("Failed to clone plan");

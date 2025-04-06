@@ -27,7 +27,7 @@ export default function Home() {
           Doeit - your all-in-one fitness companion
         </p>
         <Button asChild size="lg" className="mt-4">
-          <Link href="/dashboard">Get Started</Link>
+          <Link href="/workouts">Get Started</Link>
         </Button>
       </div>
     </main>

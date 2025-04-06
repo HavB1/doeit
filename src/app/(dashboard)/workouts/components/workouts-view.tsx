@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { format } from "date-fns";
 import type { inferRouterOutputs } from "@trpc/server";
 import type { AppRouter } from "@/trpc/routers/_app";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { WorkoutsSkeleton } from "./workouts-skeleton";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
@@ -21,8 +21,9 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  DialogFooter,
 } from "@/components/ui/dialog";
-import { Dumbbell, ArrowRight } from "lucide-react";
+import { Dumbbell, ArrowRight, Trash2 } from "lucide-react";
 
 type RouterOutput = inferRouterOutputs<AppRouter>;
 type WorkoutPlan = RouterOutput["workoutPlans"]["getMyPlans"][number];
@@ -32,9 +33,11 @@ type WorkoutPlan = RouterOutput["workoutPlans"]["getMyPlans"][number];
 export function WorkoutsView() {
   const router = useRouter();
   const trpc = useTRPC();
+  const queryClient = useQueryClient();
   const [activeTab, setActiveTab] = useState("plans");
   const [selectedPlan, setSelectedPlan] = useState<WorkoutPlan | null>(null);
   const [showContinueDialog, setShowContinueDialog] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
 
   const { data: plans, isLoading: isLoadingPlans } = useQuery(
     trpc.workoutPlans.getMyPlans.queryOptions()
@@ -55,6 +58,10 @@ export function WorkoutsView() {
     )
   );
 
+  const deletePlanMutation = useMutation(
+    trpc.workoutPlans.deletePlan.mutationOptions()
+  );
+
   if (isLoadingPlans || isLoadingWorkouts) {
     return <WorkoutsSkeleton />;
   }
@@ -71,6 +78,32 @@ export function WorkoutsView() {
     }
     router.push(
       `/workouts/session?planId=${selectedPlan?.id}&dayId=${nextDay.id}`
+    );
+  };
+
+  const handleDelete = () => {
+    if (!selectedPlan) return;
+    deletePlanMutation.mutate(
+      { planId: selectedPlan.id },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries({
+            queryKey: trpc.workoutPlans.getMyPlans.queryKey(),
+          });
+          queryClient.invalidateQueries({
+            queryKey: trpc.workoutPlans.getNextIncompleteDay.queryKey({
+              planId: selectedPlan.id,
+            }),
+          });
+          setSelectedPlan(null);
+          toast.success("Workout plan deleted successfully");
+          setShowDeleteDialog(false);
+        },
+        onError: (error) => {
+          toast.error("Failed to delete workout plan");
+          console.error(error);
+        },
+      }
     );
   };
 
@@ -151,16 +184,30 @@ export function WorkoutsView() {
                             : "Maintenance"}
                         </span>
                       </div>
-                      <Button
-                        size="sm"
-                        className="rounded-full"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handlePlanSelect(plan);
-                        }}
-                      >
-                        Continue
-                      </Button>
+                      <div className="flex items-center gap-2">
+                        <Button
+                          size="sm"
+                          variant="ghost"
+                          className="rounded-full text-destructive hover:text-destructive hover:bg-destructive/10"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setSelectedPlan(plan);
+                            setShowDeleteDialog(true);
+                          }}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          size="sm"
+                          className="rounded-full"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handlePlanSelect(plan);
+                          }}
+                        >
+                          Continue
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </Card>
@@ -301,6 +348,34 @@ export function WorkoutsView() {
               <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Delete Workout Plan</DialogTitle>
+            <DialogDescription>
+              Are you sure you want to delete this workout plan? This action
+              cannot be undone.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              onClick={() => setShowDeleteDialog(false)}
+              disabled={deletePlanMutation.isPending}
+            >
+              Cancel
+            </Button>
+            <Button
+              variant="destructive"
+              onClick={handleDelete}
+              disabled={deletePlanMutation.isPending}
+            >
+              {deletePlanMutation.isPending ? "Deleting..." : "Delete"}
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>

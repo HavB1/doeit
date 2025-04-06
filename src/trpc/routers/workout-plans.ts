@@ -315,11 +315,24 @@ export const workoutPlansRouter = createTRPCRouter({
   getNextIncompleteDay: protectedProcedure
     .input(z.object({ planId: z.string() }))
     .query(async ({ ctx, input }) => {
+      // First check if the plan exists
+      const plan = await db.query.workoutPlans.findFirst({
+        where: eq(workoutPlans.id, input.planId),
+      });
+
+      if (!plan) {
+        return null;
+      }
+
       // Get all days for the plan
       const days = await db.query.workoutDays.findMany({
         where: eq(workoutDays.planId, input.planId),
         orderBy: (days) => days.dayNumber,
       });
+
+      if (!days.length) {
+        return null;
+      }
 
       // Get all completed workouts for this plan
       const completedWorkouts = await db.query.workoutLogs.findMany({
@@ -337,5 +350,36 @@ export const workoutPlansRouter = createTRPCRouter({
 
       // If all days are completed, return the first day
       return nextDay || days[0];
+    }),
+
+  deletePlan: protectedProcedure
+    .input(z.object({ planId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      // First, get all days for this plan
+      const days = await db.query.workoutDays.findMany({
+        where: eq(workoutDays.planId, input.planId),
+      });
+
+      // Delete all exercises for each day
+      await Promise.all(
+        days.map((day) =>
+          db.delete(exercises).where(eq(exercises.dayId, day.id))
+        )
+      );
+
+      // Delete all days
+      await db.delete(workoutDays).where(eq(workoutDays.planId, input.planId));
+
+      // Finally, delete the plan
+      await db
+        .delete(workoutPlans)
+        .where(
+          and(
+            eq(workoutPlans.id, input.planId),
+            eq(workoutPlans.userId, ctx.user.id)
+          )
+        );
+
+      return { success: true };
     }),
 });
