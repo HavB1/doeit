@@ -29,7 +29,7 @@ const CreatePlanSkeleton = () => {
   );
 };
 export default function CreatePlanPage() {
-  prefetch(trpc.workoutPlans.getPresetExercises.queryOptions());
+  prefetch(trpc.exerciseCatalog.getAll.queryOptions());
 
   return (
     <HydrateClient>

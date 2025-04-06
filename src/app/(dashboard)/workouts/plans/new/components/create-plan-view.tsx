@@ -28,12 +28,8 @@ import { Plus, Trash2, Dumbbell } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
 
-type Exercise = {
-  id: string;
-  name: string;
-  sets: number;
-  reps: string;
-};
+// Change the Exercise type to be more flexible
+type Exercise = any;
 
 type Day = {
   dayNumber: number;
@@ -59,13 +55,42 @@ export function CreatePlanView() {
   });
   const [customSets, setCustomSets] = useState<Record<string, number>>({});
   const [customReps, setCustomReps] = useState<Record<string, string>>({});
+  const [categoryFilters, setCategoryFilters] = useState<
+    Record<number, string>
+  >({
+    1: "all",
+  });
 
   // Fetch preset exercises
   const { data: presetExercises = [], isLoading } = useQuery(
-    trpc.workoutPlans.getPresetExercises.queryOptions()
+    trpc.exerciseCatalog.getAll.queryOptions()
   );
 
-  const handleExerciseSelect = (exercise: Exercise, dayNumber: number) => {
+  // Helper function to filter exercises by category
+  const filterExercisesByCategory = (exercises: any[], dayNumber: number) => {
+    const selectedCategory = categoryFilters[dayNumber] || "all";
+    if (selectedCategory === "all") return exercises;
+
+    return exercises.filter(
+      (exercise) => exercise.category === selectedCategory
+    );
+  };
+
+  // Add helper function to transform catalog exercises to plan exercises
+  const getExerciseDefaults = (exercise: any): Exercise => {
+    return {
+      id: exercise.id,
+      name: exercise.name,
+      category: exercise.category,
+      sets: 3, // Default to 3 sets
+      reps: "12", // Default to 12 reps
+    };
+  };
+
+  const handleExerciseSelect = (catalogExercise: any, dayNumber: number) => {
+    // Transform catalog exercise to plan exercise with defaults
+    const exercise = getExerciseDefaults(catalogExercise);
+
     setSelectedExercises((prev) => {
       const dayExercises = prev[dayNumber] || [];
       const updatedExercises = dayExercises.some((e) => e.id === exercise.id)
@@ -86,6 +111,10 @@ export function CreatePlanView() {
     setSelectedExercises((prev) => ({
       ...prev,
       [newDayNumber]: [],
+    }));
+    setCategoryFilters((prev) => ({
+      ...prev,
+      [newDayNumber]: "all",
     }));
   };
 
@@ -117,14 +146,19 @@ export function CreatePlanView() {
 
     // Update selected exercises based on the original mapping
     const newSelectedExercises: Record<number, Exercise[]> = {};
+    const newCategoryFilters: Record<number, string> = {};
+
     updatedDays.forEach((day, index) => {
       const originalDayNumber = remainingDays[index].dayNumber;
       newSelectedExercises[day.dayNumber] = exerciseMapping[originalDayNumber];
+      newCategoryFilters[day.dayNumber] =
+        categoryFilters[originalDayNumber] || "all";
     });
 
     // Update the states
     setDays(updatedDays);
     setSelectedExercises(newSelectedExercises);
+    setCategoryFilters(newCategoryFilters);
 
     // Update sets and reps
     const updateCustomValues = (
@@ -345,49 +379,101 @@ export function CreatePlanView() {
                     </AccordionTrigger>
                     <AccordionContent>
                       <div className="space-y-4 pt-2">
-                        {presetExercises.map((exercise) => (
-                          <div key={exercise.id} className="space-y-3">
+                        <div className="mb-4">
+                          <Label
+                            htmlFor={`category-filter-${day.dayNumber}`}
+                            className="text-sm mb-2 block"
+                          >
+                            Filter by Category
+                          </Label>
+                          <Select
+                            value={categoryFilters[day.dayNumber] || "all"}
+                            onValueChange={(value) =>
+                              setCategoryFilters((prev) => ({
+                                ...prev,
+                                [day.dayNumber]: value,
+                              }))
+                            }
+                          >
+                            <SelectTrigger
+                              id={`category-filter-${day.dayNumber}`}
+                              className="w-full"
+                            >
+                              <SelectValue placeholder="Select category" />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="all">
+                                All Categories
+                              </SelectItem>
+                              <SelectItem value="upper_body">
+                                Upper Body
+                              </SelectItem>
+                              <SelectItem value="lower_body">
+                                Lower Body
+                              </SelectItem>
+                              <SelectItem value="core">Core</SelectItem>
+                              <SelectItem value="cardio">Cardio</SelectItem>
+                              <SelectItem value="full_body">
+                                Full Body
+                              </SelectItem>
+                              <SelectItem value="other">Other</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+
+                        {filterExercisesByCategory(
+                          presetExercises,
+                          day.dayNumber
+                        ).map((catalogExercise) => (
+                          <div key={catalogExercise.id} className="space-y-3">
                             <div className="flex items-center space-x-3">
                               <Checkbox
-                                id={`${day.dayNumber}-${exercise.id}`}
+                                id={`${day.dayNumber}-${catalogExercise.id}`}
                                 checked={(
                                   selectedExercises[day.dayNumber] || []
-                                ).some((e) => e.id === exercise.id)}
+                                ).some((e) => e.id === catalogExercise.id)}
                                 onCheckedChange={() =>
-                                  handleExerciseSelect(exercise, day.dayNumber)
+                                  handleExerciseSelect(
+                                    catalogExercise,
+                                    day.dayNumber
+                                  )
                                 }
                                 className="h-5 w-5"
                               />
                               <Label
-                                htmlFor={`${day.dayNumber}-${exercise.id}`}
+                                htmlFor={`${day.dayNumber}-${catalogExercise.id}`}
                                 className="text-base"
                               >
-                                {exercise.name}
+                                {catalogExercise.name}
+                                <span className="ml-2 text-xs text-muted-foreground">
+                                  ({catalogExercise.category?.replace("_", " ")}
+                                  )
+                                </span>
                               </Label>
                             </div>
                             {(selectedExercises[day.dayNumber] || []).some(
-                              (e) => e.id === exercise.id
+                              (e) => e.id === catalogExercise.id
                             ) && (
                               <div className="flex gap-4 ml-8">
                                 <div className="flex-1">
                                   <Label
-                                    htmlFor={`sets-${day.dayNumber}-${exercise.id}`}
+                                    htmlFor={`sets-${day.dayNumber}-${catalogExercise.id}`}
                                     className="text-sm text-muted-foreground"
                                   >
                                     Sets
                                   </Label>
                                   <Input
-                                    id={`sets-${day.dayNumber}-${exercise.id}`}
+                                    id={`sets-${day.dayNumber}-${catalogExercise.id}`}
                                     type="number"
                                     value={
                                       customSets[
-                                        `${day.dayNumber}-${exercise.id}`
-                                      ] || exercise.sets
+                                        `${day.dayNumber}-${catalogExercise.id}`
+                                      ] || 3
                                     }
                                     onChange={(e) =>
                                       setCustomSets((prev) => ({
                                         ...prev,
-                                        [`${day.dayNumber}-${exercise.id}`]:
+                                        [`${day.dayNumber}-${catalogExercise.id}`]:
                                           parseInt(e.target.value),
                                       }))
                                     }
@@ -397,22 +483,22 @@ export function CreatePlanView() {
                                 </div>
                                 <div className="flex-1">
                                   <Label
-                                    htmlFor={`reps-${day.dayNumber}-${exercise.id}`}
+                                    htmlFor={`reps-${day.dayNumber}-${catalogExercise.id}`}
                                     className="text-sm text-muted-foreground"
                                   >
                                     Reps
                                   </Label>
                                   <Input
-                                    id={`reps-${day.dayNumber}-${exercise.id}`}
+                                    id={`reps-${day.dayNumber}-${catalogExercise.id}`}
                                     value={
                                       customReps[
-                                        `${day.dayNumber}-${exercise.id}`
-                                      ] || exercise.reps
+                                        `${day.dayNumber}-${catalogExercise.id}`
+                                      ] || "10"
                                     }
                                     onChange={(e) =>
                                       setCustomReps((prev) => ({
                                         ...prev,
-                                        [`${day.dayNumber}-${exercise.id}`]:
+                                        [`${day.dayNumber}-${catalogExercise.id}`]:
                                           e.target.value,
                                       }))
                                     }
@@ -424,6 +510,15 @@ export function CreatePlanView() {
                             )}
                           </div>
                         ))}
+
+                        {filterExercisesByCategory(
+                          presetExercises,
+                          day.dayNumber
+                        ).length === 0 && (
+                          <p className="text-muted-foreground py-4 text-center">
+                            No exercises match the selected category.
+                          </p>
+                        )}
                       </div>
                     </AccordionContent>
                   </AccordionItem>

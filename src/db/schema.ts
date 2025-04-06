@@ -1,10 +1,12 @@
+import { relations } from "drizzle-orm";
 import {
   pgTable,
   text,
-  integer,
   timestamp,
   uuid,
+  integer,
   jsonb,
+  boolean,
   numeric,
   pgPolicy,
 } from "drizzle-orm/pg-core";
@@ -13,11 +15,11 @@ import { sql } from "drizzle-orm";
 export const users = pgTable(
   "users",
   {
-    id: uuid("id").defaultRandom().primaryKey(),
-    clerkId: text("clerk_id").unique().notNull(),
-    email: text("email").notNull(),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+    id: uuid("id").primaryKey().defaultRandom(),
+    clerkId: text("clerk_id").notNull().unique(),
+    email: text("email").notNull().unique(),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
     name: text("name"),
     imageUrl: text("image_url"),
   },
@@ -39,17 +41,18 @@ export const users = pgTable(
 export const workoutPlans = pgTable(
   "workout_plans",
   {
-    id: uuid("id").defaultRandom().primaryKey(),
+    id: uuid("id").primaryKey().defaultRandom(),
     userId: uuid("user_id")
-      .references(() => users.id)
-      .notNull(),
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
     name: text("name").notNull(),
     description: text("description"),
+    isPublic: boolean("is_public").notNull().default(false),
     goalType: text("goal_type")
       .$type<"lose_weight" | "gain_muscle" | "maintain">()
       .notNull(),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
   },
   (t) => ({
     // RLS policies for workout plans
@@ -76,17 +79,76 @@ export const workoutPlans = pgTable(
   })
 );
 
+// Workout Focuses
+export const workoutFocuses = pgTable(
+  "workout_focuses",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    name: text("name").notNull(),
+    description: text("description"),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  },
+  (t) => ({
+    // RLS policies for workout focuses
+    p1: pgPolicy("Focuses are public", {
+      for: "select",
+      to: "authenticated",
+      using: sql`true`,
+    }),
+  })
+);
+
+// Workout Focus Relations
+export const workoutFocusRelations = pgTable(
+  "workout_focus_relations",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    workoutId: uuid("workout_id")
+      .notNull()
+      .references(() => workoutDays.id, { onDelete: "cascade" }),
+    focusId: uuid("focus_id")
+      .notNull()
+      .references(() => workoutFocuses.id, { onDelete: "cascade" }),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  },
+  (t) => ({
+    // RLS policies for workout focus relations
+    p1: pgPolicy("Users can view their own focus relations", {
+      for: "select",
+      to: "authenticated",
+      using: sql`(select auth.user_id() = (select u.clerk_id from users u join workout_plans wp on wp.user_id = u.id join workout_days wd on wd.plan_id = wp.id where wd.id = workout_id))`,
+    }),
+    p2: pgPolicy("Users can create their own focus relations", {
+      for: "insert",
+      to: "authenticated",
+      withCheck: sql`(select auth.user_id() = (select u.clerk_id from users u join workout_plans wp on wp.user_id = u.id join workout_days wd on wd.plan_id = wp.id where wd.id = workout_id))`,
+    }),
+    p3: pgPolicy("Users can update their own focus relations", {
+      for: "update",
+      to: "authenticated",
+      using: sql`(select auth.user_id() = (select u.clerk_id from users u join workout_plans wp on wp.user_id = u.id join workout_days wd on wd.plan_id = wp.id where wd.id = workout_id))`,
+    }),
+    p4: pgPolicy("Users can delete their own focus relations", {
+      for: "delete",
+      to: "authenticated",
+      using: sql`(select auth.user_id() = (select u.clerk_id from users u join workout_plans wp on wp.user_id = u.id join workout_days wd on wd.plan_id = wp.id where wd.id = workout_id))`,
+    }),
+  })
+);
+
+// Modify workout_days table to remove the focus column
 export const workoutDays = pgTable(
   "workout_days",
   {
-    id: uuid("id").defaultRandom().primaryKey(),
+    id: uuid("id").primaryKey().defaultRandom(),
     planId: uuid("plan_id")
-      .references(() => workoutPlans.id)
-      .notNull(),
+      .notNull()
+      .references(() => workoutPlans.id, { onDelete: "cascade" }),
     dayNumber: integer("day_number").notNull(),
-    focus: text("focus").notNull(),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
   },
   (t) => ({
     // RLS policies for workout days
@@ -113,20 +175,45 @@ export const workoutDays = pgTable(
   })
 );
 
+// Exercise catalog - source of truth for exercises
+export const exerciseCatalog = pgTable(
+  "exercise_catalog",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    name: text("name").notNull().unique(),
+    category: text("category").$type<
+      "upper_body" | "lower_body" | "core" | "cardio" | "full_body" | "other"
+    >(),
+    description: text("description"),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  },
+  (t) => ({
+    // RLS policies for exercise catalog
+    p1: pgPolicy("Exercise catalog is public", {
+      for: "select",
+      to: "authenticated",
+      using: sql`true`,
+    }),
+  })
+);
+
 export const exercises = pgTable(
   "exercises",
   {
-    id: uuid("id").defaultRandom().primaryKey(),
+    id: uuid("id").primaryKey().defaultRandom(),
     dayId: uuid("day_id")
-      .references(() => workoutDays.id)
-      .notNull(),
-    name: text("name").notNull(),
+      .notNull()
+      .references(() => workoutDays.id, { onDelete: "cascade" }),
+    exerciseId: uuid("exercise_id")
+      .notNull()
+      .references(() => exerciseCatalog.id),
     sets: integer("sets").notNull(),
     reps: text("reps").notNull(), // Can be "6" or "12 each leg" or "1 min"
     type: text("type"), // For special exercises like HIIT
     duration: text("duration"), // For timed exercises
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at").defaultNow().notNull(),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
   },
   (t) => ({
     // RLS policies for exercises
@@ -152,6 +239,18 @@ export const exercises = pgTable(
     }),
   })
 );
+
+// Add exerciseCatalog relation to exercises
+export const exercisesRelations = relations(exercises, ({ one }) => ({
+  day: one(workoutDays, {
+    fields: [exercises.dayId],
+    references: [workoutDays.id],
+  }),
+  catalogEntry: one(exerciseCatalog, {
+    fields: [exercises.exerciseId],
+    references: [exerciseCatalog.id],
+  }),
+}));
 
 export const workoutLogs = pgTable(
   "workout_logs",
@@ -279,7 +378,55 @@ export const presetExercises = pgTable("preset_exercises", {
   presetDayId: uuid("preset_day_id")
     .references(() => presetWorkoutDays.id)
     .notNull(),
-  name: text("name").notNull(),
+  exerciseId: uuid("exercise_id")
+    .references(() => exerciseCatalog.id)
+    .notNull(),
   sets: integer("sets").notNull(),
   reps: text("reps").notNull(),
 });
+
+// Add relation for presetExercises
+export const presetExercisesRelations = relations(
+  presetExercises,
+  ({ one }) => ({
+    presetDay: one(presetWorkoutDays, {
+      fields: [presetExercises.presetDayId],
+      references: [presetWorkoutDays.id],
+    }),
+    catalogEntry: one(exerciseCatalog, {
+      fields: [presetExercises.exerciseId],
+      references: [exerciseCatalog.id],
+    }),
+  })
+);
+
+// Add relations
+export const workoutFocusesRelations = relations(
+  workoutFocuses,
+  ({ many }) => ({
+    workoutFocusRelations: many(workoutFocusRelations),
+  })
+);
+
+export const workoutFocusRelationsRelations = relations(
+  workoutFocusRelations,
+  ({ one }) => ({
+    workout: one(workoutDays, {
+      fields: [workoutFocusRelations.workoutId],
+      references: [workoutDays.id],
+    }),
+    focus: one(workoutFocuses, {
+      fields: [workoutFocusRelations.focusId],
+      references: [workoutFocuses.id],
+    }),
+  })
+);
+
+export const workoutDaysRelations = relations(workoutDays, ({ one, many }) => ({
+  plan: one(workoutPlans, {
+    fields: [workoutDays.planId],
+    references: [workoutPlans.id],
+  }),
+  exercises: many(exercises),
+  focusRelations: many(workoutFocusRelations),
+}));

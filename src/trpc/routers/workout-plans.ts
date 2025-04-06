@@ -8,6 +8,9 @@ import {
   workoutDays,
   exercises,
   workoutLogs,
+  exerciseCatalog,
+  workoutFocuses,
+  workoutFocusRelations,
 } from "@/db/schema";
 import { eq, and } from "drizzle-orm";
 import { createTRPCRouter, protectedProcedure } from "../init";
@@ -35,9 +38,23 @@ export const workoutPlansRouter = createTRPCRouter({
 
           const daysWithExercises = await Promise.all(
             days.map(async (day) => {
+              // Get exercises with catalog information
               const exercises = await db
-                .select()
+                .select({
+                  id: presetExercises.id,
+                  presetDayId: presetExercises.presetDayId,
+                  exerciseId: presetExercises.exerciseId,
+                  sets: presetExercises.sets,
+                  reps: presetExercises.reps,
+                  name: exerciseCatalog.name,
+                  category: exerciseCatalog.category,
+                  description: exerciseCatalog.description,
+                })
                 .from(presetExercises)
+                .innerJoin(
+                  exerciseCatalog,
+                  eq(presetExercises.exerciseId, exerciseCatalog.id)
+                )
                 .where(eq(presetExercises.presetDayId, day.id));
 
               return {
@@ -101,11 +118,35 @@ export const workoutPlansRouter = createTRPCRouter({
             .values({
               planId: newPlan.id,
               dayNumber: presetDay.dayNumber,
-              focus: presetDay.focus,
               createdAt: new Date(),
               updatedAt: new Date(),
             })
             .returning();
+
+          // If focus exists, create a relation in workoutFocusRelations
+          if (presetDay.focus) {
+            // Create a new focus or use existing
+            const [focus] = await db
+              .insert(workoutFocuses)
+              .values({
+                name: presetDay.focus,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+              })
+              .onConflictDoUpdate({
+                target: workoutFocuses.name,
+                set: { updatedAt: new Date() },
+              })
+              .returning();
+
+            // Link the focus to the day
+            await db.insert(workoutFocusRelations).values({
+              workoutId: newDay.id,
+              focusId: focus.id,
+              createdAt: new Date(),
+              updatedAt: new Date(),
+            });
+          }
 
           // Get the preset exercises
           const dayExercises = await db
@@ -120,7 +161,7 @@ export const workoutPlansRouter = createTRPCRouter({
                 .insert(exercises)
                 .values({
                   dayId: newDay.id,
-                  name: presetExercise.name,
+                  exerciseId: presetExercise.exerciseId,
                   sets: presetExercise.sets,
                   reps: presetExercise.reps,
                   createdAt: new Date(),
@@ -206,11 +247,17 @@ export const workoutPlansRouter = createTRPCRouter({
     const exercises = await db
       .select({
         id: presetExercises.id,
-        name: presetExercises.name,
+        exerciseId: presetExercises.exerciseId,
         sets: presetExercises.sets,
         reps: presetExercises.reps,
+        name: exerciseCatalog.name,
+        category: exerciseCatalog.category,
       })
       .from(presetExercises)
+      .innerJoin(
+        exerciseCatalog,
+        eq(presetExercises.exerciseId, exerciseCatalog.id)
+      )
       .leftJoin(
         presetWorkoutDays,
         eq(presetExercises.presetDayId, presetWorkoutDays.id)
@@ -276,11 +323,35 @@ export const workoutPlansRouter = createTRPCRouter({
             .values({
               planId: plan.id,
               dayNumber: dayInput.dayNumber,
-              focus: dayInput.focus,
               createdAt: new Date(),
               updatedAt: new Date(),
             })
             .returning();
+
+          // If focus exists, create a relation in workoutFocusRelations
+          if (dayInput.focus) {
+            // Create a new focus or use existing
+            const [focus] = await db
+              .insert(workoutFocuses)
+              .values({
+                name: dayInput.focus,
+                createdAt: new Date(),
+                updatedAt: new Date(),
+              })
+              .onConflictDoUpdate({
+                target: workoutFocuses.name,
+                set: { updatedAt: new Date() },
+              })
+              .returning();
+
+            // Link the focus to the day
+            await db.insert(workoutFocusRelations).values({
+              workoutId: day.id,
+              focusId: focus.id,
+              createdAt: new Date(),
+              updatedAt: new Date(),
+            });
+          }
 
           // Create exercises for the day
           const createdExercises = await Promise.all(
@@ -289,7 +360,7 @@ export const workoutPlansRouter = createTRPCRouter({
                 .insert(exercises)
                 .values({
                   dayId: day.id,
-                  name: exercise.name,
+                  exerciseId: exercise.id,
                   sets: exercise.sets,
                   reps: exercise.reps,
                   createdAt: new Date(),

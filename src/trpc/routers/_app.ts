@@ -4,6 +4,8 @@ import { userProfileRouter } from "./userProfile";
 import { weightRouter } from "./weight";
 import { workoutRouter } from "./workout";
 import { workoutPlansRouter } from "./workout-plans";
+import { workoutFocusesRouter } from "./workout-focuses";
+import { exerciseCatalogRouter } from "./exercise-catalog";
 
 export const appRouter = createTRPCRouter({
   hello: publicProcedure
@@ -31,6 +33,8 @@ export const appRouter = createTRPCRouter({
   weight: weightRouter,
   workout: workoutRouter,
   workoutPlans: workoutPlansRouter,
+  workoutFocuses: workoutFocusesRouter,
+  exerciseCatalog: exerciseCatalogRouter,
 });
 
 // export type definition of API

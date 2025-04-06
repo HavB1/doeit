@@ -18,19 +18,30 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import Image from "next/image";
-import exerciseInfo from "@/lib/exercise-info.json";
+// import Image from "next/image";
+// import exerciseInfo from "@/lib/exercise-info.json";
 
 interface PlanViewProps {
   planId: string;
 }
 
-function ExerciseInfoPopover({ exerciseName }: { exerciseName: string }) {
-  const exercise = exerciseInfo.exercises.find(
-    (ex) => ex.name.toLowerCase() === exerciseName.toLowerCase()
+function ExerciseInfoPopover({ exerciseId }: { exerciseId: string }) {
+  const trpc = useTRPC();
+
+  // Query the exercise from the database by ID
+  const { data: catalogExercise, isLoading } = useQuery(
+    trpc.exerciseCatalog.getById.queryOptions({ id: exerciseId })
   );
 
-  if (!exercise) return null;
+  if (isLoading) {
+    return (
+      <Button variant="ghost" size="icon" className="h-8 w-8">
+        <Info className="h-4 w-4" />
+      </Button>
+    );
+  }
+
+  if (!catalogExercise) return null;
 
   return (
     <Popover>
@@ -41,24 +52,18 @@ function ExerciseInfoPopover({ exerciseName }: { exerciseName: string }) {
       </PopoverTrigger>
       <PopoverContent className="w-80">
         <div className="space-y-4">
-          <div className="relative h-48 w-full">
-            <Image
-              src={`/${exercise.image}`}
-              alt={exercise.name}
-              fill
-              className="rounded-md object-cover"
-              // onError={(e) => {
-              //   const target = e.target as HTMLImageElement;
-              //   target.src = "/placeholder.png";
-              // }}
-            />
+          <div className="relative h-48 w-full bg-muted flex items-center justify-center">
+            {/* Placeholder for image */}
+            <div className="text-muted-foreground">Exercise Image</div>
           </div>
           <div>
-            <h4 className="font-semibold">{exercise.name}</h4>
+            <h4 className="font-semibold">{catalogExercise.name}</h4>
             <p className="text-sm text-muted-foreground mt-1">
-              {exercise.bodyParts.join(", ")}
+              {catalogExercise.category}
             </p>
-            <p className="text-sm mt-2">{exercise.description}</p>
+            <p className="text-sm mt-2">
+              {catalogExercise.description || "No description available"}
+            </p>
           </div>
         </div>
       </PopoverContent>
@@ -160,7 +165,7 @@ export function PlanView({ planId }: PlanViewProps) {
                         {exercise.sets} sets × {exercise.reps} reps
                       </p>
                     </div>
-                    <ExerciseInfoPopover exerciseName={exercise.name} />
+                    <ExerciseInfoPopover exerciseId={exercise.exerciseId} />
                   </div>
                 ))}
               </div>

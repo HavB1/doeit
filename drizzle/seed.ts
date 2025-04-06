@@ -3,11 +3,194 @@ import {
   presetWorkoutPlans,
   presetWorkoutDays,
   presetExercises,
+  exerciseCatalog,
 } from "../src/db/schema";
+import { eq } from "drizzle-orm";
 // import { sql } from "drizzle-orm";
+
+// Function to normalize exercise names (standardize similar naming)
+function normalizeExerciseName(name: string): string {
+  // Standardize names (make sure to use singular form consistently)
+  const normalizations: Record<string, string> = {
+    "Bodyweight Squats": "Bodyweight Squat",
+    "Barbell Squats": "Barbell Squat",
+    "Calf Raises": "Calf Raise",
+    "Step-ups": "Step-Up",
+    "Step-Ups": "Step-Up",
+    "Triceps Pushdowns": "Triceps Pushdown",
+    "Bent-Over Row": "Bent Over Row",
+    "Bent Over Rows": "Bent Over Row",
+    "Lat Pulldown Machine": "Lat Pulldown",
+    "Seated Row Machine": "Seated Row",
+    "Incline DB Press": "Incline Dumbbell Press",
+    "Incline Bench": "Incline Bench Press",
+    "Wall Push-Ups": "Wall Push-Up",
+    "Push-Ups": "Push-Up",
+    "Push-Ups (Knee)": "Knee Push-Up",
+    "Pull-Ups": "Pull-Up",
+    "Weighted Pull-Ups": "Weighted Pull-Up",
+    "Box Jumps": "Box Jump",
+    "Jump Squats": "Jump Squat",
+    "Hanging Leg Raises": "Hanging Leg Raise",
+    "Standing Calf Raises": "Standing Calf Raise",
+    "Standing Side Crunches": "Standing Side Crunch",
+    "Seated Russian Twists": "Seated Russian Twist",
+    "Walking Lunges": "Walking Lunge",
+    "Bulgarian Split Squats": "Bulgarian Split Squat",
+    "Face Pulls": "Face Pull",
+  };
+
+  return normalizations[name] || name;
+}
+
+async function ensureExerciseInCatalog(name: string): Promise<string> {
+  // Normalize the exercise name first
+  const normalizedName = normalizeExerciseName(name);
+
+  // Check if exercise already exists in catalog
+  const existingExercise = await db
+    .select({ id: exerciseCatalog.id })
+    .from(exerciseCatalog)
+    .where(eq(exerciseCatalog.name, normalizedName))
+    .limit(1);
+
+  if (existingExercise.length > 0) {
+    return existingExercise[0].id;
+  }
+
+  // Insert new exercise into catalog
+  const [newExercise] = await db
+    .insert(exerciseCatalog)
+    .values({
+      name: normalizedName,
+      // Categorize based on name keywords
+      category: categorizeExercise(normalizedName),
+    })
+    .returning({ id: exerciseCatalog.id });
+
+  return newExercise.id;
+}
+
+// Helper function to categorize exercises based on name
+function categorizeExercise(
+  name: string
+): "upper_body" | "lower_body" | "core" | "cardio" | "full_body" | "other" {
+  const lowerName = name.toLowerCase();
+
+  // Upper body exercises
+  if (
+    lowerName.includes("bench") ||
+    (lowerName.includes("press") && !lowerName.includes("leg press")) ||
+    lowerName.includes("curl") ||
+    lowerName.includes("row") ||
+    lowerName.includes("pull") ||
+    lowerName.includes("push") ||
+    lowerName.includes("fly") ||
+    (lowerName.includes("raise") && !lowerName.includes("leg raise")) ||
+    lowerName.includes("dip") ||
+    lowerName.includes("skull") ||
+    lowerName.includes("tricep") ||
+    lowerName.includes("bicep") ||
+    lowerName.includes("shoulder") ||
+    lowerName.includes("chest") ||
+    lowerName.includes("back")
+  ) {
+    return "upper_body";
+  }
+
+  // Lower body exercises
+  if (
+    lowerName.includes("squat") ||
+    lowerName.includes("leg") ||
+    lowerName.includes("lunge") ||
+    lowerName.includes("deadlift") ||
+    lowerName.includes("calf") ||
+    lowerName.includes("glute") ||
+    lowerName.includes("hip") ||
+    lowerName.includes("hamstring") ||
+    lowerName.includes("quad") ||
+    lowerName.includes("leg press") ||
+    lowerName === "leg press" ||
+    lowerName === "leg press machine" ||
+    lowerName === "seated leg press"
+  ) {
+    return "lower_body";
+  }
+
+  // Core exercises
+  if (
+    lowerName.includes("plank") ||
+    lowerName.includes("crunch") ||
+    lowerName.includes("ab") ||
+    lowerName.includes("twist") ||
+    lowerName.includes("sit-up") ||
+    lowerName.includes("situp") ||
+    lowerName.includes("dragon flag") ||
+    lowerName.includes("leg raise") ||
+    lowerName.includes("hanging leg raise")
+  ) {
+    return "core";
+  }
+
+  // Cardio exercises
+  if (
+    lowerName.includes("jump") ||
+    lowerName.includes("run") ||
+    lowerName.includes("jog") ||
+    lowerName.includes("sprint") ||
+    lowerName.includes("burpee") ||
+    (lowerName.includes("rope") && !lowerName.includes("battle rope")) ||
+    lowerName.includes("bike") ||
+    lowerName.includes("cycling") ||
+    lowerName.includes("walking") ||
+    lowerName.includes("cardio") ||
+    lowerName.includes("hiit")
+  ) {
+    return "cardio";
+  }
+
+  // Full body exercises
+  if (
+    lowerName.includes("clean") ||
+    lowerName.includes("snatch") ||
+    lowerName.includes("swing") ||
+    lowerName.includes("thruster") ||
+    lowerName.includes("burpee") ||
+    lowerName.includes("full body") ||
+    lowerName.includes("kettlebell swing") ||
+    lowerName.includes("turkish get up")
+  ) {
+    return "full_body";
+  }
+
+  // Special cases that need manual categorization
+  const specialCases: Record<
+    string,
+    "upper_body" | "lower_body" | "core" | "cardio" | "full_body" | "other"
+  > = {
+    "Cable Crossover": "upper_body",
+    "Calf Raise": "lower_body",
+    "Calf Raise Machine": "lower_body",
+    "Seated Leg Press": "lower_body",
+    "Leg Press": "lower_body",
+    "Leg Press Machine": "lower_body",
+    "Battle Ropes": "upper_body",
+    "Chin-Ups": "upper_body",
+  };
+
+  if (specialCases[name]) {
+    return specialCases[name];
+  }
+
+  // Default to other
+  return "other";
+}
 
 export async function seed() {
   console.log("🌱 Seeding expanded preset workout plans...");
+
+  // Extract all unique exercises first to populate the catalog
+  const allExercises = new Set<string>();
 
   const plans = [
     // Lose Weight Plans
@@ -685,6 +868,32 @@ export async function seed() {
     },
   ];
 
+  // Extract all unique exercise names
+  plans.forEach((plan) => {
+    plan.days.forEach((day) => {
+      day.exercises.forEach((exercise) => {
+        allExercises.add(normalizeExerciseName(exercise.name));
+      });
+    });
+  });
+
+  console.log(
+    `Found ${allExercises.size} unique exercises. Adding to catalog...`
+  );
+
+  // Add all exercises to the catalog
+  const exerciseIdMap = new Map<string, string>();
+  const nameToIdMap = new Map<string, string>();
+  for (const exerciseName of allExercises) {
+    const id = await ensureExerciseInCatalog(exerciseName);
+    nameToIdMap.set(exerciseName, id);
+  }
+
+  console.log(
+    `✅ Exercise catalog populated with ${allExercises.size} exercises.`
+  );
+
+  // Now create the workout plans with references to the exercise catalog
   for (const plan of plans) {
     const [insertedPlan] = await db
       .insert(presetWorkoutPlans)
@@ -708,7 +917,7 @@ export async function seed() {
       await db.insert(presetExercises).values(
         day.exercises.map((ex) => ({
           presetDayId: insertedDay.id,
-          name: ex.name,
+          exerciseId: nameToIdMap.get(normalizeExerciseName(ex.name))!, // Get ID from the catalog using normalized name
           sets: ex.sets,
           reps: ex.reps,
         }))
