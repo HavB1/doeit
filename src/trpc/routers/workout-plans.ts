@@ -233,13 +233,41 @@ export const workoutPlansRouter = createTRPCRouter({
         throw new Error("Day not found");
       }
 
-      const dayExercises = await db.query.exercises.findMany({
-        where: eq(exercises.dayId, day.id),
+      // Get the focus for this day
+      const focuses = await db.query.workoutFocusRelations.findMany({
+        where: eq(workoutFocusRelations.workoutId, input.dayId),
+        with: {
+          focus: true,
+        },
       });
+
+      // Get exercises with catalog information
+      const exercisesWithCatalog = await db
+        .select({
+          id: exercises.id,
+          dayId: exercises.dayId,
+          exerciseId: exercises.exerciseId,
+          sets: exercises.sets,
+          reps: exercises.reps,
+          type: exercises.type,
+          duration: exercises.duration,
+          createdAt: exercises.createdAt,
+          updatedAt: exercises.updatedAt,
+          exercise: {
+            id: exerciseCatalog.id,
+            name: exerciseCatalog.name,
+            category: exerciseCatalog.category,
+            description: exerciseCatalog.description,
+          },
+        })
+        .from(exercises)
+        .leftJoin(exerciseCatalog, eq(exercises.exerciseId, exerciseCatalog.id))
+        .where(eq(exercises.dayId, input.dayId));
 
       return {
         ...day,
-        exercises: dayExercises,
+        focuses: focuses.map((relation) => relation.focus),
+        exercises: exercisesWithCatalog,
       };
     }),
 
