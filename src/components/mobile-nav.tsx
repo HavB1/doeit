@@ -28,8 +28,13 @@ const items = [
     icon: Dumbbell,
   },
   {
-    title: "Plans",
-    href: "/workouts/plans",
+    title: "Preset Plans",
+    href: "/plans",
+    icon: Dumbbell,
+  },
+  {
+    title: "Exercise Catalog",
+    href: "/exercises",
     icon: Dumbbell,
   },
 

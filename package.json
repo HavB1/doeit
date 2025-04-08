@@ -11,7 +11,8 @@
     "build": "next build",
     "seed": "dotenv -e .env.local -- drizzle-kit push && drizzle-kit generate && dotenv -e .env.local -- tsx drizzle/seed.ts",
     "migrate:rls": "dotenv -e .env.local -- tsx drizzle/migrate-rls.ts",
-    "migrate:exercise-catalog": "dotenv -e .env.local -- tsx drizzle/migrate-exercise-catalog.ts && pnpm run seed"
+    "migrate:exercise-catalog": "dotenv -e .env.local -- tsx drizzle/migrate-exercise-catalog.ts && pnpm run seed",
+    "migrate:preset-rls": "dotenv -e .env.local -- tsx drizzle/migrate-preset-rls.ts"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.12.12",

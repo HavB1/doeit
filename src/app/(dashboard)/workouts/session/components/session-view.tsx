@@ -36,12 +36,14 @@ export function SessionView({ planId, dayId }: SessionViewProps) {
   const router = useRouter();
   const trpc = useTRPC();
   const [exerciseLogs, setExerciseLogs] = useState<ExerciseLogState>({});
+  // const [componentMounted, setComponentMounted] = useState(false);
 
   const { data: dayDetails, isLoading } = useQuery(
     trpc.workoutPlans.getPlanDayDetails.queryOptions({ dayId })
   );
 
   useEffect(() => {
+    // setComponentMounted(true);
     if (dayDetails) {
       const initialLogs: ExerciseLogState = {};
       dayDetails.exercises.forEach((exercise) => {
@@ -98,19 +100,13 @@ export function SessionView({ planId, dayId }: SessionViewProps) {
   const handleFinishWorkout = () => {
     const completedExercises = Object.entries(exerciseLogs)
       .filter(([_, log]) => log.completed)
-      .map(([exerciseId, log]) => {
-        // Find the original exercise by id to get its exerciseId from catalog
-        const exercise = dayDetails?.exercises.find(
-          (ex) => ex.id === exerciseId
-        );
-        return {
-          exerciseId: exercise?.exerciseId || "", // This is the catalog ID
-          sets: log.sets || 0,
-          reps: log.reps || "",
-          weight: log.weight,
-          notes: log.notes,
-        };
-      });
+      .map(([exerciseId, log]) => ({
+        exerciseId,
+        sets: log.sets || 0,
+        reps: log.reps || "",
+        weight: log.weight,
+        notes: log.notes,
+      }));
 
     if (completedExercises.length === 0) {
       toast.error("No exercises completed", {
@@ -134,16 +130,10 @@ export function SessionView({ planId, dayId }: SessionViewProps) {
     return <div>No workout day found</div>;
   }
 
-  // Get focus name from the focuses array or fallback to day number
-  const focusName =
-    dayDetails.focuses && dayDetails.focuses.length > 0
-      ? dayDetails.focuses[0].name
-      : `Day ${dayDetails.dayNumber}`;
-
   return (
     <div className="container mx-auto py-6 space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">{focusName}</h1>
+        <h1 className="text-2xl font-bold">{dayDetails.focus}</h1>
         <Button
           onClick={handleFinishWorkout}
           disabled={logWorkoutMutation.isPending}
@@ -163,9 +153,7 @@ export function SessionView({ planId, dayId }: SessionViewProps) {
               />
               <div className="flex-1 space-y-4">
                 <div>
-                  <h3 className="font-semibold">
-                    {exercise.exercise?.name || "Unknown Exercise"}
-                  </h3>
+                  <h3 className="font-semibold">{exercise.exercise.name}</h3>
                   <p className="text-sm text-muted-foreground">
                     Target: {exercise.sets} sets × {exercise.reps}
                   </p>

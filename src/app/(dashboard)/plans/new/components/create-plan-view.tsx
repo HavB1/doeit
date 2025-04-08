@@ -24,9 +24,10 @@ import {
 } from "@/components/ui/accordion";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { Plus, Trash2, Dumbbell } from "lucide-react";
+import { Plus, Trash2, Dumbbell, ChevronDown } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Badge } from "@/components/ui/badge";
+import { GoalSelector } from "@/components/goal-selector";
 
 // Change the Exercise type to be more flexible
 type Exercise = any;
@@ -244,35 +245,34 @@ export function CreatePlanView() {
 
   if (isLoading) {
     return (
-      <div className="space-y-6">
+      <div className="space-y-4 p-4">
+        <Skeleton className="h-10 w-full" />
+        <Skeleton className="h-20 w-full" />
+        <Skeleton className="h-10 w-full" />
         <div className="space-y-4">
-          <Skeleton className="h-10 w-full" />
-          <Skeleton className="h-20 w-full" />
-          <Skeleton className="h-10 w-full" />
-        </div>
-        <Card>
-          <CardHeader>
-            <Skeleton className="h-6 w-24" />
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <Skeleton className="h-10 w-full" />
-            <div className="space-y-2">
-              {[1, 2, 3].map((i) => (
-                <div key={i} className="space-y-2">
-                  <Skeleton className="h-6 w-full" />
-                  <Skeleton className="h-10 w-full" />
+          {[1, 2].map((i) => (
+            <Card key={i}>
+              <CardHeader>
+                <Skeleton className="h-6 w-24" />
+              </CardHeader>
+              <CardContent>
+                <Skeleton className="h-10 w-full" />
+                <div className="space-y-2 mt-4">
+                  {[1, 2, 3].map((j) => (
+                    <Skeleton key={j} className="h-16 w-full" />
+                  ))}
                 </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto py-6 space-y-6">
-      {/* Header Section */}
+    <div className="space-y-4 ">
+      {/* Plan Details */}
       <div className="space-y-4">
         <div>
           <Label htmlFor="planName" className="text-base font-medium">
@@ -286,6 +286,7 @@ export function CreatePlanView() {
             className="mt-2 h-12 text-base"
           />
         </div>
+
         <div>
           <Label htmlFor="planDescription" className="text-base font-medium">
             Description
@@ -298,35 +299,14 @@ export function CreatePlanView() {
             className="mt-2 min-h-[100px] text-base"
           />
         </div>
+
         <div>
-          <Label htmlFor="goalType" className="text-base font-medium">
-            Goal Type
-          </Label>
-          <Select
-            value={goalType}
-            onValueChange={(
-              value: "lose_weight" | "gain_muscle" | "maintain"
-            ) => setGoalType(value)}
-          >
-            <SelectTrigger className="mt-2 h-12 text-base">
-              <SelectValue placeholder="Select goal type" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="lose_weight" className="text-base">
-                Lose Weight
-              </SelectItem>
-              <SelectItem value="gain_muscle" className="text-base">
-                Gain Muscle
-              </SelectItem>
-              <SelectItem value="maintain" className="text-base">
-                Maintain
-              </SelectItem>
-            </SelectContent>
-          </Select>
+          <Label className="text-base font-medium mb-2 block">Goal Type</Label>
+          <GoalSelector activeGoal={goalType} onGoalChange={setGoalType} />
         </div>
       </div>
 
-      {/* Days Section */}
+      {/* Days */}
       <div className="space-y-4">
         {days.map((day) => (
           <Card key={day.dayNumber} className="overflow-hidden">
@@ -343,6 +323,7 @@ export function CreatePlanView() {
                 </Button>
               )}
             </CardHeader>
+
             <CardContent className="space-y-4 p-4">
               <div>
                 <Label
@@ -361,25 +342,29 @@ export function CreatePlanView() {
                   className="mt-2 h-12 text-base"
                 />
               </div>
+
               <div className="space-y-4">
                 <Label className="text-base font-medium">Exercises</Label>
                 <Accordion type="single" collapsible className="w-full">
                   <AccordionItem value="exercises">
-                    <AccordionTrigger className="text-base bg-accent/20 p-2 rounded-md">
-                      <div className="flex flex-col  ">
+                    <AccordionTrigger className="text-base bg-accent/20 p-3 rounded-md">
+                      <div className="flex items-center justify-between w-full">
                         <div className="flex items-center gap-2">
-                          <Dumbbell className="h-4 w-4" />
+                          <Dumbbell className="h-5 w-5" />
                           <span>Select Exercises</span>
                         </div>
-                        <Badge variant="secondary" className=" no-underline">
-                          {(selectedExercises[day.dayNumber] || []).length}{" "}
-                          selected
-                        </Badge>
+                        <div className="flex items-center gap-2">
+                          <Badge variant="secondary">
+                            {(selectedExercises[day.dayNumber] || []).length}{" "}
+                            selected
+                          </Badge>
+                          <ChevronDown className="h-4 w-4" />
+                        </div>
                       </div>
                     </AccordionTrigger>
                     <AccordionContent>
-                      <div className="space-y-4 pt-2">
-                        <div className="mb-4">
+                      <div className="space-y-4 pt-4">
+                        <div>
                           <Label
                             htmlFor={`category-filter-${day.dayNumber}`}
                             className="text-sm mb-2 block"
@@ -397,7 +382,7 @@ export function CreatePlanView() {
                           >
                             <SelectTrigger
                               id={`category-filter-${day.dayNumber}`}
-                              className="w-full"
+                              className="w-full h-12"
                             >
                               <SelectValue placeholder="Select category" />
                             </SelectTrigger>
@@ -421,104 +406,111 @@ export function CreatePlanView() {
                           </Select>
                         </div>
 
-                        {filterExercisesByCategory(
-                          presetExercises,
-                          day.dayNumber
-                        ).map((catalogExercise) => (
-                          <div key={catalogExercise.id} className="space-y-3">
-                            <div className="flex items-center space-x-3">
-                              <Checkbox
-                                id={`${day.dayNumber}-${catalogExercise.id}`}
-                                checked={(
-                                  selectedExercises[day.dayNumber] || []
-                                ).some((e) => e.id === catalogExercise.id)}
-                                onCheckedChange={() =>
-                                  handleExerciseSelect(
-                                    catalogExercise,
-                                    day.dayNumber
-                                  )
-                                }
-                                className="h-5 w-5"
-                              />
-                              <Label
-                                htmlFor={`${day.dayNumber}-${catalogExercise.id}`}
-                                className="text-base"
-                              >
-                                {catalogExercise.name}
-                                <span className="ml-2 text-xs text-muted-foreground">
-                                  ({catalogExercise.category?.replace("_", " ")}
-                                  )
-                                </span>
-                              </Label>
-                            </div>
-                            {(selectedExercises[day.dayNumber] || []).some(
-                              (e) => e.id === catalogExercise.id
-                            ) && (
-                              <div className="flex gap-4 ml-8">
-                                <div className="flex-1">
-                                  <Label
-                                    htmlFor={`sets-${day.dayNumber}-${catalogExercise.id}`}
-                                    className="text-sm text-muted-foreground"
-                                  >
-                                    Sets
-                                  </Label>
-                                  <Input
-                                    id={`sets-${day.dayNumber}-${catalogExercise.id}`}
-                                    type="number"
-                                    value={
-                                      customSets[
-                                        `${day.dayNumber}-${catalogExercise.id}`
-                                      ] || 3
-                                    }
-                                    onChange={(e) =>
-                                      setCustomSets((prev) => ({
-                                        ...prev,
-                                        [`${day.dayNumber}-${catalogExercise.id}`]:
-                                          parseInt(e.target.value),
-                                      }))
-                                    }
-                                    min="1"
-                                    className="h-10 text-base"
-                                  />
-                                </div>
-                                <div className="flex-1">
-                                  <Label
-                                    htmlFor={`reps-${day.dayNumber}-${catalogExercise.id}`}
-                                    className="text-sm text-muted-foreground"
-                                  >
-                                    Reps
-                                  </Label>
-                                  <Input
-                                    id={`reps-${day.dayNumber}-${catalogExercise.id}`}
-                                    value={
-                                      customReps[
-                                        `${day.dayNumber}-${catalogExercise.id}`
-                                      ] || "10"
-                                    }
-                                    onChange={(e) =>
-                                      setCustomReps((prev) => ({
-                                        ...prev,
-                                        [`${day.dayNumber}-${catalogExercise.id}`]:
-                                          e.target.value,
-                                      }))
-                                    }
-                                    placeholder="e.g., 12 or 30 sec"
-                                    className="h-10 text-base"
-                                  />
-                                </div>
+                        <div className="space-y-4">
+                          {filterExercisesByCategory(
+                            presetExercises,
+                            day.dayNumber
+                          ).map((catalogExercise) => (
+                            <div key={catalogExercise.id} className="space-y-3">
+                              <div className="flex items-center space-x-3">
+                                <Checkbox
+                                  id={`${day.dayNumber}-${catalogExercise.id}`}
+                                  checked={(
+                                    selectedExercises[day.dayNumber] || []
+                                  ).some((e) => e.id === catalogExercise.id)}
+                                  onCheckedChange={() =>
+                                    handleExerciseSelect(
+                                      catalogExercise,
+                                      day.dayNumber
+                                    )
+                                  }
+                                  className="h-5 w-5"
+                                />
+                                <Label
+                                  htmlFor={`${day.dayNumber}-${catalogExercise.id}`}
+                                  className="text-base flex-1"
+                                >
+                                  {catalogExercise.name}
+                                  <span className="ml-2 text-xs text-muted-foreground">
+                                    (
+                                    {catalogExercise.category?.replace(
+                                      "_",
+                                      " "
+                                    )}
+                                    )
+                                  </span>
+                                </Label>
                               </div>
-                            )}
-                          </div>
-                        ))}
 
-                        {filterExercisesByCategory(
-                          presetExercises,
-                          day.dayNumber
-                        ).length === 0 && (
-                          <p className="text-muted-foreground py-4 text-center">
-                            No exercises match the selected category.
-                          </p>
-                        )}
+                              {(selectedExercises[day.dayNumber] || []).some(
+                                (e) => e.id === catalogExercise.id
+                              ) && (
+                                <div className="flex gap-4 ml-8">
+                                  <div className="flex-1">
+                                    <Label
+                                      htmlFor={`sets-${day.dayNumber}-${catalogExercise.id}`}
+                                      className="text-sm text-muted-foreground"
+                                    >
+                                      Sets
+                                    </Label>
+                                    <Input
+                                      id={`sets-${day.dayNumber}-${catalogExercise.id}`}
+                                      type="number"
+                                      value={
+                                        customSets[
+                                          `${day.dayNumber}-${catalogExercise.id}`
+                                        ] || 3
+                                      }
+                                      onChange={(e) =>
+                                        setCustomSets((prev) => ({
+                                          ...prev,
+                                          [`${day.dayNumber}-${catalogExercise.id}`]:
+                                            parseInt(e.target.value),
+                                        }))
+                                      }
+                                      min="1"
+                                      className="h-10 text-base"
+                                    />
+                                  </div>
+                                  <div className="flex-1">
+                                    <Label
+                                      htmlFor={`reps-${day.dayNumber}-${catalogExercise.id}`}
+                                      className="text-sm text-muted-foreground"
+                                    >
+                                      Reps
+                                    </Label>
+                                    <Input
+                                      id={`reps-${day.dayNumber}-${catalogExercise.id}`}
+                                      value={
+                                        customReps[
+                                          `${day.dayNumber}-${catalogExercise.id}`
+                                        ] || "10"
+                                      }
+                                      onChange={(e) =>
+                                        setCustomReps((prev) => ({
+                                          ...prev,
+                                          [`${day.dayNumber}-${catalogExercise.id}`]:
+                                            e.target.value,
+                                        }))
+                                      }
+                                      placeholder="e.g., 12 or 30 sec"
+                                      className="h-10 text-base"
+                                    />
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+                          ))}
+
+                          {filterExercisesByCategory(
+                            presetExercises,
+                            day.dayNumber
+                          ).length === 0 && (
+                            <p className="text-muted-foreground py-4 text-center">
+                              No exercises match the selected category.
+                            </p>
+                          )}
+                        </div>
                       </div>
                     </AccordionContent>
                   </AccordionItem>
@@ -530,7 +522,7 @@ export function CreatePlanView() {
       </div>
 
       {/* Action Buttons */}
-      <div className="space-y-4">
+      <div className="space-y-4 sticky bottom-0 bg-background pt-4 pb-6">
         <Button
           variant="outline"
           className="w-full h-12 text-base"

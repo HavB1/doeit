@@ -1,11 +1,11 @@
 import { HydrateClient, trpc } from "@/trpc/server";
 import { prefetch } from "@/trpc/server";
-import { Suspense } from "react";
+// import { Suspense } from "react";
 import { PlansView } from "./plans-view";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 
-export const dynamic = "force-dynamic";
+// export const dynamic = "force-dynamic";
 
 function PlansSkeleton() {
   return (
@@ -46,15 +46,9 @@ function PlansSkeleton() {
 
 export default async function WorkoutPlansPage() {
   // Prefetch data for all goal types
-  prefetch(
-    trpc.workoutPlans.getPresetPlans.queryOptions({ goalType: "lose_weight" })
-  );
-  prefetch(
-    trpc.workoutPlans.getPresetPlans.queryOptions({ goalType: "gain_muscle" })
-  );
-  prefetch(
-    trpc.workoutPlans.getPresetPlans.queryOptions({ goalType: "maintain" })
-  );
+  // prefetch(trpc.workoutPlans.getPresetPlans.queryOptions());
+
+  // prefetch(trpc.workoutPlans.getPresetPlans.queryOptions());
 
   return (
     <div className="container py-6">
@@ -63,17 +57,15 @@ export default async function WorkoutPlansPage() {
           <h1 className="text-2xl sm:text-3xl font-bold">Workout Plans</h1>
           <p className="text-muted-foreground mt-1">
             Choose a preset plan or{" "}
-            <Link href="/workouts/plans/new" className="text-primary">
+            <Link href="/plans/new" className="text-primary">
               create your own
             </Link>
           </p>
         </div>
       </div>
-      <HydrateClient>
-        <Suspense fallback={<PlansSkeleton />}>
-          <PlansView />
-        </Suspense>
-      </HydrateClient>
+      {/* <HydrateClient> */}
+      <PlansView />
+      {/* </HydrateClient> */}
     </div>
   );
 }

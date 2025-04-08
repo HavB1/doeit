@@ -18,16 +18,14 @@ import { db } from "@/db";
 
 export const workoutPlansRouter = createTRPCRouter({
   getPresetPlans: protectedProcedure
-    .input(
-      z.object({
-        goalType: z.enum(["lose_weight", "gain_muscle", "maintain"]),
-      })
-    )
-    .query(async ({ input }) => {
-      const plans = await db
-        .select()
-        .from(presetWorkoutPlans)
-        .where(eq(presetWorkoutPlans.goalType, input.goalType));
+    // .input(
+    //   z.object({
+    //     goalType: z.enum(["lose_weight", "gain_muscle", "maintain"]),
+    //   })
+    // )
+    .query(async () => {
+      const plans = await db.select().from(presetWorkoutPlans);
+      // .where(eq(presetWorkoutPlans.goalType, input.goalType));
 
       const plansWithDays = await Promise.all(
         plans.map(async (plan) => {
@@ -233,41 +231,13 @@ export const workoutPlansRouter = createTRPCRouter({
         throw new Error("Day not found");
       }
 
-      // Get the focus for this day
-      const focuses = await db.query.workoutFocusRelations.findMany({
-        where: eq(workoutFocusRelations.workoutId, input.dayId),
-        with: {
-          focus: true,
-        },
+      const dayExercises = await db.query.exercises.findMany({
+        where: eq(exercises.dayId, day.id),
       });
-
-      // Get exercises with catalog information
-      const exercisesWithCatalog = await db
-        .select({
-          id: exercises.id,
-          dayId: exercises.dayId,
-          exerciseId: exercises.exerciseId,
-          sets: exercises.sets,
-          reps: exercises.reps,
-          type: exercises.type,
-          duration: exercises.duration,
-          createdAt: exercises.createdAt,
-          updatedAt: exercises.updatedAt,
-          exercise: {
-            id: exerciseCatalog.id,
-            name: exerciseCatalog.name,
-            category: exerciseCatalog.category,
-            description: exerciseCatalog.description,
-          },
-        })
-        .from(exercises)
-        .leftJoin(exerciseCatalog, eq(exercises.exerciseId, exerciseCatalog.id))
-        .where(eq(exercises.dayId, input.dayId));
 
       return {
         ...day,
-        focuses: focuses.map((relation) => relation.focus),
-        exercises: exercisesWithCatalog,
+        exercises: dayExercises,
       };
     }),
 

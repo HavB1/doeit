@@ -49,7 +49,7 @@ export default function CreatePlanPage() {
           <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <span>Or clone a preset one?</span>
             <Button variant="link" className="p-0 h-auto font-medium" asChild>
-              <Link href="/workouts/plans">Browse templates</Link>
+              <Link href="/plans">Browse templates</Link>
             </Button>
           </div>
         </div>

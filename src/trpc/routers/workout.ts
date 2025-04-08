@@ -1,13 +1,7 @@
 import { z } from "zod";
 import { createTRPCRouter, protectedProcedure } from "../init";
 import { db } from "@/db";
-import {
-  workoutLogs,
-  exercises,
-  workoutPlans,
-  workoutDays,
-  exerciseCatalog,
-} from "@/db/schema";
+import { workoutLogs, exercises, workoutPlans, workoutDays } from "@/db/schema";
 import { desc, eq, and, gte, lt } from "drizzle-orm";
 
 const exerciseLogSchema = z.object({
@@ -107,17 +101,12 @@ export const workoutRouter = createTRPCRouter({
       const exerciseLogs = workout.exerciseLogs || [];
       const exerciseDetails = await Promise.all(
         exerciseLogs.map(async (log) => {
-          const catalogEntry = await db.query.exerciseCatalog.findFirst({
-            where: eq(exerciseCatalog.id, log.exerciseId),
+          const exercise = await db.query.exercises.findFirst({
+            where: eq(exercises.id, log.exerciseId),
           });
-
           return {
             ...log,
-            exercise: {
-              name: catalogEntry?.name || "Unknown Exercise",
-              category: catalogEntry?.category || null,
-              description: catalogEntry?.description || null,
-            },
+            exercise,
           };
         })
       );

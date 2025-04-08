@@ -43,32 +43,21 @@ function normalizeExerciseName(name: string): string {
   return normalizations[name] || name;
 }
 
-async function ensureExerciseInCatalog(name: string): Promise<string> {
-  // Normalize the exercise name first
+async function getExerciseId(name: string): Promise<string> {
   const normalizedName = normalizeExerciseName(name);
 
-  // Check if exercise already exists in catalog
-  const existingExercise = await db
+  // Get exercise ID from existing catalog
+  const [exercise] = await db
     .select({ id: exerciseCatalog.id })
     .from(exerciseCatalog)
     .where(eq(exerciseCatalog.name, normalizedName))
     .limit(1);
 
-  if (existingExercise.length > 0) {
-    return existingExercise[0].id;
+  if (!exercise) {
+    throw new Error(`Exercise "${normalizedName}" not found in catalog`);
   }
 
-  // Insert new exercise into catalog
-  const [newExercise] = await db
-    .insert(exerciseCatalog)
-    .values({
-      name: normalizedName,
-      // Categorize based on name keywords
-      category: categorizeExercise(normalizedName),
-    })
-    .returning({ id: exerciseCatalog.id });
-
-  return newExercise.id;
+  return exercise.id;
 }
 
 // Helper function to categorize exercises based on name
@@ -188,9 +177,6 @@ function categorizeExercise(
 
 export async function seed() {
   console.log("🌱 Seeding expanded preset workout plans...");
-
-  // Extract all unique exercises first to populate the catalog
-  const allExercises = new Set<string>();
 
   const plans = [
     // Lose Weight Plans
@@ -868,31 +854,6 @@ export async function seed() {
     },
   ];
 
-  // Extract all unique exercise names
-  plans.forEach((plan) => {
-    plan.days.forEach((day) => {
-      day.exercises.forEach((exercise) => {
-        allExercises.add(normalizeExerciseName(exercise.name));
-      });
-    });
-  });
-
-  console.log(
-    `Found ${allExercises.size} unique exercises. Adding to catalog...`
-  );
-
-  // Add all exercises to the catalog
-  const exerciseIdMap = new Map<string, string>();
-  const nameToIdMap = new Map<string, string>();
-  for (const exerciseName of allExercises) {
-    const id = await ensureExerciseInCatalog(exerciseName);
-    nameToIdMap.set(exerciseName, id);
-  }
-
-  console.log(
-    `✅ Exercise catalog populated with ${allExercises.size} exercises.`
-  );
-
   // Now create the workout plans with references to the exercise catalog
   for (const plan of plans) {
     const [insertedPlan] = await db
@@ -914,12 +875,22 @@ export async function seed() {
         })
         .returning({ id: presetWorkoutDays.id });
 
-      await db.insert(presetExercises).values(
-        day.exercises.map((ex) => ({
-          presetDayId: insertedDay.id,
-          exerciseId: nameToIdMap.get(normalizeExerciseName(ex.name))!, // Get ID from the catalog using normalized name
+      // Get exercise IDs for each exercise in the day
+      const exerciseIds = await Promise.all(
+        day.exercises.map(async (ex) => ({
+          exerciseId: await getExerciseId(ex.name),
           sets: ex.sets,
           reps: ex.reps,
+        }))
+      );
+
+      // Insert exercises with their IDs
+      await db.insert(presetExercises).values(
+        exerciseIds.map(({ exerciseId, sets, reps }) => ({
+          presetDayId: insertedDay.id,
+          exerciseId,
+          sets,
+          reps,
         }))
       );
     }

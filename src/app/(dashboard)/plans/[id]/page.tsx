@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import { PlanView } from "./plan-view";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export const dynamic = "force-dynamic";
+// export const dynamic = "force-dynamic";
 
 interface PlanPageProps {
   params: Promise<{ id: string }>;
@@ -50,21 +50,13 @@ function PlanSkeleton() {
 export default async function PlanPage({ params }: PlanPageProps) {
   const { id: planId } = await params;
 
-  prefetch(
-    trpc.workoutPlans.getPresetPlans.queryOptions({ goalType: "lose_weight" })
-  );
-  prefetch(
-    trpc.workoutPlans.getPresetPlans.queryOptions({ goalType: "gain_muscle" })
-  );
-  prefetch(
-    trpc.workoutPlans.getPresetPlans.queryOptions({ goalType: "maintain" })
-  );
+  // prefetch(trpc.workoutPlans.getPresetPlans.queryOptions());
 
   return (
-    <HydrateClient>
-      <Suspense fallback={<PlanSkeleton />}>
-        <PlanView planId={planId} />
-      </Suspense>
-    </HydrateClient>
+    // <HydrateClient>
+    //   <Suspense fallback={<PlanSkeleton />}>
+    <PlanView planId={planId} />
+    //   </Suspense>
+    // </HydrateClient>
   );
 }
