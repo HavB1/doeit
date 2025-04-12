@@ -9,7 +9,7 @@ import { neon } from "@neondatabase/serverless";
 
 import * as schema from "./schema";
 
-const dbUrl = process.env.DATABASE_URL!;
+const dbUrl = process.env.DATABASE_URL;
 
 if (!dbUrl) {
   throw new Error("Database URL is not set");
