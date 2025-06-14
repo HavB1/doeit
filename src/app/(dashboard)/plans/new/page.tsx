@@ -1,7 +1,8 @@
 import { HydrateClient, prefetch, trpc } from "@/trpc/server";
 import { CreatePlanView } from "./components/create-plan-view";
 import { Button } from "@/components/ui/button";
-
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -28,7 +29,14 @@ const CreatePlanSkeleton = () => {
     </div>
   );
 };
-export default function CreatePlanPage() {
+
+export default async function CreatePlanPage() {
+  const { userId } = await auth();
+
+  if (!userId) {
+    redirect("/sign-in");
+  }
+
   prefetch(trpc.exerciseCatalog.getAll.queryOptions());
 
   return (

@@ -58,7 +58,7 @@ export function WorkoutDetailsView({ workoutId }: { workoutId: string }) {
               >
                 <div>
                   <p className="font-medium">
-                    {log.exercise?.name || "Unknown Exercise"}
+                    {log.exercise?.type || "Unknown Exercise"}
                   </p>
                   <p className="text-sm text-muted-foreground">
                     {log.sets} sets × {log.reps} reps

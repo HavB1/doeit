@@ -17,6 +17,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useMutation } from "@tanstack/react-query";
 import { toast } from "sonner";
+import { useAuth } from "@clerk/nextjs";
+import { SignInButton } from "@clerk/nextjs";
 
 interface ClonePlanButtonProps {
   planId: string;
@@ -27,6 +29,7 @@ export function ClonePlanButton({ planId }: ClonePlanButtonProps) {
   const [name, setName] = useState("");
   const router = useRouter();
   const trpc = useTRPC();
+  const { isSignedIn } = useAuth();
 
   const { mutate: clonePlan, isPending } = useMutation(
     trpc.workoutPlans.clonePresetPlan.mutationOptions({
@@ -46,6 +49,14 @@ export function ClonePlanButton({ planId }: ClonePlanButtonProps) {
     e.preventDefault();
     clonePlan({ presetPlanId: planId, name });
   };
+
+  if (!isSignedIn) {
+    return (
+      <SignInButton mode="modal">
+        <Button>Sign in to Clone Plan</Button>
+      </SignInButton>
+    );
+  }
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>

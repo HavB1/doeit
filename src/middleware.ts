@@ -7,13 +7,10 @@ const isPublicRoute = createRouteMatcher([
   "/api/users/webhook(.*)",
   "/",
   "/api/trpc/(.*)",
+  "/plans(.*)",
 ]);
 
-// const isOnboardingRoute = createRouteMatcher(["/onboarding(.*)"]);
-
 export default clerkMiddleware(async (auth, req) => {
-  // const path = req.nextUrl.pathname;
-
   // Allow public routes
   if (isPublicRoute(req)) {
     return NextResponse.next();
@@ -21,20 +18,6 @@ export default clerkMiddleware(async (auth, req) => {
 
   // Protect all other routes
   await auth.protect();
-
-  // Check onboarding status from cookie
-  // const hasCompletedOnboarding =
-  //   req.cookies.get("onboarding_completed")?.value === "true";
-
-  // // Redirect to onboarding if not completed and not already on onboarding page
-  // if (!hasCompletedOnboarding && !isOnboardingRoute(req)) {
-  //   return NextResponse.redirect(new URL("/onboarding", req.url));
-  // }
-
-  // // Redirect to dashboard if completed onboarding and trying to access onboarding
-  // if (hasCompletedOnboarding && isOnboardingRoute(req)) {
-  //   return NextResponse.redirect(new URL("/dashboard", req.url));
-  // }
 
   return NextResponse.next();
 });

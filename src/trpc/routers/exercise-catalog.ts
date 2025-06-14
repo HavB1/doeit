@@ -1,17 +1,17 @@
 import { z } from "zod";
-import { createTRPCRouter, protectedProcedure } from "../init";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../init";
 import { db } from "@/db";
 import { exerciseCatalog } from "@/db/schema";
 import { eq, ilike } from "drizzle-orm";
 
 export const exerciseCatalogRouter = createTRPCRouter({
   // Get all exercises from the catalog
-  getAll: protectedProcedure.query(async () => {
+  getAll: publicProcedure.query(async () => {
     return await db.query.exerciseCatalog.findMany();
   }),
 
   // Get a specific exercise by ID
-  getById: protectedProcedure
+  getById: publicProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ input }) => {
       return await db.query.exerciseCatalog.findFirst({
@@ -20,7 +20,7 @@ export const exerciseCatalogRouter = createTRPCRouter({
     }),
 
   // Get a specific exercise by name (exact match)
-  getByName: protectedProcedure
+  getByName: publicProcedure
     .input(z.object({ name: z.string() }))
     .query(async ({ input }) => {
       return await db.query.exerciseCatalog.findFirst({
@@ -29,7 +29,7 @@ export const exerciseCatalogRouter = createTRPCRouter({
     }),
 
   // Get exercises by name using partial match
-  searchByName: protectedProcedure
+  searchByName: publicProcedure
     .input(z.object({ searchTerm: z.string() }))
     .query(async ({ input }) => {
       return await db.query.exerciseCatalog.findMany({
@@ -38,7 +38,7 @@ export const exerciseCatalogRouter = createTRPCRouter({
     }),
 
   // Get exercises by category
-  getByCategory: protectedProcedure
+  getByCategory: publicProcedure
     .input(
       z.object({
         category: z.enum([

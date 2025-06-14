@@ -13,11 +13,9 @@ export const createTRPCContext = cache(async () => {
 
   const { userId } = await auth();
 
+  // If no userId, return a context with no user
   if (!userId) {
-    throw new TRPCError({
-      code: "UNAUTHORIZED",
-      message: "You must be logged in to access this resource",
-    });
+    return { userId: null, user: null };
   }
 
   const dbUser = await db.query.users.findFirst({
@@ -52,9 +50,10 @@ export const createTRPCRouter = t.router;
 export const createCallerFactory = t.createCallerFactory;
 export const baseProcedure = t.procedure;
 
-// Add a public procedure that doesn't require auth
+// Public procedure that doesn't require auth
 export const publicProcedure = t.procedure;
 
+// Protected procedure that requires auth
 const authedProcedure = t.procedure.use(async function isAuthed(opts) {
   const { ctx, next } = opts;
 

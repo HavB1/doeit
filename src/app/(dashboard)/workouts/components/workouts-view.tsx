@@ -155,7 +155,7 @@ export function WorkoutsView() {
                 <Card
                   key={plan.id}
                   className="p-4 transition-all hover:shadow-md active:scale-[0.98]"
-                  onClick={() => router.push(`/workouts/plans/${plan.id}`)}
+                  // onClick={() => router.push(`/workouts/${plan.id}`)}
                 >
                   <div className="flex flex-col gap-3">
                     <div className="flex items-start justify-between">
@@ -312,9 +312,9 @@ export function WorkoutsView() {
                 </div>
                 <div>
                   <h4 className="font-medium">Day {nextDay.dayNumber}</h4>
-                  <p className="text-sm text-muted-foreground">
-                    {nextDay.focus}
-                  </p>
+                  {/* <p className="text-sm text-muted-foreground">
+                    {nextDay.}
+                  </p> */}
                 </div>
               </div>
               <div className="space-y-2">

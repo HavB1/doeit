@@ -13,64 +13,43 @@ import {
   workoutFocusRelations,
 } from "@/db/schema";
 import { eq, and } from "drizzle-orm";
-import { createTRPCRouter, protectedProcedure } from "../init";
+import { createTRPCRouter, protectedProcedure, publicProcedure } from "../init";
 import { db } from "@/db";
 
 export const workoutPlansRouter = createTRPCRouter({
-  getPresetPlans: protectedProcedure
-    // .input(
-    //   z.object({
-    //     goalType: z.enum(["lose_weight", "gain_muscle", "maintain"]),
-    //   })
-    // )
-    .query(async () => {
-      const plans = await db.select().from(presetWorkoutPlans);
-      // .where(eq(presetWorkoutPlans.goalType, input.goalType));
+  getPresetPlans: publicProcedure.query(async () => {
+    const plans = await db.select().from(presetWorkoutPlans);
 
-      const plansWithDays = await Promise.all(
-        plans.map(async (plan) => {
-          const days = await db
-            .select()
-            .from(presetWorkoutDays)
-            .where(eq(presetWorkoutDays.presetPlanId, plan.id));
+    const plansWithDays = await Promise.all(
+      plans.map(async (plan) => {
+        const days = await db
+          .select()
+          .from(presetWorkoutDays)
+          .where(eq(presetWorkoutDays.presetPlanId, plan.id));
 
-          const daysWithExercises = await Promise.all(
-            days.map(async (day) => {
-              // Get exercises with catalog information
-              const exercises = await db
-                .select({
-                  id: presetExercises.id,
-                  presetDayId: presetExercises.presetDayId,
-                  exerciseId: presetExercises.exerciseId,
-                  sets: presetExercises.sets,
-                  reps: presetExercises.reps,
-                  name: exerciseCatalog.name,
-                  category: exerciseCatalog.category,
-                  description: exerciseCatalog.description,
-                })
-                .from(presetExercises)
-                .innerJoin(
-                  exerciseCatalog,
-                  eq(presetExercises.exerciseId, exerciseCatalog.id)
-                )
-                .where(eq(presetExercises.presetDayId, day.id));
+        const daysWithExercises = await Promise.all(
+          days.map(async (day) => {
+            const exercises = await db
+              .select()
+              .from(presetExercises)
+              .where(eq(presetExercises.presetDayId, day.id));
 
-              return {
-                ...day,
-                exercises,
-              };
-            })
-          );
+            return {
+              ...day,
+              exercises,
+            };
+          })
+        );
 
-          return {
-            ...plan,
-            days: daysWithExercises,
-          };
-        })
-      );
+        return {
+          ...plan,
+          days: daysWithExercises,
+        };
+      })
+    );
 
-      return plansWithDays;
-    }),
+    return plansWithDays;
+  }),
 
   clonePresetPlan: protectedProcedure
     .input(
