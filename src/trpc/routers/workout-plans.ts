@@ -30,8 +30,19 @@ export const workoutPlansRouter = createTRPCRouter({
         const daysWithExercises = await Promise.all(
           days.map(async (day) => {
             const exercises = await db
-              .select()
+              .select({
+                id: presetExercises.id,
+                presetDayId: presetExercises.presetDayId,
+                exerciseId: presetExercises.exerciseId,
+                sets: presetExercises.sets,
+                reps: presetExercises.reps,
+                name: exerciseCatalog.name,
+              })
               .from(presetExercises)
+              .innerJoin(
+                exerciseCatalog,
+                eq(presetExercises.exerciseId, exerciseCatalog.id)
+              )
               .where(eq(presetExercises.presetDayId, day.id));
 
             return {

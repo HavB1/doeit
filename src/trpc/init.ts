@@ -53,17 +53,13 @@ export const baseProcedure = t.procedure;
 // Public procedure that doesn't require auth
 export const publicProcedure = t.procedure;
 
-// Protected procedure that requires auth
-const authedProcedure = t.procedure.use(async function isAuthed(opts) {
-  const { ctx, next } = opts;
-
-  if (!ctx.userId || !ctx.user) {
+const isAuthed = t.middleware(({ next, ctx }) => {
+  if (!ctx.userId) {
     throw new TRPCError({
       code: "UNAUTHORIZED",
       message: "You must be logged in to access this resource",
     });
   }
-
   return next({
     ctx: {
       user: ctx.user,
@@ -71,4 +67,6 @@ const authedProcedure = t.procedure.use(async function isAuthed(opts) {
   });
 });
 
+// Protected procedure that requires auth
+const authedProcedure = t.procedure.use(isAuthed);
 export const protectedProcedure = authedProcedure;

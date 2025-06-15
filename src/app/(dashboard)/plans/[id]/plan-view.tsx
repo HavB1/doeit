@@ -63,8 +63,8 @@ export function PlanView({ planId }: PlanViewProps) {
       <div className=" flex flex-col gap-4">
         <Card className="">
           <Accordion type="single" collapsible>
-            {plan.days.map((day) => (
-              <AccordionItem value={day.id}>
+            {plan.days.map((day, index) => (
+              <AccordionItem key={day.id} value={day.id + index.toString()}>
                 <AccordionTrigger className="items-center">
                   <CardHeader>
                     <CardTitle>Day {day.dayNumber}</CardTitle>

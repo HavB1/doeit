@@ -47,12 +47,12 @@ export function ClonePlanButton({ planId }: ClonePlanButtonProps) {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    clonePlan({ presetPlanId: planId, name });
+    clonePlan({ presetPlanId: planId });
   };
 
   if (!isSignedIn) {
     return (
-      <SignInButton mode="modal">
+      <SignInButton fallbackRedirectUrl={"/plans/" + planId} mode="modal">
         <Button>Sign in to Clone Plan</Button>
       </SignInButton>
     );
@@ -68,21 +68,11 @@ export function ClonePlanButton({ planId }: ClonePlanButtonProps) {
           <DialogHeader>
             <DialogTitle>Clone Workout Plan</DialogTitle>
             <DialogDescription>
-              Give your new plan a name or use the default name.
+              Your new plan will be added to your workouts.
             </DialogDescription>
           </DialogHeader>
-          <div className="grid gap-4 py-4">
-            <div className="grid gap-2">
-              <Label htmlFor="name">Plan Name</Label>
-              <Input
-                id="name"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                placeholder="My Custom Plan"
-              />
-            </div>
-          </div>
-          <DialogFooter>
+
+          <DialogFooter className="mt-4">
             <Button type="submit" disabled={isPending}>
               {isPending ? "Cloning..." : "Clone Plan"}
             </Button>

@@ -1,0 +1,1 @@
+ALTER TABLE "workout_focuses" ADD CONSTRAINT "workout_focuses_name_unique" UNIQUE("name");
