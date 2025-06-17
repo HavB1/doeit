@@ -1,6 +1,6 @@
 "use client";
 
-import { SignOutButton, useUser } from "@clerk/nextjs";
+import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { LogOutIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -19,6 +19,8 @@ export function UserNav() {
   const router = useRouter();
   const [avatarFallback, setAvatarFallback] = useState("");
   const { user } = useUser();
+
+  const pathname = usePathname();
 
   useEffect(() => {
     if (user?.fullName) {
@@ -29,6 +31,16 @@ export function UserNav() {
       setAvatarFallback(initials);
     }
   }, [user?.fullName]);
+
+  console.log(pathname);
+
+  if (!user) {
+    return (
+      <SignInButton mode="modal" fallbackRedirectUrl={pathname}>
+        <Button>Sign In</Button>
+      </SignInButton>
+    );
+  }
 
   return (
     <DropdownMenu>

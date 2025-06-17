@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { Suspense } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { SignInButton } from "@clerk/nextjs";
 
 export const dynamic = "force-dynamic";
 
@@ -34,7 +35,11 @@ export default async function CreatePlanPage() {
   const { userId } = await auth();
 
   if (!userId) {
-    redirect("/sign-in");
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <SignInButton mode="modal" />
+      </div>
+    );
   }
 
   prefetch(trpc.exerciseCatalog.getAll.queryOptions());

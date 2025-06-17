@@ -44,11 +44,11 @@ function PlansSkeleton() {
   );
 }
 
-export default async function WorkoutPlansPage() {
+export default function WorkoutPlansPage() {
   // Prefetch data for all goal types
-  // prefetch(trpc.workoutPlans.getPresetPlans.queryOptions());
+  prefetch(trpc.workoutPlans.getPresetPlans.queryOptions());
 
-  // prefetch(trpc.workoutPlans.getPresetPlans.queryOptions());
+  prefetch(trpc.workoutPlans.getPresetPlans.queryOptions());
 
   return (
     <div className="container py-6">
@@ -63,9 +63,9 @@ export default async function WorkoutPlansPage() {
           </p>
         </div>
       </div>
-      {/* <HydrateClient> */}
-      <PlansView />
-      {/* </HydrateClient> */}
+      <HydrateClient>
+        <PlansView />
+      </HydrateClient>
     </div>
   );
 }
