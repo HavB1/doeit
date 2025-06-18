@@ -3,7 +3,7 @@ import { z } from "zod";
 import { userProfileRouter } from "./userProfile";
 import { weightRouter } from "./weight";
 import { workoutRouter } from "./workout";
-import { workoutPlansRouter } from "./workout-plans";
+import { plansRouter } from "./plans";
 import { workoutFocusesRouter } from "./workout-focuses";
 import { exerciseCatalogRouter } from "./exercise-catalog";
 
@@ -32,7 +32,7 @@ export const appRouter = createTRPCRouter({
   userProfile: userProfileRouter,
   weight: weightRouter,
   workout: workoutRouter,
-  workoutPlans: workoutPlansRouter,
+  plans: plansRouter,
   workoutFocuses: workoutFocusesRouter,
   exerciseCatalog: exerciseCatalogRouter,
 });

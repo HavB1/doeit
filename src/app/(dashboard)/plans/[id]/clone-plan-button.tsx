@@ -32,7 +32,7 @@ export function ClonePlanButton({ planId }: ClonePlanButtonProps) {
   const { isSignedIn } = useAuth();
 
   const { mutate: clonePlan, isPending } = useMutation(
-    trpc.workoutPlans.clonePresetPlan.mutationOptions({
+    trpc.workout.clonePresetPlan.mutationOptions({
       onSuccess: () => {
         toast.success("Plan cloned successfully");
         setOpen(false);

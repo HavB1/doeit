@@ -37,7 +37,7 @@ export function PlanView({ planId }: PlanViewProps) {
   const trpc = useTRPC();
 
   const { data: plans = [], isLoading: plansLoading } = useQuery(
-    trpc.workoutPlans.getPresetPlans.queryOptions()
+    trpc.plans.getPresetPlans.queryOptions()
   );
 
   if (plansLoading) {

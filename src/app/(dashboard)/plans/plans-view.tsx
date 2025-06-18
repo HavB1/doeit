@@ -6,6 +6,9 @@ import { useTRPC } from "@/trpc/client";
 import { Skeleton } from "@/components/ui/skeleton";
 import { WorkoutPlanCard } from "@/components/workout-plan-card";
 import { GoalSelector, GoalType } from "@/components/goal-selector";
+import { Button } from "@/components/ui/button";
+import { Plus } from "lucide-react";
+import Link from "next/link";
 
 export function PlansView() {
   const [activeGoal, setActiveGoal] = useState("lose_weight");
@@ -13,16 +16,16 @@ export function PlansView() {
   const trpc = useTRPC();
 
   const { data: plans, isLoading: plansLoading } = useQuery(
-    trpc.workoutPlans.getPresetPlans.queryOptions()
+    trpc.plans.getPresetPlans.queryOptions()
   );
 
   if (plansLoading) {
     return (
-      <div className="space-y-4 p-4">
-        <Skeleton className="h-10 w-full" />
-        <div className="grid grid-cols-1 gap-4">
-          {[1, 2, 3].map((i) => (
-            <Skeleton key={i} className="h-32 w-full" />
+      <div className="space-y-6">
+        <Skeleton className="h-12 w-full" />
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <Skeleton key={i} className="h-[280px] w-full rounded-lg" />
           ))}
         </div>
       </div>
@@ -39,30 +42,44 @@ export function PlansView() {
     return acc;
   }, {} as Record<string, any[]>);
 
+  const currentPlans =
+    plansByGoal[activeGoal as keyof typeof plansByGoal] || [];
+
   return (
-    <div className="space-y-4 p-4">
-      <div className="sticky top-0 z-10 bg-background pb-2">
+    <div className="flex flex-col gap-6">
+      <div className="sticky top-0 z-10 bg-background/80 backdrop-blur-sm pb-2">
         <GoalSelector
           activeGoal={activeGoal as GoalType}
           onGoalChange={setActiveGoal}
         />
       </div>
 
-      <div className="grid grid-cols-1 gap-4">
-        {plansByGoal[activeGoal as keyof typeof plansByGoal].length === 0 ? (
-          <div className="flex h-40 items-center justify-center">
-            <p className="text-muted-foreground">No plans found.</p>
+      {currentPlans.length === 0 ? (
+        <div className="flex flex-col items-center justify-center gap-4 py-12 text-center">
+          <div className="rounded-full bg-primary/10 p-4">
+            <Plus className="h-6 w-6 text-primary" />
           </div>
-        ) : (
-          plansByGoal[activeGoal as keyof typeof plansByGoal].map((plan) => (
+          <div className="space-y-2">
+            <h3 className="text-lg font-semibold">No plans found</h3>
+            <p className="text-sm text-muted-foreground">
+              There are no preset plans for this goal type yet.
+            </p>
+          </div>
+          <Button asChild>
+            <Link href="/plans/new">Create Your Own Plan</Link>
+          </Button>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {currentPlans.map((plan) => (
             <WorkoutPlanCard
               key={plan.id}
               plan={plan}
               href={`/plans/${plan.id}`}
             />
-          ))
-        )}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }

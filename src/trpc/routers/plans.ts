@@ -16,7 +16,7 @@ import { eq, and } from "drizzle-orm";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../init";
 import { db } from "@/db";
 
-export const workoutPlansRouter = createTRPCRouter({
+export const plansRouter = createTRPCRouter({
   getPresetPlans: publicProcedure.query(async () => {
     const plans = await db.select().from(presetWorkoutPlans);
 
@@ -66,7 +66,7 @@ export const workoutPlansRouter = createTRPCRouter({
     .input(
       z.object({
         presetPlanId: z.string(),
-        name: z.string().optional(),
+        // name: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -84,7 +84,7 @@ export const workoutPlansRouter = createTRPCRouter({
         .insert(workoutPlans)
         .values({
           userId: ctx.user.id,
-          name: input.name || presetPlan.name,
+          name: presetPlan.name,
           description: presetPlan.description,
           goalType: presetPlan.goalType,
           createdAt: new Date(),

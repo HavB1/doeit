@@ -19,7 +19,7 @@ import type { inferRouterOutputs } from "@trpc/server";
 import type { AppRouter } from "@/trpc/routers/_app";
 
 type RouterOutput = inferRouterOutputs<AppRouter>;
-type DayDetails = RouterOutput["workoutPlans"]["getPlanDayDetails"];
+type DayDetails = RouterOutput["workout"]["getWorkoutDayDetails"];
 type Exercise = DayDetails["exercises"][number];
 
 export function NewWorkoutForm() {
@@ -39,7 +39,7 @@ export function NewWorkoutForm() {
 
   const { data: dayDetails } = selectedDay
     ? useQuery(
-        trpc.workoutPlans.getPlanDayDetails.queryOptions({ dayId: selectedDay })
+        trpc.workout.getWorkoutDayDetails.queryOptions({ dayId: selectedDay })
       )
     : { data: undefined };
 
@@ -100,7 +100,7 @@ export function NewWorkoutForm() {
           <SelectContent>
             {days?.map((day) => (
               <SelectItem key={day.id} value={day.id}>
-                Day {day.dayNumber} - {day.focus}
+                Day {day.dayNumber}
               </SelectItem>
             ))}
           </SelectContent>

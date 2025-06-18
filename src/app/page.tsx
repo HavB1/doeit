@@ -1,8 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { DM_Serif_Text } from "next/font/google";
 
 export const dynamic = "force-dynamic";
+
+const dmSerifText = DM_Serif_Text({
+  subsets: ["latin"],
+  weight: ["400"],
+  variable: "--font-dm-serif-text",
+});
 
 export default function Home() {
   return (
@@ -26,7 +33,9 @@ export default function Home() {
           Home & Gym Friendly
         </span>
         {/* Headline */}
-        <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight text-foreground text-center mb-4">
+        <h1
+          className={`${dmSerifText.variable} text-5xl sm:text-7xl font-extrabold leading-tight text-foreground text-center mb-4 `}
+        >
           Start Your <span className="text-primary">Fitness</span> Journey
           <br />
           <span className="text-primary">Anywhere</span>, Anytime
@@ -34,7 +43,14 @@ export default function Home() {
         {/* Subheading */}
         <p className="text-base text-muted-foreground text-center mb-6 max-w-xs">
           Simple, effective plans for home or gym. No equipment? No problem.
-          Your path to a healthier you starts here.
+          Your path to a healthier{" "}
+          <span className="relative inline-block">
+            <span className="absolute inset-0 bg-primary h-[1.2em] mt-[4px] w-full -z-10"></span>
+            <span className="relative text-primary-foreground font-bold px-1">
+              you
+            </span>
+          </span>{" "}
+          starts here.
         </p>
         {/* Stats */}
         <div className="flex justify-center gap-4 mb-8">
