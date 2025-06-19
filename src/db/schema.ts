@@ -48,9 +48,14 @@ export const workoutPlans = pgTable(
     name: text("name").notNull(),
     description: text("description"),
     isPublic: boolean("is_public").notNull().default(false),
+    presetPlanId: uuid("preset_plan_id").references(
+      () => presetWorkoutPlans.id
+    ), // Optional link to preset plan
+    isCustom: boolean("is_custom").notNull().default(true), // Indicates if plan is user-created
     goalType: text("goal_type")
       .$type<"lose_weight" | "gain_muscle" | "maintain">()
       .notNull(),
+
     createdAt: timestamp("created_at").notNull().defaultNow(),
     updatedAt: timestamp("updated_at").notNull().defaultNow(),
   },
@@ -75,6 +80,11 @@ export const workoutPlans = pgTable(
       for: "delete",
       to: "authenticated",
       using: sql`(select auth.user_id() = (select clerk_id from users where id = user_id))`,
+    }),
+    p5: pgPolicy("view preset-derived plans", {
+      for: "select",
+      to: "authenticated",
+      using: sql`preset_plan_id IS NOT NULL AND is_custom = false`, // Allow viewing preset-derived plans
     }),
   })
 );
@@ -352,15 +362,26 @@ export const userProfiles = pgTable(
 );
 
 // 1. Preset Workout Plans
-export const presetWorkoutPlans = pgTable("preset_workout_plans", {
-  id: uuid("id").defaultRandom().primaryKey(),
-  goalType: text("goal_type")
-    .$type<"lose_weight" | "gain_muscle" | "maintain">()
-    .notNull(),
-  name: text("name").notNull(),
-  description: text("description").notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-});
+export const presetWorkoutPlans = pgTable(
+  "preset_workout_plans",
+  {
+    id: uuid("id").defaultRandom().primaryKey(),
+    goalType: text("goal_type")
+      .$type<"lose_weight" | "gain_muscle" | "maintain">()
+      .notNull(),
+    name: text("name").notNull(),
+    description: text("description").notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+  },
+  (t) => ({
+    // RLS policies for preset workout plans
+    p1: pgPolicy("Preset plans are public", {
+      for: "select",
+      to: "authenticated",
+      using: sql`true`,
+    }),
+  })
+);
 
 // 2. Preset Workout Days
 export const presetWorkoutDays = pgTable("preset_workout_days", {

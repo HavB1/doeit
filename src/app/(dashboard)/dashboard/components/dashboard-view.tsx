@@ -20,8 +20,10 @@ export function DashboardView() {
   );
 
   if (!isUserLoaded || weightLoading || workoutsLoading) {
+ 
     return <DashboardSkeleton />;
   }
+
 
   const userName = user?.firstName || user?.fullName || "User";
 

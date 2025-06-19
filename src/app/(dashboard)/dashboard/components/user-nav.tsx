@@ -32,7 +32,7 @@ export function UserNav() {
     }
   }, [user?.fullName]);
 
-  console.log(pathname);
+
 
   if (!user) {
     return (

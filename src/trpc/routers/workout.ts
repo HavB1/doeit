@@ -11,6 +11,7 @@ import {
   workoutFocuses,
   workoutFocusRelations,
   presetExercises,
+  exerciseCatalog,
 } from "@/db/schema";
 import { desc, eq, and, gte, lt } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
@@ -107,9 +108,22 @@ export const workoutRouter = createTRPCRouter({
               where: eq(exercises.dayId, day.id),
             });
 
+            const dayExercisesWithDetails = await Promise.all(
+              dayExercises.map(async (exercise) => {
+                const exerciseDetails =
+                  await db.query.exerciseCatalog.findFirst({
+                    where: eq(exerciseCatalog.id, exercise.exerciseId),
+                  });
+                return {
+                  ...exercise,
+                  exercise: exerciseDetails,
+                };
+              })
+            );
+
             return {
               ...day,
-              exercises: dayExercises,
+              exercises: dayExercisesWithDetails,
             };
           })
         );
@@ -152,12 +166,32 @@ export const workoutRouter = createTRPCRouter({
             where: eq(exercises.dayId, day.id),
           });
 
+          const dayExercisesWithDetails = await Promise.all(
+            dayExercises.map(async (exercise) => {
+              const exerciseDetails = await db.query.exerciseCatalog.findFirst({
+                where: eq(exerciseCatalog.id, exercise.exerciseId),
+              });
+              return {
+                ...exercise,
+                exercise: exerciseDetails,
+              };
+            })
+          );
+
           return {
             ...day,
-            exercises: dayExercises,
+            exercises: dayExercisesWithDetails,
           };
         })
       );
+
+      // const daysWithDetailedExercises = await Promise.all(
+      //   daysWithExercises.map(async(e)=>{
+      //     const daysWithDetailes = await db.query.exerciseCatalog,findFirst({
+      //       where: eq(exerciseCatalog.id, e.exercises.)
+      //     })
+      //   })
+      // )
 
       return {
         ...plan,
@@ -224,13 +258,31 @@ export const workoutRouter = createTRPCRouter({
         });
       }
 
+      console.log({ day });
+
       const dayExercises = await db.query.exercises.findMany({
-        where: eq(exercises.dayId, day.id),
+        where: eq(exercises.dayId, input.dayId),
       });
+
+      console.log({ dayExercises });
+
+      const dayExercisesWithDetails = await Promise.all(
+        dayExercises.map(async (d) => {
+          const exercise = await db.query.exerciseCatalog.findFirst({
+            where: eq(exerciseCatalog.id, d.exerciseId),
+          });
+          return {
+            ...d,
+            exercise,
+          };
+        })
+      );
+
+      console.log({ dayExercisesWithDetails });
 
       return {
         ...day,
-        exercises: dayExercises,
+        exercises: dayExercisesWithDetails,
       };
     }),
 

@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 
 interface SessionPageProps {
   searchParams: Promise<{
-    planId?: string;
+    workoutId?: string;
     dayId?: string;
   }>;
 }
@@ -21,19 +21,19 @@ export default async function SessionPage({ searchParams }: SessionPageProps) {
     redirect("/sign-in");
   }
 
-  const { planId, dayId } = await searchParams;
+  const { workoutId, dayId } = await searchParams;
 
-  if (!planId || !dayId) {
+  if (!workoutId || !dayId) {
     redirect("/workouts");
   }
 
   // Prefetch the day details
-  prefetch(trpc.workoutPlans.getPlanDayDetails.queryOptions({ dayId }));
+  prefetch(trpc.workout.getWorkoutDayDetails.queryOptions({ dayId }));
 
   return (
     <HydrateClient>
       <Suspense fallback={<div>Loading...</div>}>
-        <SessionView planId={planId} dayId={dayId} />
+        <SessionView planId={workoutId} dayId={dayId} />
       </Suspense>
     </HydrateClient>
   );

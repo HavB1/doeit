@@ -14,7 +14,7 @@ import type { AppRouter } from "@/trpc/routers/_app";
 import { useQuery, useMutation } from "@tanstack/react-query";
 
 type RouterOutput = inferRouterOutputs<AppRouter>;
-type DayDetails = RouterOutput["workoutPlans"]["getPlanDayDetails"];
+type DayDetails = RouterOutput["workout"]["getWorkoutDayDetails"];
 type Exercise = DayDetails["exercises"][number];
 
 interface ExerciseLogState {
@@ -36,14 +36,14 @@ export function SessionView({ planId, dayId }: SessionViewProps) {
   const router = useRouter();
   const trpc = useTRPC();
   const [exerciseLogs, setExerciseLogs] = useState<ExerciseLogState>({});
-  // const [componentMounted, setComponentMounted] = useState(false);
+  const [componentMounted, setComponentMounted] = useState(false);
 
   const { data: dayDetails, isLoading } = useQuery(
-    trpc.workoutPlans.getPlanDayDetails.queryOptions({ dayId })
+    trpc.workout.getWorkoutDayDetails.queryOptions({ dayId })
   );
 
   useEffect(() => {
-    // setComponentMounted(true);
+    setComponentMounted(true);
     if (dayDetails) {
       const initialLogs: ExerciseLogState = {};
       dayDetails.exercises.forEach((exercise) => {
@@ -133,7 +133,7 @@ export function SessionView({ planId, dayId }: SessionViewProps) {
   return (
     <div className="container mx-auto py-6 space-y-6">
       <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">{dayDetails.focus}</h1>
+        {/* <h1 className="text-2xl font-bold">{dayDetails.focus}</h1> */}
         <Button
           onClick={handleFinishWorkout}
           disabled={logWorkoutMutation.isPending}
@@ -153,7 +153,7 @@ export function SessionView({ planId, dayId }: SessionViewProps) {
               />
               <div className="flex-1 space-y-4">
                 <div>
-                  <h3 className="font-semibold">{exercise.exercise.name}</h3>
+                  <h3 className="font-semibold">{exercise?.exercise?.name}</h3>
                   <p className="text-sm text-muted-foreground">
                     Target: {exercise.sets} sets × {exercise.reps}
                   </p>
