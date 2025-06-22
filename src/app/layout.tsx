@@ -21,11 +21,7 @@ export const metadata: Metadata = {
     "Track your progress, set goals, and achieve your fitness dreams with Doeit. Your all-in-one fitness companion for workouts, nutrition, and personal growth.",
   keywords:
     "fitness, workout, exercise, health, fitness tracking, personal trainer, fitness goals, workout app",
-  // viewport: "width=device-width, initial-scale=1, maximum-scale=1",
-  // themeColor: [
-  //   { media: "(prefers-color-scheme: light)", color: "white" },
-  //   { media: "(prefers-color-scheme: dark)", color: "black" },
-  // ],
+
   manifest: "/manifest.json",
   openGraph: {
     title: "Doeit - Your Personal Fitness Journey",
@@ -35,7 +31,7 @@ export const metadata: Metadata = {
     siteName: "Doeit",
     images: [
       {
-        url: "https://doeit.ditolab.com/open-graph-image.png",
+        url: "https://doeit.ditolab.com/opengraph-image.png",
         width: 1200,
         height: 630,
         alt: "Doeit - Your Personal Fitness Journey",
