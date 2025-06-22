@@ -9,7 +9,12 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { format } from "date-fns";
 import type { inferRouterOutputs } from "@trpc/server";
 import type { AppRouter } from "@/trpc/routers/_app";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from "@tanstack/react-query";
 import { WorkoutsSkeleton } from "./workouts-skeleton";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
@@ -32,38 +37,15 @@ export function WorkoutsView() {
 
   const [activeTab, setActiveTab] = useState("workouts");
 
-  const { data: plans, isLoading: isLoadingPlans } = useQuery(
+  const { data: plans, isLoading: isLoadingPlans } = useSuspenseQuery(
     trpc.workout.getMyWorkouts.queryOptions()
   );
 
-  const { data: recentWorkouts, isLoading: isLoadingWorkouts } = useQuery(
-    trpc.workout.getRecentWorkouts.queryOptions()
-  );
+  const { data: recentWorkouts, isLoading: isLoadingWorkouts } =
+    useSuspenseQuery(trpc.workout.getRecentWorkouts.queryOptions());
 
   return (
     <div className="container mx-auto relative py-6 space-y-8">
-      {/* Hero Section - More Angular and Bold */}
-      <div className="relative flex justify-center items-center w-full overflow-hidden h-72 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border-2 border-slate-700">
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-800/50 to-transparent" />
-        <Image
-          src="/doeit-4.png"
-          alt="Doeit"
-          width={1000}
-          height={1000}
-          className="w-full h-full object-cover object-top opacity-20"
-        />
-        <div className="absolute inset-0 flex flex-col justify-center items-center text-center p-8">
-          <div className="bg-primary/10 backdrop-blur-sm border border-primary/20 px-8 py-6">
-            <h1 className="text-4xl font-black text-white tracking-tight mb-2 uppercase">
-              Your Workouts
-            </h1>
-            <p className="text-slate-300 text-lg font-semibold">
-              BUILD. PUSH. CONQUER.
-            </p>
-          </div>
-        </div>
-      </div>
-
       {/* Tabs - More Angular Design */}
       <Tabs
         value={activeTab}

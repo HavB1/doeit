@@ -33,44 +33,43 @@ export function WorkoutPlanCard({ plan, href }: WorkoutPlanCardProps) {
   }[plan.goalType];
 
   return (
-    <Card className="group relative overflow-hidden transition-all hover:shadow-lg active:scale-[0.98]">
-      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-      <CardHeader className="space-y-1.5">
-        <div className="flex items-start justify-between">
-          <div className="space-y-1">
-            <CardTitle className="text-xl font-semibold">{plan.name}</CardTitle>
-            <CardDescription className="line-clamp-2">
-              {plan.description}
-            </CardDescription>
-          </div>
-          <Badge variant="secondary" className="ml-2">
-            {goalTypeLabel}
-          </Badge>
-        </div>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          <div className="flex items-center gap-4 text-sm text-muted-foreground">
-            <div className="flex items-center gap-1.5">
-              <Calendar className="h-4 w-4" />
-              <span>{plan.days.length} days per week</span>
+    <Link href={href} className="block">
+      <Card className="group relative overflow-hidden transition-all hover:shadow-lg active:scale-[0.98] cursor-pointer">
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-primary/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+        <CardHeader className="space-y-1.5">
+          <div className="flex items-start justify-between">
+            <div className="space-y-1">
+              <CardTitle className="text-xl font-semibold">
+                {plan.name}
+              </CardTitle>
+              <CardDescription className="line-clamp-2">
+                {plan.description}
+              </CardDescription>
             </div>
-            <div className="flex items-center gap-1.5">
-              <Dumbbell className="h-4 w-4" />
-              <span>Preset Plan</span>
-            </div>
+            <Badge variant="secondary" className="ml-2">
+              {goalTypeLabel}
+            </Badge>
           </div>
-          <Button asChild className="w-full group/button">
-            <Link
-              href={href}
-              className="flex items-center justify-center gap-2"
-            >
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="flex items-center gap-4 text-sm text-muted-foreground">
+              <div className="flex items-center gap-1.5">
+                <Calendar className="h-4 w-4" />
+                <span>{plan.days.length} days per week</span>
+              </div>
+              <div className="flex items-center gap-1.5">
+                <Dumbbell className="h-4 w-4" />
+                <span>Preset Plan</span>
+              </div>
+            </div>
+            <div className="flex items-center justify-center gap-2 text-primary font-medium">
               View Details
-              <ArrowRight className="h-4 w-4 transition-transform group-hover/button:translate-x-0.5" />
-            </Link>
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
+              <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </Link>
   );
 }

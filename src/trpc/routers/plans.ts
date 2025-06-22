@@ -15,6 +15,7 @@ import {
 import { eq, and } from "drizzle-orm";
 import { createTRPCRouter, protectedProcedure, publicProcedure } from "../init";
 import { db } from "@/db";
+import { TRPCError } from "@trpc/server";
 
 export const plansRouter = createTRPCRouter({
   getPresetPlans: publicProcedure.query(async () => {
@@ -61,6 +62,65 @@ export const plansRouter = createTRPCRouter({
 
     return plansWithDays;
   }),
+
+  getPresetPlan: publicProcedure
+    .input(z.object({ id: z.string() }))
+    .query(async ({ input }) => {
+      const plan = await db.query.presetWorkoutPlans.findFirst({
+        where: eq(presetWorkoutPlans.id, input.id),
+      });
+
+      if (!plan) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Preset plan not found",
+        });
+      }
+
+      const days = await db.query.presetWorkoutDays.findMany({
+        where: eq(presetWorkoutDays.presetPlanId, input.id),
+      });
+
+      const daysWithExercises = await Promise.all(
+        days.map(async (day) => {
+          const exercises = await db
+            .select({
+              id: presetExercises.id,
+              presetDayId: presetExercises.presetDayId,
+              exerciseId: presetExercises.exerciseId,
+              sets: presetExercises.sets,
+              reps: presetExercises.reps,
+              name: exerciseCatalog.name,
+            })
+            .from(presetExercises)
+            .innerJoin(
+              exerciseCatalog,
+              eq(presetExercises.exerciseId, exerciseCatalog.id)
+            )
+            .where(eq(presetExercises.presetDayId, day.id));
+
+          return {
+            ...day,
+            exercises,
+          };
+        })
+      );
+
+      // const daysWithExercises = await Promise.all(
+      //   days.map(async (day) => {
+      //     const exercises = await db.query.presetExercises.findMany({
+      //       where: eq(presetExercises.presetDayId, day.id),
+      //     });
+
+      //     return { ...day, exercises };
+      //   })
+      // );
+
+      return {
+        ...plan,
+        days: daysWithExercises,
+      };
+    }),
 
   clonePresetPlan: protectedProcedure
     .input(

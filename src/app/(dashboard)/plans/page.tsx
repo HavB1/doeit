@@ -6,6 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
+import { Suspense } from "react";
 
 // export const dynamic = "force-dynamic";
 
@@ -60,7 +61,9 @@ export default function WorkoutPlansPage() {
         </Button>
       </div>
       <HydrateClient>
-        <PlansView />
+        <Suspense fallback={<PlansSkeleton />}>
+          <PlansView />
+        </Suspense>
       </HydrateClient>
     </div>
   );

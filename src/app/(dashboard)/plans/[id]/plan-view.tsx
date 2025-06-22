@@ -36,15 +36,18 @@ interface PlanViewProps {
 export function PlanView({ planId }: PlanViewProps) {
   const trpc = useTRPC();
 
-  const { data: plans = [], isLoading: plansLoading } = useQuery(
-    trpc.plans.getPresetPlans.queryOptions()
+  const { data: plan, isLoading: planLoading } = useQuery(
+    trpc.plans.getPresetPlan.queryOptions(
+      { id: planId },
+      {
+        enabled: !!planId,
+      }
+    )
   );
 
-  if (plansLoading) {
+  if (planLoading) {
     return <PlanViewSkeleton />;
   }
-
-  const plan = plans.find((p) => p.id === planId);
 
   if (!plan) {
     return <div className="container py-6 px-4 md:px-6">Plan not found.</div>;

@@ -12,20 +12,19 @@ export function DashboardView() {
   const trpc = useTRPC();
   const { user, isLoaded: isUserLoaded } = useUser();
 
-  const { isLoading: weightLoading } = useQuery(
-    trpc.weight.getWeightHistory.queryOptions()
-  );
-  const { isLoading: workoutsLoading } = useQuery(
-    trpc.workout.getRecentWorkouts.queryOptions()
-  );
+  // const { isLoading: weightLoading } = useQuery(
+  //   trpc.weight.getWeightHistory.queryOptions()
+  // );
+  // const { isLoading: workoutsLoading } = useQuery(
+  //   trpc.workout.getRecentWorkouts.queryOptions()
+  // );
 
-  if (!isUserLoaded || weightLoading || workoutsLoading) {
- 
-    return <DashboardSkeleton />;
-  }
+  // if (!isUserLoaded || weightLoading || workoutsLoading) {
 
+  //   return <DashboardSkeleton />;
+  // }
 
-  const userName = user?.firstName || user?.fullName || "User";
+  const userName = user?.firstName || user?.fullName || "Friend";
 
   return (
     <div className="flex-1 space-y-4 p-4 pt-6 md:p-8">

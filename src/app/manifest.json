@@ -1,6 +1,6 @@
 {
-  "name": "Doeit",
-  "short_name": "Doeit",
+  "name": "doeit",
+  "short_name": "doeit",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",

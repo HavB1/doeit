@@ -2,6 +2,7 @@
 import { DashboardNav } from "@/components/nav";
 import { MobileNav } from "@/components/mobile-nav";
 import { UserNav } from "@/app/(dashboard)/dashboard/components/user-nav";
+import Image from "next/image";
 
 export default function DashboardLayout({
   children,
@@ -15,10 +16,14 @@ export default function DashboardLayout({
       <header className="sticky top-0 z-50 w-full px-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-14 items-center">
           <MobileNav />
-          <div className="mr-4 hidden md:flex">
-            <a className="mr-6 flex items-center space-x-2" href="/dashboard">
-              <span className="hidden font-bold sm:inline-block">Doeit</span>
-            </a>
+          <div className="flex items-center justify-center w-full h-10 overflow-hidden">
+            <Image
+              src="/doeit.png"
+              alt="Doeit"
+              width={50}
+              height={50}
+              className="object-contain"
+            />
           </div>
           <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">
             <div className="w-full flex-1 md:w-auto md:flex-none">

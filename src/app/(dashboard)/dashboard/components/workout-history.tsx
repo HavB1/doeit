@@ -1,7 +1,7 @@
 "use client";
 
 import { useTRPC } from "@/trpc/client";
-import { useQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 import { ArrowRight, Dumbbell } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -19,7 +19,7 @@ export function WorkoutHistory() {
   const trpc = useTRPC();
   const router = useRouter();
 
-  const { data: workouts, isLoading } = useQuery(
+  const { data: workouts, isLoading } = useSuspenseQuery(
     trpc.workout.getRecentWorkouts.queryOptions()
   );
 

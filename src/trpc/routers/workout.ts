@@ -258,13 +258,13 @@ export const workoutRouter = createTRPCRouter({
         });
       }
 
-      console.log({ day });
+      // console.log({ day });
 
       const dayExercises = await db.query.exercises.findMany({
         where: eq(exercises.dayId, input.dayId),
       });
 
-      console.log({ dayExercises });
+      // console.log({ dayExercises });
 
       const dayExercisesWithDetails = await Promise.all(
         dayExercises.map(async (d) => {
@@ -278,7 +278,7 @@ export const workoutRouter = createTRPCRouter({
         })
       );
 
-      console.log({ dayExercisesWithDetails });
+      // console.log({ dayExercisesWithDetails });
 
       return {
         ...day,
