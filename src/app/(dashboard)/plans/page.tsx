@@ -1,6 +1,5 @@
 import { HydrateClient, trpc } from "@/trpc/server";
 import { prefetch } from "@/trpc/server";
-// import { Suspense } from "react";
 import { PlansView } from "./plans-view";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
@@ -8,7 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { Suspense } from "react";
 
-// export const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic";
 
 function PlansSkeleton() {
   return (
