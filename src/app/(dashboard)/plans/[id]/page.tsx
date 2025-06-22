@@ -50,13 +50,13 @@ function PlanSkeleton() {
 export default async function PlanPage({ params }: PlanPageProps) {
   const { id: planId } = await params;
 
-  // prefetch(trpc.workoutPlans.getPresetPlans.queryOptions());
+  prefetch(trpc.plans.getPresetPlan.queryOptions({ id: planId }));
 
   return (
-    // <HydrateClient>
-    //   <Suspense fallback={<PlanSkeleton />}>
-    <PlanView planId={planId} />
-    //   </Suspense>
-    // </HydrateClient>
+    <HydrateClient>
+      <Suspense fallback={<PlanSkeleton />}>
+        <PlanView planId={planId} />
+      </Suspense>
+    </HydrateClient>
   );
 }

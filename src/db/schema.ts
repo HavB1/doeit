@@ -51,7 +51,7 @@ export const workoutPlans = pgTable(
     presetPlanId: uuid("preset_plan_id").references(
       () => presetWorkoutPlans.id
     ), // Optional link to preset plan
-    isCustom: boolean("is_custom").notNull().default(true), // Indicates if plan is user-created
+    isCustom: boolean("is_custom").notNull().default(false), // Indicates if plan is user-created
     goalType: text("goal_type")
       .$type<"lose_weight" | "gain_muscle" | "maintain">()
       .notNull(),

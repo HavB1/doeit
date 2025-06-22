@@ -1,13 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
 import { useTRPC } from "@/trpc/client";
 import { Skeleton } from "@/components/ui/skeleton";
 import { WorkoutPlanCard } from "@/components/workout-plan-card";
 import { GoalSelector, GoalType } from "@/components/goal-selector";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { EmptyState } from "@/components/ui/empty-state";
+import { Plus, Dumbbell } from "lucide-react";
 import Link from "next/link";
 
 export function PlansView() {
@@ -15,7 +16,7 @@ export function PlansView() {
 
   const trpc = useTRPC();
 
-  const { data: plans, isLoading: plansLoading } = useQuery(
+  const { data: plans, isLoading: plansLoading } = useSuspenseQuery(
     trpc.plans.getPresetPlans.queryOptions()
   );
 
@@ -33,7 +34,17 @@ export function PlansView() {
   }
 
   if (!plans) {
-    return <div>No plans found</div>;
+    return (
+      <EmptyState
+        icon={Dumbbell}
+        title="No Plans Available"
+        description="We couldn't load any workout plans at the moment. Please try refreshing the page or contact support if the issue persists."
+        action={{
+          label: "Refresh Page",
+          onClick: () => window.location.reload(),
+        }}
+      />
+    );
   }
 
   const plansByGoal = plans.reduce((acc, plan) => {
@@ -55,20 +66,16 @@ export function PlansView() {
       </div>
 
       {currentPlans.length === 0 ? (
-        <div className="flex flex-col items-center justify-center gap-4 py-12 text-center">
-          <div className="rounded-full bg-primary/10 p-4">
-            <Plus className="h-6 w-6 text-primary" />
-          </div>
-          <div className="space-y-2">
-            <h3 className="text-lg font-semibold">No plans found</h3>
-            <p className="text-sm text-muted-foreground">
-              There are no preset plans for this goal type yet.
-            </p>
-          </div>
-          <Button asChild>
-            <Link href="/plans/new">Create Your Own Plan</Link>
-          </Button>
-        </div>
+        <EmptyState
+          icon={Plus}
+          title="No Plans for This Goal"
+          description="There are no preset plans available for this goal type yet. Create your own custom workout plan to get started."
+          action={{
+            label: "Create Your Own Plan",
+            href: "/plans/new",
+          }}
+          variant="card"
+        />
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {currentPlans.map((plan) => (

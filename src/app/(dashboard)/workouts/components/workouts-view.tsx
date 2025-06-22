@@ -172,7 +172,7 @@ export function WorkoutsView() {
 
         <TabsContent value="history" className="space-y-6">
           {!recentWorkouts?.length ? (
-            <Card className="border-2 border-dashed border-slate-600 bg-slate-800/50">
+            <Card className="border-2 border-dashed border-slate-600 bg-slate-800/80">
               <CardContent className="flex flex-col items-center justify-center space-y-8 p-12">
                 <div className="h-20 w-20 bg-primary/20 border-2 border-primary flex items-center justify-center">
                   <Calendar className="h-10 w-10 text-primary" />
@@ -186,7 +186,7 @@ export function WorkoutsView() {
                   </p>
                 </div>
                 <Button
-                  onClick={() => router.push("/workouts/plans")}
+                  onClick={() => router.push("/plans")}
                   className="bg-primary hover:bg-primary/90 text-white font-bold px-10 py-4 text-lg border-0"
                   size="lg"
                 >

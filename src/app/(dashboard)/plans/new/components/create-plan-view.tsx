@@ -200,7 +200,7 @@ export function CreatePlanView() {
   };
 
   const createPlanMutation = useMutation({
-    ...trpc.workoutPlans.createPlan.mutationOptions(),
+    ...trpc.workout.createCustomWorkoutPlan.mutationOptions(),
     onSuccess: (plan) => {
       router.push(`/workouts/plans/${plan.id}`);
     },
@@ -338,7 +338,7 @@ export function CreatePlanView() {
                   onChange={(e) =>
                     handleUpdateDayFocus(day.dayNumber, e.target.value)
                   }
-                  placeholder="Enter workout focus (e.g., Upper Body, Cardio)"
+                  placeholder="e.g., Upper Body, Cardio"
                   className="mt-2 h-12 text-base"
                 />
               </div>

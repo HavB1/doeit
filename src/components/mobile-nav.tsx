@@ -131,7 +131,7 @@ export function MobileNav() {
             <div className="space-y-2">
               {items.map((item, index) => {
                 const Icon = item.icon;
-                const isActive = pathname === item.href;
+                const isActive = pathname.includes(item.href);
 
                 return (
                   <React.Fragment key={item.href}>
