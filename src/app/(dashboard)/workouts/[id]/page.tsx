@@ -1,5 +1,6 @@
 import { HydrateClient, prefetch, trpc } from "@/trpc/server";
 import { WorkoutDetailsView } from "./components/workout-details-view";
+import { Suspense } from "react";
 
 export const dynamic = "force-dynamic";
 
@@ -22,7 +23,9 @@ export default async function WorkoutDetailsPage({
 
   return (
     <HydrateClient>
-      <WorkoutDetailsView workoutId={id} />
+      <Suspense fallback={<div>Loading...</div>}>
+        <WorkoutDetailsView workoutId={id} />
+      </Suspense>
     </HydrateClient>
   );
 }

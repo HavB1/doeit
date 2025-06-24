@@ -84,7 +84,7 @@ export const workoutPlans = pgTable(
     p5: pgPolicy("view preset-derived plans", {
       for: "select",
       to: "authenticated",
-      using: sql`preset_plan_id IS NOT NULL AND is_custom = false`, // Allow viewing preset-derived plans
+      using: sql`preset_plan_id IS NOT NULL AND is_custom = false`,
     }),
   })
 );
@@ -273,7 +273,7 @@ export const workoutLogs = pgTable(
       .references(() => workoutPlans.id)
       .notNull(),
     dayId: uuid("day_id")
-      .references(() => workoutDays.id)
+      .references(() => workoutDays.id, { onDelete: "cascade" })
       .notNull(),
     completedAt: timestamp("completed_at").defaultNow().notNull(),
     notes: text("notes"),

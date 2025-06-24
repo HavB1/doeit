@@ -1,15 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
+import { useSuspenseQuery } from "@tanstack/react-query";
 import { useTRPC } from "@/trpc/client";
 import { Skeleton } from "@/components/ui/skeleton";
 import { WorkoutPlanCard } from "@/components/workout-plan-card";
 import { GoalSelector, GoalType } from "@/components/goal-selector";
-import { Button } from "@/components/ui/button";
+
 import { EmptyState } from "@/components/ui/empty-state";
 import { Plus, Dumbbell } from "lucide-react";
-import Link from "next/link";
 
 export function PlansView() {
   const [activeGoal, setActiveGoal] = useState("lose_weight");

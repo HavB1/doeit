@@ -121,9 +121,28 @@ export const workoutRouter = createTRPCRouter({
               })
             );
 
+            // Get focus relations for the day
+            const focusRelations =
+              await db.query.workoutFocusRelations.findMany({
+                where: eq(workoutFocusRelations.workoutId, day.id),
+              });
+
+            const focusRelationsWithDetails = await Promise.all(
+              focusRelations.map(async (relation) => {
+                const focus = await db.query.workoutFocuses.findFirst({
+                  where: eq(workoutFocuses.id, relation.focusId),
+                });
+                return {
+                  ...relation,
+                  focus,
+                };
+              })
+            );
+
             return {
               ...day,
               exercises: dayExercisesWithDetails,
+              focusRelations: focusRelationsWithDetails,
             };
           })
         );
@@ -221,11 +240,36 @@ export const workoutRouter = createTRPCRouter({
         });
       }
 
+      // Get plan details
+      const plan = await db.query.workoutPlans.findFirst({
+        where: eq(workoutPlans.id, workout.planId),
+      });
+
+      // Get day details
+      const day = await db.query.workoutDays.findFirst({
+        where: eq(workoutDays.id, workout.dayId),
+      });
+
+      // Get focus for the day
+      let focus = null;
+      if (day) {
+        const focusRelation = await db.query.workoutFocusRelations.findFirst({
+          where: eq(workoutFocusRelations.workoutId, day.id),
+        });
+
+        if (focusRelation) {
+          focus = await db.query.workoutFocuses.findFirst({
+            where: eq(workoutFocuses.id, focusRelation.focusId),
+          });
+        }
+      }
+
       const exerciseLogs = workout.exerciseLogs || [];
+
       const exerciseDetails = await Promise.all(
         exerciseLogs.map(async (log) => {
-          const exercise = await db.query.exercises.findFirst({
-            where: eq(exercises.id, log.exerciseId),
+          const exercise = await db.query.exerciseCatalog.findFirst({
+            where: eq(exerciseCatalog.id, log.exerciseId),
           });
           return {
             ...log,
@@ -236,6 +280,9 @@ export const workoutRouter = createTRPCRouter({
 
       return {
         ...workout,
+        plan,
+        day,
+        focus,
         exerciseLogs: exerciseDetails,
       };
     }),

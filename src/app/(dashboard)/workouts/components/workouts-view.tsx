@@ -72,7 +72,7 @@ export function WorkoutsView() {
 
         <TabsContent value="workouts" className="space-y-6">
           {!plans?.length ? (
-            <Card className="border-2 border-dashed border-slate-600 bg-slate-800/50">
+            <Card className="border-2 border-dashed border-slate-600 bg-slate-800/80">
               <CardContent className="flex flex-col items-center justify-center space-y-8 p-12">
                 <div className="h-20 w-20 bg-primary/20 border-2 border-primary flex items-center justify-center">
                   <Dumbbell className="h-10 w-10 text-primary" />
@@ -195,71 +195,88 @@ export function WorkoutsView() {
               </CardContent>
             </Card>
           ) : (
-            <div className="grid gap-6 md:grid-cols-2">
-              {recentWorkouts?.map((workout) => (
-                <Card
-                  key={workout.id}
-                  className="group relative overflow-hidden transition-all hover:shadow-2xl hover:scale-[1.02] border-4 border-slate-500 bg-black hover:border-primary shadow-2xl"
-                  onClick={() => router.push(`/workouts/${workout.id}`)}
-                >
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <CardContent className="p-8 relative z-10">
-                    <div className="flex flex-col gap-6">
-                      <div className="flex items-start justify-between">
-                        <div className="space-y-3">
-                          <h3 className="font-black text-2xl text-white uppercase tracking-wide drop-shadow-lg">
-                            {workout.notes || "Untitled Workout"}
-                          </h3>
-                          <p className="text-slate-100 font-medium flex items-center gap-2">
-                            <Calendar className="h-4 w-4" />
-                            {new Date(workout.completedAt).toLocaleDateString(
+            <div className="grid gap-4 md:grid-cols-2">
+              {recentWorkouts?.map((workout) => {
+                // Find the plan for this workout
+                const plan = plans?.find((p) => p.id === workout.planId);
+                const day = plan?.days.find((d) => d.id === workout.dayId);
+
+                return (
+                  <Card
+                    key={workout.id}
+                    className="group relative overflow-hidden transition-all hover:shadow-2xl hover:scale-[1.02] border-4 border-slate-500 bg-black hover:border-primary shadow-2xl"
+                    onClick={() => router.push(`/workouts/${workout.id}`)}
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary/5 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <CardContent className="p-6 relative z-10">
+                      <div className="flex flex-col gap-4">
+                        <div className="flex items-start justify-between">
+                          <div className="space-y-2 flex-1 min-w-0">
+                            <h3 className="font-black text-lg text-white uppercase tracking-wide drop-shadow-lg line-clamp-1">
+                              {plan?.name || "Unknown Plan"}
+                            </h3>
+                            <div className="flex items-center gap-2 text-slate-300 text-sm">
+                              <Badge
+                                variant="outline"
+                                className="bg-slate-800 border-slate-600 text-primary font-bold text-xs"
+                              >
+                                Day {day?.dayNumber || "?"}
+                              </Badge>
+                              {day?.focusRelations?.[0]?.focus && (
+                                <span className="text-slate-400">
+                                  • {day.focusRelations[0].focus.name}
+                                </span>
+                              )}
+                            </div>
+                            <p className="text-slate-100 font-medium flex items-center gap-2 text-sm">
+                              <Calendar className="h-3 w-3" />
+                              {new Date(workout.completedAt).toLocaleDateString(
+                                undefined,
+                                {
+                                  weekday: "short",
+                                  month: "short",
+                                  day: "numeric",
+                                }
+                              )}
+                            </p>
+                          </div>
+                          <Badge className="bg-primary text-white font-black px-3 py-1 border-0 shadow-lg flex items-center gap-1 text-xs">
+                            <Clock className="h-3 w-3" />
+                            {new Date(workout.completedAt).toLocaleTimeString(
                               undefined,
                               {
-                                weekday: "long",
-                                year: "numeric",
-                                month: "long",
-                                day: "numeric",
+                                hour: "2-digit",
+                                minute: "2-digit",
                               }
                             )}
-                          </p>
+                          </Badge>
                         </div>
-                        <Badge className="bg-primary text-white font-black px-4 py-2 border-0 shadow-lg flex items-center gap-2 text-sm">
-                          <Clock className="h-4 w-4" />
-                          {new Date(workout.completedAt).toLocaleTimeString(
-                            undefined,
-                            {
-                              hour: "2-digit",
-                              minute: "2-digit",
-                            }
-                          )}
-                        </Badge>
-                      </div>
 
-                      <div className="flex items-center justify-between pt-4 border-t-2 border-slate-600">
-                        <div className="flex items-center gap-3">
-                          <span className="text-sm font-bold text-white flex items-center gap-2">
-                            <Dumbbell className="h-5 w-5 text-primary" />
-                            {workout.exerciseLogs?.length || 0} EXERCISES
-                            COMPLETED
-                          </span>
+                        <div className="flex items-center justify-between pt-3 border-t-2 border-slate-600">
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs font-bold text-white flex items-center gap-1">
+                              <Dumbbell className="h-4 w-4 text-primary" />
+                              {workout.exerciseLogs?.length || 0} EXERCISES
+                            </span>
+                          </div>
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="border-2 border-primary text-primary hover:bg-primary hover:text-white font-bold shadow-lg text-xs px-3 py-1"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              router.push(`/workouts/${workout.id}`);
+                            }}
+                          >
+                            VIEW
+                            <ArrowRight className="ml-1 h-3 w-3" />
+                          </Button>
                         </div>
-                        <Button
-                          size="sm"
-                          variant="outline"
-                          className="border-2 border-primary text-primary hover:bg-primary hover:text-white font-bold shadow-lg"
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            router.push(`/workouts/${workout.id}`);
-                          }}
-                        >
-                          VIEW DETAILS
-                          <ArrowRight className="ml-2 h-4 w-4" />
-                        </Button>
                       </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+                    </CardContent>
+                  </Card>
+                );
+              })}
             </div>
           )}
         </TabsContent>
