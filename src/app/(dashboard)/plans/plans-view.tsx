@@ -71,7 +71,7 @@ export function PlansView() {
           description="There are no preset plans available for this goal type yet. Create your own custom workout plan to get started."
           action={{
             label: "Create Your Own Plan",
-            href: "/plans/new",
+            href: "/workouts/new",
           }}
           variant="card"
         />

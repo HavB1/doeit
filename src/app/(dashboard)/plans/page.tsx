@@ -53,7 +53,7 @@ export default function WorkoutPlansPage() {
           </p>
         </div>
         <Button asChild size="lg" className="shrink-0">
-          <Link href="/plans/new" className="flex items-center gap-2">
+          <Link href="/workouts/new" className="flex items-center gap-2">
             <Plus className="h-4 w-4" />
             Create Plan
           </Link>
