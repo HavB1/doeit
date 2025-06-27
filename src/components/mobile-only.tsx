@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Loader, Smartphone, Monitor } from "lucide-react";
+import { WebviewWarning } from "@/components/webview-warning";
 
 export default function MobileOnly({
   children,
@@ -107,5 +108,10 @@ export default function MobileOnly({
   //   );
   // }
 
-  return <>{children}</>;
+  return (
+    <>
+      <WebviewWarning />
+      {children}
+    </>
+  );
 }

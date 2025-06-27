@@ -149,6 +149,8 @@ export const plansRouter = createTRPCRouter({
           goalType: presetPlan.goalType,
           createdAt: new Date(),
           updatedAt: new Date(),
+          isPublic: false,
+          isCustom: true,
         })
         .returning();
 
